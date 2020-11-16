@@ -1,0 +1,13 @@
+name = "UnitfulCurrencies"
+uuid = "acc8e2b2-5b00-45d8-b782-8432da0c0c59"
+license = "MIT"
+desc = "Currency units extension for Unitful"
+authors = ["Ricardo Rosa <rmsrosa@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+
+[compat]
+Unitful = "1"
+julia = "1"
