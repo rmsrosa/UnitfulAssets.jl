@@ -7,7 +7,8 @@ Module extending Unitful.jl with currencies.
 module UnitfulCurrencies
 
 using Unitful, JSON, Dates
-using Unitful: uconvert, @dimension, @unit, @refunit
+using Unitful: uconvert, basefactors, @dimension, @unit, @refunit
+import Unitful: basefactors
 
 """
     ExchangeRate
@@ -34,7 +35,7 @@ for entry in readdir(exr_dir)
 end
 
 # Set date to initialize rates in the unit definitions
-date = "2020-02-01"
+date = "2020-01-01"
 
 # Set reference unit, base currency, and base factor
 @refunit    EUR     "EUR"       Euro                𝐂           false
@@ -54,11 +55,28 @@ for (curr, rate) in jexr[date]["rates"]
     end
 end
 
-function set_exchange_rates(date::Union{String,Date})
-    if typeof(date) == String
-        date = Date(date)
+function set_exchange_rates(d::Date)
+    date = string(d)
+    if date in keys(jexr)
+        println("Setting exchange rates for date $date")
+        base_factor = jexr[date]["base"] == base_curr ? 1.0 : 1/jexr[date]["rates"][base_curr]
+        for (curr, rate) in jexr[date]["rates"]
+            if curr != base_curr
+                rate_to_base = base_factor * rate
+                basefactors[Symbol(curr)] = (1/rate_to_base, 1)
+            end
+        end
+    else
+        println("No exchange rates availabe for date $date")
     end
-    date
+end
+
+function set_exchange_rates(date::String)
+    set_exchange_rates(Date(date))
+end
+
+function set_exchange_rates()
+    nothing
 end
 
 # Register the above units and dimensions in Unitful
