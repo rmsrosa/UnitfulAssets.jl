@@ -6,8 +6,8 @@ Module extending Unitful.jl with currencies.
 """
 module UnitfulCurrencies
 
-using Unitful, CSV, JSON, Dates
-using Unitful: uconvert, basefactors, @dimension, @unit, @refunit, Units
+using Unitful, CSV, JSON
+using Unitful: @dimension, @refunit
 import Unitful: uconvert
 
 export ExchangeMarket
