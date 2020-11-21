@@ -34,7 +34,7 @@ and the value is the exchange rate between these currencies.
 
 For instance, the Dict
 
-    exr_mkt = Dict("EURUSD" => 1.164151)
+    exchmkt = Dict("EURUSD" => 1.164151)
 
 is of ExchangeMarket type and it means that, in this exchange maket,
 one can trade 1 EUR for 1.164151 USD, i.e. one can buy 1 EUR
@@ -73,11 +73,11 @@ Convert between currencies according to a market list of exchange pairs.
 
 # Examples
 
-Assuming `forex_mkt["2020-11-01"]` ExchangeMarket contains the key-value
-pair `"EURBRL" => 6.685598`, then the following exchange works:
+Assuming `forex_exchmkt["2020-11-01"]` ExchangeMarket contains the key-value
+pair `"EURBRL" => 6.685598`, then the following exchange takes placee:
 
 ```jldoctest
-julia> uconvert(u"BRL", 1u"EUR", forex_mkt["2020-11-01"])
+julia> uconvert(u"BRL", 1u"EUR", forex_exchmkt["2020-11-01"])
 6.685598 BRL
 ```
 """
@@ -101,33 +101,7 @@ function Unitful.uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMark
     end
 end
 
-"""
-    get_fixer_mkt(::Dict)
-
-Return an ExchangeMarket Dict from a fixer.io Dict.
-"""
-function get_fixer_mkt(jfixer::Dict)
-    base = jfixer["base"]
-    return Dict([base * curr => rate for (curr,rate) in jfixer["rates"]])
-end
-
-"""
-    get_fixer_mkt(::String)
-
-Return an ExchangeMarket Dict from a fixer.io json file.
-"""
-function get_fixer_mkt(filename::String)
-    return get_fixer_mkt(JSON.parsefile(filename))
-end
-
-"""
-    get_currencylayer_mkt(::String)
-
-Return an ExchangeMarket Dict from a currenylayer.com json file.
-"""
-function get_currencylayer_mkt(filename::String)
-    return JSON.parsefile(filename)["rates"]
-end
+include("exchmkt_tools.jl")
 
 # Register the above units and dimensions in Unitful
 __init__() = Unitful.register(UnitfulCurrencies)
