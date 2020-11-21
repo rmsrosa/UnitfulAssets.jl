@@ -3,6 +3,17 @@ __precompile__(true)
     UnitfulCurrencies
 
 Module extending Unitful.jl with currencies.
+
+A currency dimension 𝐂 is created and most, if not all, active currencies
+around the world are defined as units with dimension 𝐂. The Euro is set
+as the reference unit for 𝐂.
+
+An ExchangeMarket type is also defined as a Dict{String,Real} for containing
+currency pairs (see `ExchangeMarket`).
+
+Based on an given exchange market, a conversion can be made from a "quote"
+currency to the "base" currency. This is implemented as an extended
+dispatch for `uconvert`.
 """
 module UnitfulCurrencies
 
@@ -15,11 +26,19 @@ export ExchangeMarket
 """
     ExchangeMarket
 
-Alias for the type used for (one-way) exchange rates, given as
-a Dict{String,Float64}, where the key is expected to be a 
-six-characters string.
+Alias for the type used for exchange rates pairs, given as a
+Dict{String,Float64}, where the key is expected to be a 
+six-characters string containing the concatenation of the
+alphabetic codes ISO-4217 of the base and quote currencies,
+and the value is the exchange rate between these currencies.
 
-For instance, the following instance
+For instance, the Dict
+
+    exr_mkt = Dict("EURUSD" => 1.164151)
+
+is of ExchangeMarket type and it means that, in this exchange maket,
+one can trade 1 EUR for 1.164151 USD, i.e. one can buy 1 EUR
+with 1.164151 USD.
 """
 ExchangeMarket = Dict{String,Real}
 
@@ -50,19 +69,21 @@ end
 """
     uconvert(u::Units, x::Quantity, e::ExchangeMarket)
 
-Convert currency amount `x` to the currency unit `u` based on a list
-of exchange pairs.
+Convert between currencies according to a market list of exchange pairs.
 
 # Examples
 
+Assuming `forex_mkt["2020-11-01"]` ExchangeMarket contains the key-value
+pair `"EURBRL" => 6.685598`, then the following exchange works:
+
 ```jldoctest
-julia> uconvert(u"BRL", 1u"EUR", exchange_pairs("2020-10-01")) 
-???
+julia> uconvert(u"BRL", 1u"EUR", forex_mkt["2020-11-01"])
+6.685598 BRL
 ```
 """
 function Unitful.uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket)
     if Unitful.dimension(u) == Unitful.dimension(x) == 𝐂
-        pair = string(Unitful.unit(x)) * string(u)
+        pair =  string(Unitful.unit(x)) * string(u)
         if pair in keys(e)
             Unitful.uconvert(u, e[pair] * x)
         else
@@ -83,7 +104,7 @@ end
 """
     get_fixer_mkt(::Dict)
 
-Return an ExchangeMarket Dict from a Dict constructed from fixer.io json file.
+Return an ExchangeMarket Dict from a fixer.io Dict.
 """
 function get_fixer_mkt(jfixer::Dict)
     base = jfixer["base"]
@@ -93,7 +114,7 @@ end
 """
     get_fixer_mkt(::String)
 
-Return an ExchangeMarket Dict from a fixer.io json file of currency pairs.
+Return an ExchangeMarket Dict from a fixer.io json file.
 """
 function get_fixer_mkt(filename::String)
     return get_fixer_mkt(JSON.parsefile(filename))
@@ -102,7 +123,7 @@ end
 """
     get_currencylayer_mkt(::String)
 
-Return an ExchangeMarket Dict from a fixer.io json file of currency pairs.
+Return an ExchangeMarket Dict from a currenylayer.com json file.
 """
 function get_currencylayer_mkt(filename::String)
     return JSON.parsefile(filename)["rates"]
