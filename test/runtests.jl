@@ -10,5 +10,6 @@ using Test
         )
     )
     # conversions
+    @test uconvert(u"EUR", 1u"BRL") == 1u"EUR"
     @test uconvert(u"BRL", 1u"EUR", fixer_exchmkt["2020-11-01"]) == 6.685598u"BRL"
 end

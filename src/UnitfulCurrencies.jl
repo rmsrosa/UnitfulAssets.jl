@@ -42,8 +42,30 @@ with 1.164151 USD.
 """
 ExchangeMarket = Dict{String,Real}
 
+# Test bypass macro
+
+macro dimension_from_strings(symb, abbr, name)
+    s = Symbol(symb)
+    x = Expr(:quote, Symbol(name))
+    # x = Symbol(name)
+    uname = Symbol(name * "Units")
+    funame = Symbol(name * "FreeUnits")
+    esc(quote
+        Unitful.abbr(::Unitful.Dimension{$x}) = $abbr
+        const global $s = Unitful.Dimensions{(Unitful.Dimension{$x}(1),)}()
+        const global ($(Symbol(name))){T,U} = Union{
+            Unitful.Quantity{T,$s,U},
+            Unitful.Level{L,S,Unitful.Quantity{T,$s,U}} where {L,S}}
+        const global ($uname){U} = Unitful.Units{U,$s}
+        const global ($funame){U} = Unitful.FreeUnits{U,$s}
+        $s
+    end)
+end
+
 # Define currency dimension
-@dimension  𝐂   "C"     Currency
+#@dimension  𝐂   "C"     Currency
+@dimension_from_strings  "𝐂"   "C"     "Currency"
+
 
 # Set reference unit
 base_curr = "EUR"
@@ -56,6 +78,7 @@ curr_list = CSV.File("src/list_of_currencies.csv")
 for row in curr_list
     curr_code = row.Code
     curr_name = row.Currency
+    curr_dim = join([Char(Int(c) + 119743) for c in curr_code]) * "_𝐂𝐮𝐫𝐫𝐞𝐧𝐜𝐲"
     if curr_code != base_curr
         eval(
             quote
