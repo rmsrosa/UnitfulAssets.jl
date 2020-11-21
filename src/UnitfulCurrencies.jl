@@ -9,16 +9,19 @@ module UnitfulCurrencies
 using Unitful, CSV, JSON, Dates
 using Unitful: uconvert, basefactors, @dimension, @unit, @refunit, Units
 import Unitful: uconvert
-#import Unitful: basefactors
+
+export ExchangeMarket
 
 """
-    ExchangePairs
+    ExchangeMarket
 
-Abstract supertype for all exchange pair rates.
+Alias for the type used for (one-way) exchange rates, given as
+a Dict{String,Float64}, where the key is expected to be a 
+six-characters string.
+
+For instance, the following instance
 """
-abstract type ExchangePairs end
-
-Base.broadcastable(x::ExchangePairs) = Ref(x)
+ExchangeMarket = Dict{String,Real}
 
 # Define currency dimension
 @dimension  𝐂   "C"     Currency
@@ -30,6 +33,7 @@ base_curr = "EUR"
 # Load currency info and define new currency units
 curr_list = CSV.File("src/list_of_currencies.csv")
 
+# Initialize 
 for row in curr_list
     curr_code = row.Code
     curr_name = row.Currency
@@ -43,72 +47,11 @@ for row in curr_list
     end
 end
 
-# Load exchange rates
-
-exr_dir = "src/exchange_rates/"
-jexr = Dict()
-for entry in readdir(exr_dir)
-    if entry[end-4:end] == ".json"
-        j = JSON.parsefile(exr_dir * entry)
-        jexr[j["date"]] = Dict("base" => j["base"], "rates" => j["rates"])
-    end
-end
-
-# Set date to initialize rates in the unit definitions
-date = "2020-01-01"
-
-# Set reference unit, base currency, and base factor
-base_curr = jexr[date]["base"]
-
-#= eval(
-    quote
-        Unitful.@refunit $base_curr $base_curr $base_curr  "𝐂" false
-    end
-) =#
-#Unitful.@refunit   EUR     "EUR"   Euro    𝐂   false
-
-
-# define units
-#= for (curr, rate) in jexr[date]["rates"]
-    if curr != base_curr
-        eval(
-            quote
-                Unitful.@unit_symbols($curr,$curr,𝐂,(1/$rate, 1))
-                Unitful.abbr(::Unitful.Unit{Symbol($curr),𝐂}) = begin $curr end
-            end
-            )
-    end
-end =#
-
-function set_exchange_rates(d::Date)
-    date = string(d)
-    if date in keys(jexr)
-        println("Setting exchange rates for date $date")
-        base_factor = jexr[date]["base"] == base_curr ? 1.0 : 1/jexr[date]["rates"][base_curr]
-        for (curr, rate) in jexr[date]["rates"]
-            if curr != base_curr
-                rate_to_base = base_factor * rate
-                basefactors[Symbol(curr)] = (1/rate_to_base, 1)
-            end
-        end
-    else
-        println("No exchange rates availabe for date $date")
-    end
-end
-
-function set_exchange_rates(date::String)
-    set_exchange_rates(Date(date))
-end
-
-function set_exchange_rates()
-    nothing
-end
-
 """
-    uconvert(u::Units, x::Quantity, e::ExchangePairs)
+    uconvert(u::Units, x::Quantity, e::ExchangeMarket)
 
-Convert amount in currency `x` to the currency unit `u` based on a list
-e of exchange pairs.
+Convert currency amount `x` to the currency unit `u` based on a list
+of exchange pairs.
 
 # Examples
 
@@ -117,14 +60,53 @@ julia> uconvert(u"BRL", 1u"EUR", exchange_pairs("2020-10-01"))
 ???
 ```
 """
-Unitful.uconvert(u::Units, x::Quantity, e::ExchangePairs) 
-    if "USD" * "EUR" in keys(ExchangePairs)
-        = uconvert(u, edconvert(dimension(u), x, e))
+function Unitful.uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket)
+    if Unitful.dimension(u) == Unitful.dimension(x) == 𝐂
+        pair = string(Unitful.unit(x)) * string(u)
+        if pair in keys(e)
+            Unitful.uconvert(u, e[pair] * x)
+        else
+            throw(ArgumentError(
+                "No exchange rate available in the given exchange market" *
+                "for the conversion from $(Unitful.unit(x)) to $u."
+                )
+            )            
+        end
     else
-        throw(ArgumentError("No exchange pair available for USD and EUR"))
+        throw(ArgumentError(
+            "The first two arguments $u and $x must have the dimension of currency"
+            )
+        )
     end
 end
 
+"""
+    get_fixer_mkt(::Dict)
+
+Return an ExchangeMarket Dict from a Dict constructed from fixer.io json file.
+"""
+function get_fixer_mkt(jfixer::Dict)
+    base = jfixer["base"]
+    return Dict([base * curr => rate for (curr,rate) in jfixer["rates"]])
+end
+
+"""
+    get_fixer_mkt(::String)
+
+Return an ExchangeMarket Dict from a fixer.io json file of currency pairs.
+"""
+function get_fixer_mkt(filename::String)
+    return get_fixer_mkt(JSON.parsefile(filename))
+end
+
+"""
+    get_currencylayer_mkt(::String)
+
+Return an ExchangeMarket Dict from a fixer.io json file of currency pairs.
+"""
+function get_currencylayer_mkt(filename::String)
+    return JSON.parsefile(filename)["rates"]
+end
 
 # Register the above units and dimensions in Unitful
 __init__() = Unitful.register(UnitfulCurrencies)
