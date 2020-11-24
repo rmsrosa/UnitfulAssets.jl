@@ -10,6 +10,7 @@ using Test
         )
     )
     # conversions
-    @test uconvert(u"EUR", 1u"BRL") == 1u"EUR"
+#    @test uconvert(u"€", 1u"EUR") == 1u"€"
     @test uconvert(u"BRL", 1u"EUR", fixer_exchmkt["2020-11-01"]) == 6.685598u"BRL"
+    @test uconvert(u"kBRL", 2u"MEUR", fixer_exchmkt["2020-11-01"]) == 13371.196u"kBRL"
 end

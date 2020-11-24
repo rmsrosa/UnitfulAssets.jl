@@ -42,63 +42,107 @@ with 1.164151 USD.
 """
 ExchangeMarket = Dict{String,Real}
 
-# Define currency dimension
-@dimension  𝐂   "C"     Currency
-
-# Set reference unit
-base_curr = "EUR"
-@refunit    EUR     "EUR"   Euro    𝐂   false
-
-# Load currency info and define new currency units
-curr_list = CSV.File("src/list_of_currencies.csv")
-
-# Initialize 
-for row in curr_list
-    curr_code = row.Code
-    curr_name = row.Currency
-    curr_dim = join([Char(Int(c) + 119743) for c in curr_code]) * "_𝐂𝐮𝐫𝐫𝐞𝐧𝐜𝐲"
-    if curr_code != base_curr
-        eval(
-            quote
-                Unitful.@unit_symbols($curr_code,$curr_name,𝐂,(1.0, 1))
-                Unitful.abbr(::Unitful.Unit{Symbol($curr_name),𝐂}) = begin $curr_code end
-            end
-            )
-    end
+macro currency(code_symb, code_abbr, name, dimension, dimension_abbr, tf)
+    esc(quote
+        Unitful.@dimension($dimension, $dimension_abbr, $name)
+        Unitful.@refunit($code_symb, $code_abbr, $name, $dimension, $tf)
+    end)
 end
+
+include("pkgdefaults.jl")
+
+#@currency BLA "BLA" Blah 𝐁𝐋𝐀_𝐂𝐮𝐫𝐫 "BLA_Curr" true € "€" EuroSign 1.0BLA
+
+#= @dimension 𝐄𝐔𝐑  "EURCurrency"  EURCurrency
+@refunit EUR  "EUR"  Euro  𝐄𝐔𝐑  true
+
+@dimension 𝐁𝐑𝐋  "BRLCurrency"  BRLCurrency
+@refunit BRL  "BRL"  BrazilianReal  𝐁𝐑𝐋  true =#
 
 """
     uconvert(u::Units, x::Quantity, e::ExchangeMarket)
 
 Convert between currencies according to a market list of exchange pairs.
 
+The exchange market must contain an exchange rate from `unit(x)` to `u`,
+otherwise an error is thrown.
+
+An `ArgumentError` is also thrown if either `unit(x)` or `u` is not a currency.
+
 # Examples
 
 Assuming `forex_exchmkt["2020-11-01"]` ExchangeMarket contains the key-value
-pair `"EURBRL" => 6.685598`, then the following exchange takes placee:
+pair `"EURBRL" => 6.685598`, then the following exchange takes place:
 
 ```jldoctest
 julia> uconvert(u"BRL", 1u"EUR", forex_exchmkt["2020-11-01"])
 6.685598 BRL
 ```
 """
-function Unitful.uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket)
-    if Unitful.dimension(u) == Unitful.dimension(x) == 𝐂
-        pair =  string(Unitful.unit(x)) * string(u)
-        if pair in keys(e)
-            Unitful.uconvert(u, e[pair] * x)
-        else
-            throw(ArgumentError(
-                "No exchange rate available in the given exchange market" *
-                "for the conversion from $(Unitful.unit(x)) to $u."
-                )
-            )            
-        end
+function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket)
+    u_curr = string(Unitful.dimension(u))[1:3]
+    x_curr = string(Unitful.dimension(x))[1:3]
+    pair = x_curr * u_curr
+    if pair in keys(e)
+        rate = Main.eval(Meta.parse(string(e[pair]) * "u\"" * u_curr * "/" * x_curr * "\""))
+        Unitful.uconvert(u, rate * x)
     else
         throw(ArgumentError(
-            "The first two arguments $u and $x must have the dimension of currency"
+            "No exchange rate available in the given exchange market" *
+            "for the conversion from $(Unitful.unit(x)) to $u."
             )
-        )
+        )            
+    end
+end
+
+"""
+    uconvert(u::Units, x::Quantity, e::ExchangeMarket, extended::Bool)
+
+Convert between currencies, allowing for extensions.
+
+If the given exchange market includes the conversion rate from `unit(x)`
+to `u`, then the function `uconvert(u,x,e)` is invoked. Otherwise, if
+`extended` is `true` and a conversion `rate` from `u` to `unit(x)` is
+included in the exchange market, then `1/rate` is used for the conversion
+of `x` to `u`.
+
+If `extended` is true and neither conversions from `unit(x)` to `u`
+or `u` to `unit(x)` is given in the exchange market, then the function
+looks for the first tertiary conversion in the exchange market (i.e.
+an exchange rate from `unit(x)` to an intermediate unit `v` and an
+exchange rate from `v` to `u`, so that the compound rate is used).
+If there is no such conversion either, then an `ArgumentError` is thrown.
+
+An `ArgumentError` is also thrown if either `unit(x)` or `u` is not a currency.
+
+# Examples
+
+Assuming `forex_exchmkt["2020-11-01"]` ExchangeMarket contains the key-value
+pair `"EURBRL" => 6.685598`, then the following exchange takes place:
+
+```jldoctest
+julia> uconvert(u"BRL", 1u"EUR", forex_exchmkt["2020-11-01"])
+6.685598 BRL
+julia> uconvert(1u"BRL", 1u"BRL", forex_exchmkt["2020-11-01"])
+0.149575251159283 EUR
+```
+"""
+function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket, extended::Bool)
+    u_curr = string(Unitful.dimension(u))[1:3]
+    x_curr = string(Unitful.dimension(x))[1:3]
+    pair = x_curr * u_curr
+    pairinv = u_curr * x_curr
+    if !extended || pair in keys(e)
+        uconvert(u, x, e)
+    elseif extended && pairinv in keys(e)
+        rate = Main.eval(Meta.parse(string(1/e[pairinv]) * "u\"" * u_curr * "/" * x_curr * "\""))
+        Unitful.uconvert(u, rate * x)
+    else
+        throw(ArgumentError(
+            "No extended exchange rate available in the given exchange" *
+            "market for the conversion from $(Unitful.unit(x)) to $u."
+            )
+        ) 
     end
 end
 
