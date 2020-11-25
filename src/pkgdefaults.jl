@@ -1,166 +1,166 @@
-@currency  AED  "AED"  UAEDirham  𝐀𝐄𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "AEDCurrency"  true
-@currency  AFN  "AFN"  Afghani  𝐀𝐅𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "AFNCurrency"  true
-@currency  ALL  "ALL"  Lek  𝐀𝐋𝐋𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "ALLCurrency"  true
-@currency  AMD  "AMD"  ArmenianDram  𝐀𝐌𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "AMDCurrency"  true
-@currency  ANG  "ANG"  NetherlandsAntilleanGuilder  𝐀𝐍𝐆𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "ANGCurrency"  true
-@currency  AOA  "AOA"  Kwanza  𝐀𝐎𝐀𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "AOACurrency"  true
-@currency  ARS  "ARS"  ArgentinePeso  𝐀𝐑𝐒𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "ARSCurrency"  true
-@currency  AUD  "AUD"  AustralianDollar  𝐀𝐔𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "AUDCurrency"  true
-@currency  AWG  "AWG"  ArubanFlorin  𝐀𝐖𝐆𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "AWGCurrency"  true
-@currency  AZN  "AZN"  AzerbaijanManat  𝐀𝐙𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "AZNCurrency"  true
-@currency  BAM  "BAM"  ConvertibleMark  𝐁𝐀𝐌𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BAMCurrency"  true
-@currency  BBD  "BBD"  BarbadosDollar  𝐁𝐁𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BBDCurrency"  true
-@currency  BDT  "BDT"  Taka  𝐁𝐃𝐓𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BDTCurrency"  true
-@currency  BGN  "BGN"  BulgarianLev  𝐁𝐆𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BGNCurrency"  true
-@currency  BHD  "BHD"  BahrainiDinar  𝐁𝐇𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BHDCurrency"  true
-@currency  BIF  "BIF"  BurundiFranc  𝐁𝐈𝐅𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BIFCurrency"  true
-@currency  BMD  "BMD"  BermudianDollar  𝐁𝐌𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BMDCurrency"  true
-@currency  BND  "BND"  BruneiDollar  𝐁𝐍𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BNDCurrency"  true
-@currency  BOB  "BOB"  Boliviano  𝐁𝐎𝐁𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BOBCurrency"  true
-@currency  BOV  "BOV"  Mvdol  𝐁𝐎𝐕𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BOVCurrency"  true
-@currency  BRL  "BRL"  BrazilianReal  𝐁𝐑𝐋𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BRLCurrency"  true
-@currency  BSD  "BSD"  BahamianDollar  𝐁𝐒𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BSDCurrency"  true
-@currency  BTN  "BTN"  Ngultrum  𝐁𝐓𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BTNCurrency"  true
-@currency  BWP  "BWP"  Pula  𝐁𝐖𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BWPCurrency"  true
-@currency  BYN  "BYN"  BelarusianRuble  𝐁𝐘𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BYNCurrency"  true
-@currency  BZD  "BZD"  BelizeDollar  𝐁𝐙𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "BZDCurrency"  true
-@currency  CAD  "CAD"  CanadianDollar  𝐂𝐀𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CADCurrency"  true
-@currency  CDF  "CDF"  CongoleseFranc  𝐂𝐃𝐅𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CDFCurrency"  true
-@currency  CHE  "CHE"  WIREuro  𝐂𝐇𝐄𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CHECurrency"  true
-@currency  CHF  "CHF"  SwissFranc  𝐂𝐇𝐅𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CHFCurrency"  true
-@currency  CHW  "CHW"  WIRFranc  𝐂𝐇𝐖𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CHWCurrency"  true
-@currency  CLF  "CLF"  UnidadDeFomento  𝐂𝐋𝐅𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CLFCurrency"  true
-@currency  CLP  "CLP"  ChileanPeso  𝐂𝐋𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CLPCurrency"  true
-@currency  CNY  "CNY"  YuanRenminbi  𝐂𝐍𝐘𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CNYCurrency"  true
-@currency  COP  "COP"  ColombianPeso  𝐂𝐎𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "COPCurrency"  true
-@currency  COU  "COU"  UnidadDeValorReal  𝐂𝐎𝐔𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "COUCurrency"  true
-@currency  CRC  "CRC"  CostaRicanColon  𝐂𝐑𝐂𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CRCCurrency"  true
-@currency  CUC  "CUC"  PesoConvertible  𝐂𝐔𝐂𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CUCCurrency"  true
-@currency  CUP  "CUP"  CubanPeso  𝐂𝐔𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CUPCurrency"  true
-@currency  CVE  "CVE"  CaboVerdeEscudo  𝐂𝐕𝐄𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CVECurrency"  true
-@currency  CZK  "CZK"  CzechKoruna  𝐂𝐙𝐊𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "CZKCurrency"  true
-@currency  DJF  "DJF"  DjiboutiFranc  𝐃𝐉𝐅𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "DJFCurrency"  true
-@currency  DKK  "DKK"  DanishKrone  𝐃𝐊𝐊𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "DKKCurrency"  true
-@currency  DOP  "DOP"  DominicanPeso  𝐃𝐎𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "DOPCurrency"  true
-@currency  DZD  "DZD"  AlgerianDinar  𝐃𝐙𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "DZDCurrency"  true
-@currency  EGP  "EGP"  EgyptianPound  𝐄𝐆𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "EGPCurrency"  true
-@currency  ERN  "ERN"  Nakfa  𝐄𝐑𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "ERNCurrency"  true
-@currency  ETB  "ETB"  EthiopianBirr  𝐄𝐓𝐁𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "ETBCurrency"  true
-@currency  EUR  "EUR"  Euro  𝐄𝐔𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "EURCurrency"  true
-@currency  FJD  "FJD"  FijiDollar  𝐅𝐉𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "FJDCurrency"  true
-@currency  FKP  "FKP"  FalklandIslandsPound  𝐅𝐊𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "FKPCurrency"  true
-@currency  GBP  "GBP"  PoundSterling  𝐆𝐁𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "GBPCurrency"  true
-@currency  GEL  "GEL"  Lari  𝐆𝐄𝐋𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "GELCurrency"  true
-@currency  GHS  "GHS"  GhanaCedi  𝐆𝐇𝐒𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "GHSCurrency"  true
-@currency  GIP  "GIP"  GibraltarPound  𝐆𝐈𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "GIPCurrency"  true
-@currency  GMD  "GMD"  Dalasi  𝐆𝐌𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "GMDCurrency"  true
-@currency  GNF  "GNF"  GuineanFranc  𝐆𝐍𝐅𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "GNFCurrency"  true
-@currency  GTQ  "GTQ"  Quetzal  𝐆𝐓𝐐𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "GTQCurrency"  true
-@currency  GYD  "GYD"  GuyanaDollar  𝐆𝐘𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "GYDCurrency"  true
-@currency  HKD  "HKD"  HongKongDollar  𝐇𝐊𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "HKDCurrency"  true
-@currency  HNL  "HNL"  Lempira  𝐇𝐍𝐋𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "HNLCurrency"  true
-@currency  HRK  "HRK"  Kuna  𝐇𝐑𝐊𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "HRKCurrency"  true
-@currency  HTG  "HTG"  Gourde  𝐇𝐓𝐆𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "HTGCurrency"  true
-@currency  HUF  "HUF"  Forint  𝐇𝐔𝐅𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "HUFCurrency"  true
-@currency  IDR  "IDR"  Rupiah  𝐈𝐃𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "IDRCurrency"  true
-@currency  ILS  "ILS"  NewIsraeliSheqel  𝐈𝐋𝐒𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "ILSCurrency"  true
-@currency  INR  "INR"  IndianRupee  𝐈𝐍𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "INRCurrency"  true
-@currency  IQD  "IQD"  IraqiDinar  𝐈𝐐𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "IQDCurrency"  true
-@currency  IRR  "IRR"  IranianRial  𝐈𝐑𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "IRRCurrency"  true
-@currency  ISK  "ISK"  IcelandKrona  𝐈𝐒𝐊𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "ISKCurrency"  true
-@currency  JMD  "JMD"  JamaicanDollar  𝐉𝐌𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "JMDCurrency"  true
-@currency  JOD  "JOD"  JordanianDinar  𝐉𝐎𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "JODCurrency"  true
-@currency  JPY  "JPY"  Yen  𝐉𝐏𝐘𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "JPYCurrency"  true
-@currency  KES  "KES"  KenyanShilling  𝐊𝐄𝐒𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "KESCurrency"  true
-@currency  KGS  "KGS"  Som  𝐊𝐆𝐒𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "KGSCurrency"  true
-@currency  KHR  "KHR"  Riel  𝐊𝐇𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "KHRCurrency"  true
-@currency  KMF  "KMF"  ComorianFranc  𝐊𝐌𝐅𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "KMFCurrency"  true
-@currency  KPW  "KPW"  NorthKoreanWon  𝐊𝐏𝐖𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "KPWCurrency"  true
-@currency  KRW  "KRW"  Won  𝐊𝐑𝐖𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "KRWCurrency"  true
-@currency  KWD  "KWD"  KuwaitiDinar  𝐊𝐖𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "KWDCurrency"  true
-@currency  KYD  "KYD"  CaymanIslandsDollar  𝐊𝐘𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "KYDCurrency"  true
-@currency  KZT  "KZT"  Tenge  𝐊𝐙𝐓𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "KZTCurrency"  true
-@currency  LAK  "LAK"  LaoKip  𝐋𝐀𝐊𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "LAKCurrency"  true
-@currency  LBP  "LBP"  LebanesePound  𝐋𝐁𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "LBPCurrency"  true
-@currency  LKR  "LKR"  SriLankaRupee  𝐋𝐊𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "LKRCurrency"  true
-@currency  LRD  "LRD"  LiberianDollar  𝐋𝐑𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "LRDCurrency"  true
-@currency  LSL  "LSL"  Loti  𝐋𝐒𝐋𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "LSLCurrency"  true
-@currency  LYD  "LYD"  LibyanDinar  𝐋𝐘𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "LYDCurrency"  true
-@currency  MAD  "MAD"  MoroccanDirham  𝐌𝐀𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MADCurrency"  true
-@currency  MDL  "MDL"  MoldovanLeu  𝐌𝐃𝐋𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MDLCurrency"  true
-@currency  MGA  "MGA"  MalagasyAriary  𝐌𝐆𝐀𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MGACurrency"  true
-@currency  MKD  "MKD"  Denar  𝐌𝐊𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MKDCurrency"  true
-@currency  MMK  "MMK"  Kyat  𝐌𝐌𝐊𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MMKCurrency"  true
-@currency  MNT  "MNT"  Tugrik  𝐌𝐍𝐓𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MNTCurrency"  true
-@currency  MOP  "MOP"  Pataca  𝐌𝐎𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MOPCurrency"  true
-@currency  MRU  "MRU"  Ouguiya  𝐌𝐑𝐔𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MRUCurrency"  true
-@currency  MUR  "MUR"  MauritiusRupee  𝐌𝐔𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MURCurrency"  true
-@currency  MVR  "MVR"  Rufiyaa  𝐌𝐕𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MVRCurrency"  true
-@currency  MWK  "MWK"  MalawiKwacha  𝐌𝐖𝐊𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MWKCurrency"  true
-@currency  MXN  "MXN"  MexicanPeso  𝐌𝐗𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MXNCurrency"  true
-@currency  MXV  "MXV"  MexicanUnidadDeInversion  𝐌𝐗𝐕𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MXVCurrency"  true
-@currency  MYR  "MYR"  MalaysianRinggit  𝐌𝐘𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MYRCurrency"  true
-@currency  MZN  "MZN"  MozambiqueMetical  𝐌𝐙𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "MZNCurrency"  true
-@currency  NAD  "NAD"  NamibiaDollar  𝐍𝐀𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "NADCurrency"  true
-@currency  NGN  "NGN"  Naira  𝐍𝐆𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "NGNCurrency"  true
-@currency  NIO  "NIO"  CordobaOro  𝐍𝐈𝐎𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "NIOCurrency"  true
-@currency  NOK  "NOK"  NorwegianKrone  𝐍𝐎𝐊𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "NOKCurrency"  true
-@currency  NPR  "NPR"  NepaleseRupee  𝐍𝐏𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "NPRCurrency"  true
-@currency  NZD  "NZD"  NewZealandDollar  𝐍𝐙𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "NZDCurrency"  true
-@currency  OMR  "OMR"  RialOmani  𝐎𝐌𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "OMRCurrency"  true
-@currency  PAB  "PAB"  Balboa  𝐏𝐀𝐁𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "PABCurrency"  true
-@currency  PEN  "PEN"  Sol  𝐏𝐄𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "PENCurrency"  true
-@currency  PGK  "PGK"  Kina  𝐏𝐆𝐊𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "PGKCurrency"  true
-@currency  PHP  "PHP"  PhilippinePeso  𝐏𝐇𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "PHPCurrency"  true
-@currency  PKR  "PKR"  PakistanRupee  𝐏𝐊𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "PKRCurrency"  true
-@currency  PLN  "PLN"  Zloty  𝐏𝐋𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "PLNCurrency"  true
-@currency  PYG  "PYG"  Guarani  𝐏𝐘𝐆𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "PYGCurrency"  true
-@currency  QAR  "QAR"  QatariRial  𝐐𝐀𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "QARCurrency"  true
-@currency  RON  "RON"  RomanianLeu  𝐑𝐎𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "RONCurrency"  true
-@currency  RSD  "RSD"  SerbianDinar  𝐑𝐒𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "RSDCurrency"  true
-@currency  RUB  "RUB"  RussianRuble  𝐑𝐔𝐁𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "RUBCurrency"  true
-@currency  RWF  "RWF"  RwandaFranc  𝐑𝐖𝐅𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "RWFCurrency"  true
-@currency  SAR  "SAR"  SaudiRiyal  𝐒𝐀𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SARCurrency"  true
-@currency  SBD  "SBD"  SolomonIslandsDollar  𝐒𝐁𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SBDCurrency"  true
-@currency  SCR  "SCR"  SeychellesRupee  𝐒𝐂𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SCRCurrency"  true
-@currency  SDG  "SDG"  SudanesePound  𝐒𝐃𝐆𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SDGCurrency"  true
-@currency  SEK  "SEK"  SwedishKrona  𝐒𝐄𝐊𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SEKCurrency"  true
-@currency  SGD  "SGD"  SingaporeDollar  𝐒𝐆𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SGDCurrency"  true
-@currency  SHP  "SHP"  SaintHelenaPound  𝐒𝐇𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SHPCurrency"  true
-@currency  SLL  "SLL"  Leone  𝐒𝐋𝐋𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SLLCurrency"  true
-@currency  SOS  "SOS"  SomaliShilling  𝐒𝐎𝐒𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SOSCurrency"  true
-@currency  SRD  "SRD"  SurinamDollar  𝐒𝐑𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SRDCurrency"  true
-@currency  SSP  "SSP"  SouthSudanesePound  𝐒𝐒𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SSPCurrency"  true
-@currency  STN  "STN"  Dobra  𝐒𝐓𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "STNCurrency"  true
-@currency  SVC  "SVC"  ElSalvadorColon  𝐒𝐕𝐂𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SVCCurrency"  true
-@currency  SYP  "SYP"  SyrianPound  𝐒𝐘𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SYPCurrency"  true
-@currency  SZL  "SZL"  Lilangeni  𝐒𝐙𝐋𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "SZLCurrency"  true
-@currency  THB  "THB"  Baht  𝐓𝐇𝐁𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "THBCurrency"  true
-@currency  TJS  "TJS"  Somoni  𝐓𝐉𝐒𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "TJSCurrency"  true
-@currency  TMT  "TMT"  TurkmenistanNewManat  𝐓𝐌𝐓𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "TMTCurrency"  true
-@currency  TND  "TND"  TunisianDinar  𝐓𝐍𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "TNDCurrency"  true
-@currency  TOP  "TOP"  Paanga  𝐓𝐎𝐏𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "TOPCurrency"  true
-@currency  TRY  "TRY"  TurkishLira  𝐓𝐑𝐘𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "TRYCurrency"  true
-@currency  TTD  "TTD"  TrinidadAndTobagoDollar  𝐓𝐓𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "TTDCurrency"  true
-@currency  TWD  "TWD"  NewTaiwanDollar  𝐓𝐖𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "TWDCurrency"  true
-@currency  TZS  "TZS"  TanzanianShilling  𝐓𝐙𝐒𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "TZSCurrency"  true
-@currency  UAH  "UAH"  Hryvnia  𝐔𝐀𝐇𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "UAHCurrency"  true
-@currency  UGX  "UGX"  UgandaShilling  𝐔𝐆𝐗𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "UGXCurrency"  true
-@currency  USD  "USD"  USDollar  𝐔𝐒𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "USDCurrency"  true
-@currency  USN  "USN"  USDollarNextDay  𝐔𝐒𝐍𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "USNCurrency"  true
-@currency  UYI  "UYI"  UruguayPesoEnUnidadesIndexadas  𝐔𝐘𝐈𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "UYICurrency"  true
-@currency  UYU  "UYU"  PesoUruguayo  𝐔𝐘𝐔𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "UYUCurrency"  true
-@currency  UYW  "UYW"  UnidadPrevisional  𝐔𝐘𝐖𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "UYWCurrency"  true
-@currency  UZS  "UZS"  UzbekistanSum  𝐔𝐙𝐒𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "UZSCurrency"  true
-@currency  VES  "VES"  BolívarSoberano  𝐕𝐄𝐒𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "VESCurrency"  true
-@currency  VND  "VND"  Dong  𝐕𝐍𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "VNDCurrency"  true
-@currency  VUV  "VUV"  Vatu  𝐕𝐔𝐕𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "VUVCurrency"  true
-@currency  WST  "WST"  Tala  𝐖𝐒𝐓𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "WSTCurrency"  true
-@currency  XAF  "XAF"  CFAFrancBEAC  𝐗𝐀𝐅𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "XAFCurrency"  true
-@currency  XCD  "XCD"  EastCaribbeanDollar  𝐗𝐂𝐃𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "XCDCurrency"  true
-@currency  XOF  "XOF"  CFAFrancBCEAO  𝐗𝐎𝐅𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "XOFCurrency"  true
-@currency  XPF  "XPF"  CFPFranc  𝐗𝐏𝐅𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "XPFCurrency"  true
-@currency  YER  "YER"  YemeniRial  𝐘𝐄𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "YERCurrency"  true
-@currency  ZAR  "ZAR"  Rand  𝐙𝐀𝐑𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "ZARCurrency"  true
-@currency  ZMW  "ZMW"  ZambianKwacha  𝐙𝐌𝐖𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "ZMWCurrency"  true
-@currency  ZWL  "ZWL"  ZimbabweDollar  𝐙𝐖𝐋𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘  "ZWLCurrency"  true
+@currency  AED  UAEDirham
+@currency  AFN  Afghani
+@currency  ALL  Lek
+@currency  AMD  ArmenianDram
+@currency  ANG  NetherlandsAntilleanGuilder
+@currency  AOA  Kwanza
+@currency  ARS  ArgentinePeso
+@currency  AUD  AustralianDollar
+@currency  AWG  ArubanFlorin
+@currency  AZN  AzerbaijanManat
+@currency  BAM  ConvertibleMark
+@currency  BBD  BarbadosDollar
+@currency  BDT  Taka
+@currency  BGN  BulgarianLev
+@currency  BHD  BahrainiDinar
+@currency  BIF  BurundiFranc
+@currency  BMD  BermudianDollar
+@currency  BND  BruneiDollar
+@currency  BOB  Boliviano
+@currency  BOV  Mvdol
+@currency  BRL  BrazilianReal
+@currency  BSD  BahamianDollar
+@currency  BTN  Ngultrum
+@currency  BWP  Pula
+@currency  BYN  BelarusianRuble
+@currency  BZD  BelizeDollar
+@currency  CAD  CanadianDollar
+@currency  CDF  CongoleseFranc
+@currency  CHE  WIREuro
+@currency  CHF  SwissFranc
+@currency  CHW  WIRFranc
+@currency  CLF  UnidadDeFomento
+@currency  CLP  ChileanPeso
+@currency  CNY  YuanRenminbi
+@currency  COP  ColombianPeso
+@currency  COU  UnidadDeValorReal
+@currency  CRC  CostaRicanColon
+@currency  CUC  PesoConvertible
+@currency  CUP  CubanPeso
+@currency  CVE  CaboVerdeEscudo
+@currency  CZK  CzechKoruna
+@currency  DJF  DjiboutiFranc
+@currency  DKK  DanishKrone
+@currency  DOP  DominicanPeso
+@currency  DZD  AlgerianDinar
+@currency  EGP  EgyptianPound
+@currency  ERN  Nakfa
+@currency  ETB  EthiopianBirr
+@currency  EUR  Euro
+@currency  FJD  FijiDollar
+@currency  FKP  FalklandIslandsPound
+@currency  GBP  PoundSterling
+@currency  GEL  Lari
+@currency  GHS  GhanaCedi
+@currency  GIP  GibraltarPound
+@currency  GMD  Dalasi
+@currency  GNF  GuineanFranc
+@currency  GTQ  Quetzal
+@currency  GYD  GuyanaDollar
+@currency  HKD  HongKongDollar
+@currency  HNL  Lempira
+@currency  HRK  Kuna
+@currency  HTG  Gourde
+@currency  HUF  Forint
+@currency  IDR  Rupiah
+@currency  ILS  NewIsraeliSheqel
+@currency  INR  IndianRupee
+@currency  IQD  IraqiDinar
+@currency  IRR  IranianRial
+@currency  ISK  IcelandKrona
+@currency  JMD  JamaicanDollar
+@currency  JOD  JordanianDinar
+@currency  JPY  Yen
+@currency  KES  KenyanShilling
+@currency  KGS  Som
+@currency  KHR  Riel
+@currency  KMF  ComorianFranc
+@currency  KPW  NorthKoreanWon
+@currency  KRW  Won
+@currency  KWD  KuwaitiDinar
+@currency  KYD  CaymanIslandsDollar
+@currency  KZT  Tenge
+@currency  LAK  LaoKip
+@currency  LBP  LebanesePound
+@currency  LKR  SriLankaRupee
+@currency  LRD  LiberianDollar
+@currency  LSL  Loti
+@currency  LYD  LibyanDinar
+@currency  MAD  MoroccanDirham
+@currency  MDL  MoldovanLeu
+@currency  MGA  MalagasyAriary
+@currency  MKD  Denar
+@currency  MMK  Kyat
+@currency  MNT  Tugrik
+@currency  MOP  Pataca
+@currency  MRU  Ouguiya
+@currency  MUR  MauritiusRupee
+@currency  MVR  Rufiyaa
+@currency  MWK  MalawiKwacha
+@currency  MXN  MexicanPeso
+@currency  MXV  MexicanUnidadDeInversion
+@currency  MYR  MalaysianRinggit
+@currency  MZN  MozambiqueMetical
+@currency  NAD  NamibiaDollar
+@currency  NGN  Naira
+@currency  NIO  CordobaOro
+@currency  NOK  NorwegianKrone
+@currency  NPR  NepaleseRupee
+@currency  NZD  NewZealandDollar
+@currency  OMR  RialOmani
+@currency  PAB  Balboa
+@currency  PEN  Sol
+@currency  PGK  Kina
+@currency  PHP  PhilippinePeso
+@currency  PKR  PakistanRupee
+@currency  PLN  Zloty
+@currency  PYG  Guarani
+@currency  QAR  QatariRial
+@currency  RON  RomanianLeu
+@currency  RSD  SerbianDinar
+@currency  RUB  RussianRuble
+@currency  RWF  RwandaFranc
+@currency  SAR  SaudiRiyal
+@currency  SBD  SolomonIslandsDollar
+@currency  SCR  SeychellesRupee
+@currency  SDG  SudanesePound
+@currency  SEK  SwedishKrona
+@currency  SGD  SingaporeDollar
+@currency  SHP  SaintHelenaPound
+@currency  SLL  Leone
+@currency  SOS  SomaliShilling
+@currency  SRD  SurinamDollar
+@currency  SSP  SouthSudanesePound
+@currency  STN  Dobra
+@currency  SVC  ElSalvadorColon
+@currency  SYP  SyrianPound
+@currency  SZL  Lilangeni
+@currency  THB  Baht
+@currency  TJS  Somoni
+@currency  TMT  TurkmenistanNewManat
+@currency  TND  TunisianDinar
+@currency  TOP  Paanga
+@currency  TRY  TurkishLira
+@currency  TTD  TrinidadAndTobagoDollar
+@currency  TWD  NewTaiwanDollar
+@currency  TZS  TanzanianShilling
+@currency  UAH  Hryvnia
+@currency  UGX  UgandaShilling
+@currency  USD  USDollar
+@currency  USN  USDollarNextDay
+@currency  UYI  UruguayPesoEnUnidadesIndexadas
+@currency  UYU  PesoUruguayo
+@currency  UYW  UnidadPrevisional
+@currency  UZS  UzbekistanSum
+@currency  VES  BolívarSoberano
+@currency  VND  Dong
+@currency  VUV  Vatu
+@currency  WST  Tala
+@currency  XAF  CFAFrancBEAC
+@currency  XCD  EastCaribbeanDollar
+@currency  XOF  CFAFrancBCEAO
+@currency  XPF  CFPFranc
+@currency  YER  YemeniRial
+@currency  ZAR  Rand
+@currency  ZMW  ZambianKwacha
+@currency  ZWL  ZimbabweDollar

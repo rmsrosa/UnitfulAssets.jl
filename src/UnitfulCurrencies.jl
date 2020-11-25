@@ -42,22 +42,28 @@ with 1.164151 USD.
 """
 ExchangeMarket = Dict{String,Real}
 
-macro currency(code_symb, code_abbr, name, dimension, dimension_abbr, tf)
+"""
+    @currency code_symb name
+
+Create a dimension and a reference unit for a currency.
+
+The macros `@dimension` and `@refunit` are called with arguments derived
+from `code_symb` and `name`.
+"""
+macro currency(code_symb, name)
+    gap = Int('𝐀') - Int('A')
+    code_abbr = string(code_symb)
+    code_abbr_bold = join([Char(Int(c) + gap) for c in code_abbr])
+    dimension = Symbol(code_abbr_bold)
+    dim_abbr = string(code_symb) * "CURRENCY"
+    dim_name = Symbol(code_abbr_bold * "𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘")
     esc(quote
-        Unitful.@dimension($dimension, $dimension_abbr, $name)
-        Unitful.@refunit($code_symb, $code_abbr, $name, $dimension, $tf)
+        Unitful.@dimension($dimension, $dim_abbr, $dim_name)
+        Unitful.@refunit($code_symb, $code_abbr, $name, $dimension, true)
     end)
 end
 
 include("pkgdefaults.jl")
-
-#@currency BLA "BLA" Blah 𝐁𝐋𝐀_𝐂𝐮𝐫𝐫 "BLA_Curr" true € "€" EuroSign 1.0BLA
-
-#= @dimension 𝐄𝐔𝐑  "EURCurrency"  EURCurrency
-@refunit EUR  "EUR"  Euro  𝐄𝐔𝐑  true
-
-@dimension 𝐁𝐑𝐋  "BRLCurrency"  BRLCurrency
-@refunit BRL  "BRL"  BrazilianReal  𝐁𝐑𝐋  true =#
 
 """
     uconvert(u::Units, x::Quantity, e::ExchangeMarket)
@@ -106,7 +112,7 @@ to `u`, then the function `uconvert(u,x,e)` is invoked. Otherwise, if
 included in the exchange market, then `1/rate` is used for the conversion
 of `x` to `u`.
 
-If `extended` is true and neither conversions from `unit(x)` to `u`
+STILL TO BE IMPLEMENTED: If `extended` is true and neither conversions from `unit(x)` to `u`
 or `u` to `unit(x)` is given in the exchange market, then the function
 looks for the first tertiary conversion in the exchange market (i.e.
 an exchange rate from `unit(x)` to an intermediate unit `v` and an
