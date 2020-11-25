@@ -67,7 +67,7 @@ include("pkgdefaults.jl")
 """
     uconvert(u::Units, x::Quantity, e::ExchangeMarket; extended::Bool = false)
 
-Convert between currencies, allowing for extensions.
+Convert between currencies, allowing for inverse and secondary rates.
 
 If the given exchange market includes the conversion rate from `unit(x)`
 to `u`, then the function `uconvert(u,x,e)` is invoked. Otherwise, if
@@ -75,9 +75,9 @@ to `u`, then the function `uconvert(u,x,e)` is invoked. Otherwise, if
 included in the exchange market, then `1/rate` is used for the conversion
 of `x` to `u`.
 
-STILL TO BE IMPLEMENTED: If `extended` is true and neither conversions from `unit(x)` to `u`
+If `extended` is true and neither conversions from `unit(x)` to `u`
 or `u` to `unit(x)` is given in the exchange market, then the function
-looks for the first tertiary conversion in the exchange market (i.e.
+looks for the first secondary conversion in the exchange market (i.e.
 an exchange rate from `unit(x)` to an intermediate unit `v` and an
 exchange rate from `v` to `u`, so that the compound rate is used).
 If there is no such conversion either, then an `ArgumentError` is thrown.
@@ -103,17 +103,25 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; exte
     pairinv = u_curr * x_curr
     if pair in keys(e)
         rate = Main.eval(Meta.parse(string(e[pair]) * "u\"" * u_curr * "/" * x_curr * "\""))
-        Unitful.uconvert(u, rate * x)
+        return Unitful.uconvert(u, rate * x)
     elseif extended && pairinv in keys(e)
         rate = Main.eval(Meta.parse(string(1/e[pairinv]) * "u\"" * u_curr * "/" * x_curr * "\""))
-        Unitful.uconvert(u, rate * x)
-    else
-        throw(ArgumentError(
-            "No (extended) exchange rate available in the given exchange" *
-            "market for the conversion from $(Unitful.unit(x)) to $u."
-            )
-        ) 
+        return Unitful.uconvert(u, rate * x)
+    elseif extended
+        for (pair1, rate1) in e
+            for (pair2, rate2) in e
+                if pair1[1:3] == x_curr && pair2[4:6] == u_curr && pair1[4:6] == pair2[1:3]
+                    rate = Main.eval(Meta.parse(string(rate1 * rate2) * "u\"" * u_curr * "/" * x_curr * "\""))
+                    return Unitful.uconvert(u, rate * x)
+                end
+            end
+        end
     end
+    throw(ArgumentError(
+        "No (extended) exchange rate available in the given exchange" *
+        "market for the conversion from $(Unitful.unit(x)) to $u."
+        )
+    )
 end
 
 include("exchmkt_tools.jl")
