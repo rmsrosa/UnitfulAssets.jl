@@ -2,6 +2,8 @@
 
 A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/Unitful.jl) adding units for all currently active currencies in the world, along with tools to perform conversions based on exchange market rates.
 
+**This package is not registered and is current under development.**
+
 Currency dimensions are created for each currency, along with its reference
 unit.
 
@@ -14,7 +16,24 @@ Based on an given exchange market instance of `ExchangeMarket`, a conversion
 can be made from the "quote" currency to the "base" currency. This conversion
 is implemented as an extended dispatch for `Unitful.uconvert`.
 
-This package is not registered and is current under development.
+For example, consider the following exchange market:
+
+```julia
+julia> using Unitful
+julia> using UnitfulCurrencies
+julia> exch_mkt = ExchangeMarket(
+           ("EUR","USD") => 1.19172, ("USD","EUR") => 0.839125,
+           ("USD","CAD") => 1.30015, ("CAD","USD") => 0.769144,
+           ("USD","BRL") => 5.41576, ("BRL","USD") => 5.41239
+       )
+```
+
+Then, the conversions between these currencies can be done as follows:
+
+```julia
+julia> uconvert(u"BRL", 100u"USD", test_mkt)
+541.576 BRL
+```
 
 ## License
 
