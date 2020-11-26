@@ -2,20 +2,20 @@ using Unitful
 using UnitfulCurrencies
 using Test
 
-@testset "Currencies" begin
-    # read exchange market from a fixer.io file
-    fixer_exchmkt = Dict(
-        "2020-11-01" => UnitfulCurrencies.get_fixer_exchmkt(
-            "test/exchange_markets/2020-11-01_fixer.json"
-        )
+# create exchange market from a fixer.io file
+fixer_exchmkt = Dict(
+    "2020-11-01" => UnitfulCurrencies.get_fixer_exchmkt(
+        "test/exchange_markets/2020-11-01_fixer.json"
     )
-    # rates obtained on Nov 25, 2020, for testing purposes
-    test_mkt = ExchangeMarket(
-        ("EUR","USD") => 1.19172, ("USD","EUR") => 0.839125,
-        ("USD","CAD") => 1.30015, ("CAD","USD") => 0.769144,
-        ("USD","BRL") => 5.41576, ("BRL","USD") => 5.41239
-    )
+)
+# rates obtained on Nov 25, 2020, for testing purposes
+test_mkt = ExchangeMarket(
+    ("EUR","USD") => 1.19172, ("USD","EUR") => 0.839125,
+    ("USD","CAD") => 1.30015, ("CAD","USD") => 0.769144,
+    ("USD","BRL") => 5.41576, ("BRL","USD") => 5.41239
+)
 
+@testset "Currencies" begin
     # conversions
 #    @test uconvert(u"€", 1u"EUR") == 1u"€"
     @test uconvert(u"BRL", 1u"EUR", fixer_exchmkt["2020-11-01"]) == 6.685598u"BRL"
