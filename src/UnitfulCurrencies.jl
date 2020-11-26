@@ -20,7 +20,7 @@ using Unitful, CSV, JSON
 using Unitful: @dimension, @refunit
 import Unitful: uconvert
 
-export ExchangeMarket
+export ExchangeMarket, @currency
 
 """
     ExchangeMarket
@@ -50,16 +50,20 @@ The macros `@dimension` and `@refunit` are called with arguments derived
 from `code_symb` and `name`.
 """
 macro currency(code_symb, name)
-    gap = Int('𝐀') - Int('A')
     code_abbr = string(code_symb)
-    code_abbr_bold = join([Char(Int(c) + gap) for c in code_abbr])
-    dimension = Symbol(code_abbr_bold)
-    dim_abbr = string(code_symb) * "CURRENCY"
-    dim_name = Symbol(code_abbr_bold * "𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘")
-    esc(quote
-        Unitful.@dimension($dimension, $dim_abbr, $dim_name)
-        Unitful.@refunit($code_symb, $code_abbr, $name, $dimension, true)
-    end)
+    if all(c -> 'A' <= c <= 'Z', code_abbr)
+        gap = Int('𝐀') - Int('A')
+        code_abbr_bold = join([Char(Int(c) + gap) for c in code_abbr])
+        dimension = Symbol(code_abbr_bold)
+        dim_abbr = string(code_symb) * "CURRENCY"
+        dim_name = Symbol(code_abbr_bold * "𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘")
+        esc(quote
+            Unitful.@dimension($dimension, $dim_abbr, $dim_name)
+            Unitful.@refunit($code_symb, $code_abbr, $name, $dimension, true)
+        end)
+    else
+        throw(ArgumentError("The code symbol `$code_symb` should be all in uppercase."))
+    end
 end
 
 include("pkgdefaults.jl")
