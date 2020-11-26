@@ -10,11 +10,11 @@ using Test
         )
     )
     # rates obtained on Nov 25, 2020, for testing purposes
-    test_mkt = Dict{String,Real}(
-        "EURUSD" => 1.19172, "USDEUR" => 0.839125,
-        "USDCAD" => 1.30015, "CADUSD" => 0.769144,
-        "USDBRL" => 5.41576, "BRLUSD" => 5.41239
-        )
+    test_mkt = ExchangeMarket(
+        ("EUR","USD") => 1.19172, ("USD","EUR") => 0.839125,
+        ("USD","CAD") => 1.30015, ("CAD","USD") => 0.769144,
+        ("USD","BRL") => 5.41576, ("BRL","USD") => 5.41239
+    )
 
     # conversions
 #    @test uconvert(u"€", 1u"EUR") == 1u"€"

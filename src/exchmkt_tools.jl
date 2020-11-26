@@ -11,7 +11,7 @@ Return an ExchangeMarket Dict from a fixer.io Dict.
 """
 function get_fixer_exchmkt(jfixer::Dict)
     base = jfixer["base"]
-    return Dict([base * curr => rate for (curr,rate) in jfixer["rates"]])
+    return ExchangeMarket([(base,curr) => rate for (curr,rate) in jfixer["rates"]])
 end
 
 """
@@ -29,5 +29,5 @@ end
 Return an ExchangeMarket Dict from a currenylayer.com json file.
 """
 function get_currencylayer_exchmkt(filename::String)
-    return JSON.parsefile(filename)["rates"]
+    return ExchangeMarket([(pair[1:3],pair[4:6]) => rate for (pair,rate) in JSON.parsefile(filename)["rates"]])
 end

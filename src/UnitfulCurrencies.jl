@@ -22,24 +22,30 @@ import Unitful: uconvert
 
 export ExchangeMarket, @currency
 
+#= struct CurrencyPair{T<:String}
+    base_curr::T
+    quote_curr::T
+end =#
+
 """
     ExchangeMarket
 
 Alias for the type used for exchange rates pairs, given as a
-Dict{String,Float64}, where the key is expected to be a 
-six-characters string containing the concatenation of the
+Dict{Tuple{String,String},Float64}, where the key is expected 
+to be a tuple of three-character strings containing the 
 alphabetic codes ISO-4217 of the base and quote currencies,
-and the value is the exchange rate between these currencies.
+respectively, and the value is the exchange rate for this pair
+(i.e. how much in quote currency is needed to buy one unit of
+the base currency).
 
 For instance, the Dict
 
-    exchmkt = Dict("EURUSD" => 1.164151)
+    exchmkt = ExchangeMarket(("EUR", "USD") => 1.164151)
 
-is of ExchangeMarket type and it means that, in this exchange maket,
-one can trade 1 EUR for 1.164151 USD, i.e. one can buy 1 EUR
+is means that, in this exchange market, one can buy 1 EUR 
 with 1.164151 USD.
 """
-ExchangeMarket = Dict{String,Real}
+ExchangeMarket = Dict{Tuple{String,String},Real}
 
 """
     @currency code_symb name
@@ -91,7 +97,7 @@ An `ArgumentError` is also thrown if either `unit(x)` or `u` is not a currency.
 # Examples
 
 Assuming `forex_exchmkt["2020-11-01"]` ExchangeMarket contains the key-value
-pair `"EURBRL" => 6.685598`, then the following exchange takes place:
+pair `("EUR","BRL") => 6.685598`, then the following exchange takes place:
 
 ```jldoctest
 julia> uconvert(u"BRL", 1u"EUR", forex_exchmkt["2020-11-01"])
@@ -103,8 +109,8 @@ julia> uconvert(u"BRL", 1u"BRL", forex_exchmkt["2020-11-01"], extended=true)
 function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; extended::Bool = false)
     u_curr = string(Unitful.dimension(u))[1:3]
     x_curr = string(Unitful.dimension(x))[1:3]
-    pair = x_curr * u_curr
-    pairinv = u_curr * x_curr
+    pair = (x_curr, u_curr)
+    pairinv = (u_curr, x_curr)
     if pair in keys(e)
         rate = Main.eval(Meta.parse(string(e[pair]) * "u\"" * u_curr * "/" * x_curr * "\""))
         return Unitful.uconvert(u, rate * x)
@@ -114,7 +120,7 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; exte
     elseif extended
         for (pair1, rate1) in e
             for (pair2, rate2) in e
-                if pair1[1:3] == x_curr && pair2[4:6] == u_curr && pair1[4:6] == pair2[1:3]
+                if pair1[1] == x_curr && pair2[2] == u_curr && pair1[2] == pair2[1]
                     rate = Main.eval(Meta.parse(string(rate1 * rate2) * "u\"" * u_curr * "/" * x_curr * "\""))
                     return Unitful.uconvert(u, rate * x)
                 end
