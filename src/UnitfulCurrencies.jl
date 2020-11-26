@@ -5,14 +5,16 @@ __precompile__(true)
 Module extending Unitful.jl with currencies.
 
 Currency dimensions are created for each currency, along with its reference
-unit. Most, if not all, active currencies around the world are defined.
+unit. All active currencies around the world are defined.
 
-An ExchangeMarket type is also defined as a Dict{String,Real} for containing
-currency pairs (see help for `ExchangeMarket`).
+An `ExchangeMarket` type is also defined as an alias for
+`Dict{Tuple{String,String},Float64}`, in which the tuple key contains the
+quote-ask currency pair (e.g. `("EUR", "USD")`) and the value is the
+exchange rate for the pair.
 
-Based on an given exchange market, a conversion can be made from a "quote"
-currency to the "base" currency. This is implemented as an extended dispatch
-for `uconvert`.
+Based on an given exchange market instance of `ExchangeMarket`, a conversion
+can be made from the "quote" currency to the "base" currency. This conversion
+is implemented as an extended dispatch for `Unitful.uconvert`.
 """
 module UnitfulCurrencies
 
