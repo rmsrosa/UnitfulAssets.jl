@@ -7,7 +7,7 @@ Currently, tools for fixer.io and currencylayer.com providers are implemented.
 """
     get_fixer_exchmkt(::Dict)
 
-Return an ExchangeMarket Dict from a fixer.io Dict.
+Return an ExchangeMarket instance from a fixer.io Dict.
 """
 function get_fixer_exchmkt(jfixer::Dict)
     base = jfixer["base"]
@@ -17,7 +17,7 @@ end
 """
     get_fixer_exchmkt(::String)
 
-Return an ExchangeMarket Dict from a fixer.io json file.
+Return an ExchangeMarket instance from a fixer.io json file.
 """
 function get_fixer_exchmkt(filename::String)
     return get_fixer_exchmkt(JSON.parsefile(filename))
@@ -26,8 +26,8 @@ end
 """
     get_currencylayer_exchmkt(::String)
 
-Return an ExchangeMarket Dict from a currenylayer.com json file.
+Return an ExchangeMarket instance from a currencylayer.com json file.
 """
 function get_currencylayer_exchmkt(filename::String)
-    return ExchangeMarket([(pair[1:3],pair[4:6]) => rate for (pair,rate) in JSON.parsefile(filename)["rates"]])
+    return ExchangeMarket([(pair[1:3],pair[4:6]) => rate for (pair,rate) in JSON.parsefile(filename)["quotes"]])
 end

@@ -1,0 +1,12 @@
+{
+    "success":true,
+    "terms":"https:\/\/currencylayer.com\/terms",
+    "privacy":"https:\/\/currencylayer.com\/privacy",
+    "timestamp":1606408864,
+    "source":"USD",
+    "quotes":{
+      "USDEUR":0.839935,
+      "USDBRL":5.310399,
+      "USDCAD":1.301655
+    }
+  }

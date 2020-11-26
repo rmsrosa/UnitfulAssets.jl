@@ -1,0 +1,14 @@
+{
+    "success":true,
+    "terms":"https:\/\/currencylayer.com\/terms",
+    "privacy":"https:\/\/currencylayer.com\/privacy",
+    "historical":true,
+    "date":"2020-11-25",
+    "timestamp":1606348799,
+    "source":"USD",
+    "quotes":{
+      "USDEUR":0.839032,
+      "USDBRL":5.324094,
+      "USDCAD":1.30045
+    }
+  }
