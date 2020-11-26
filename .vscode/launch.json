@@ -7,6 +7,13 @@
         {
             "type": "julia",
             "request": "launch",
+            "name": "Launch Julia tests",
+            "program": "${workspaceFolder}/test/runtests.jl",
+            "stopOnEntry": true
+        },
+        {
+            "type": "julia",
+            "request": "launch",
             "name": "Run active Julia file",
             "program": "${file}",
             "stopOnEntry": false,
