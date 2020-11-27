@@ -81,12 +81,13 @@ julia> println("After $(savings.t[end]), we expect to have $(savings.u[end])")
 After 10.0 yr, we expect to have 1303.6211777402004 GBP
 ```
 
-Thus, we expect to have about £1,303.62 in our savings account.
+Thus, we expect to have about £1,303.62 in our savings account, after ten years.
 
-Now let us suppose I want to monitor que evolution of this savings in terms of Brazillian Reais. In this case, I use an exchange rate time series, as follows.
+Now let us suppose I want to see the evolution of this savings in terms of Brazillian Reais, and suppose this happened ten years ago, so we can use some real exchange rates. In this case, I use an exchange rate time series, as follows.
 
 ```julia
-julia> BRLGBP_timeseries = Dict(           "2011-01-01" => ExchangeMarket(("BRL","GBP") => 0.38585),
+julia> BRLGBP_timeseries = Dict(
+           "2011-01-01" => ExchangeMarket(("BRL","GBP") => 0.38585),
            "2012-01-01" => ExchangeMarket(("BRL","GBP") => 0.34587),
            "2013-01-01" => ExchangeMarket(("BRL","GBP") => 0.29998),
            "2014-01-01" => ExchangeMarket(("BRL","GBP") => 0.25562),
