@@ -21,6 +21,19 @@ test_mkt = ExchangeMarket(
     ("USD","BRL") => 5.41576, ("BRL","USD") => 5.41239
 )
 
+BRLGBP_timeseries = Dict(
+    "2011-01-01" => ExchangeMarket(("BRL","GBP") => 0.38585),
+    "2012-01-01" => ExchangeMarket(("BRL","GBP") => 0.34587),
+    "2013-01-01" => ExchangeMarket(("BRL","GBP") => 0.29998),
+    "2014-01-01" => ExchangeMarket(("BRL","GBP") => 0.25562),
+    "2015-01-02" => ExchangeMarket(("BRL","GBP") => 0.24153),
+    "2016-01-03" => ExchangeMarket(("BRL","GBP") => 0.17093),
+    "2017-01-02" => ExchangeMarket(("BRL","GBP") => 0.24888),
+    "2018-01-02" => ExchangeMarket(("BRL","GBP") => 0.22569),
+    "2019-01-04" => ExchangeMarket(("BRL","GBP") => 0.21082),
+    "2020-01-04" => ExchangeMarket(("BRL","GBP") => 0.18784)
+)
+
 @testset "Currencies" begin
     # conversions
 #    @test uconvert(u"€", 1u"EUR") == 1u"€"
@@ -34,6 +47,7 @@ test_mkt = ExchangeMarket(
     @test uconvert(u"EUR", 1u"CAD", test_mkt, extended=true) == 0.645407959u"EUR"
     @test uconvert(u"CAD", 1u"EUR", test_mkt, extended=true) == 1.5494147579999997u"CAD"
     @test uconvert(u"BRL", 1000u"CAD", test_mkt, extended=true) ≈ 4165.50u"BRL" (atol=0.001u"BRL")
+    @test uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), extended=true) ≈ [2591.68, 2891.26, 4018.00, 4743.38, 5850.35, 3333.56, 4140.27, 3912.06, 4430.86, 5323.68]u"BRL" (atol=0.01u"BRL")
     @test_throws ArgumentError uconvert(u"EUR", 1u"BRL", fixer_exchmkt["2020-11-01"], extended=false)
     @test_throws ArgumentError uconvert(u"EUR", 1u"CAD", fixer_exchmkt["2020-11-01"], extended=false)
 end
