@@ -83,29 +83,6 @@ After 10.0 yr, we expect to have 1303.6211777402004 GBP
 
 Thus, we expect to have about £1,303.62 in our savings account, after ten years.
 
-Now let us suppose I want to see the evolution of this savings in terms of Brazillian Reais, and suppose this happened ten years ago, so we can use some real exchange rates. In this case, I use an exchange rate time series, as follows.
-
-```julia
-julia> BRLGBP_timeseries = Dict(
-           "2011-01-01" => ExchangeMarket(("BRL","GBP") => 0.38585),
-           "2012-01-01" => ExchangeMarket(("BRL","GBP") => 0.34587),
-           "2013-01-01" => ExchangeMarket(("BRL","GBP") => 0.29998),
-           "2014-01-01" => ExchangeMarket(("BRL","GBP") => 0.25562),
-           "2015-01-02" => ExchangeMarket(("BRL","GBP") => 0.24153),
-           "2016-01-03" => ExchangeMarket(("BRL","GBP") => 0.17093),
-           "2017-01-02" => ExchangeMarket(("BRL","GBP") => 0.24888),
-           "2018-01-02" => ExchangeMarket(("BRL","GBP") => 0.22569),
-           "2019-01-04" => ExchangeMarket(("BRL","GBP") => 0.21082),
-           "2020-01-04" => ExchangeMarket(("BRL","GBP") => 0.18784)
-       );
-
-julia> uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), extended=true)'
-1×10 LinearAlgebra.Adjoint{Quantity{Float64,BRLCURRENCY,Unitful.FreeUnits{(BRL,),BRLCURRENCY,nothing}},Array{Quantity{Float64,BRLCURRENCY,Unitful.FreeUnits{(BRL,),BRLCURRENCY,nothing}},1}}:
- 2591.68 BRL  2891.26 BRL  4018.0 BRL  4743.38 BRL  …  4140.27 BRL  3912.06 BRL  4430.86 BRL  5323.68 BRL
-```
-
-Notice we used the optional argument `extended=true`, so it uses the inverse rate for the conversion. This is different than using the rate for the pair `("GBP", "BRL")` since we don't want to buy `GBP` with `BRL`, and neither do we want the direct rate for `("BRL", "GBP")` since we don't want to buy a specific amount of `BRL` with `GBP`. Instead, we want to find out how much `BRL` we can buy with a given amount of `GBP`.
-
 ### Exchange markets
 
 For exchanging money, consider, for example, the following exchange market:
@@ -135,6 +112,31 @@ Then, the conversions between these currencies can be done as follows:
 julia> uconvert(u"BRL", 100u"USD", test_mkt)
 541.576 BRL
 ```
+
+### Continuously varying interest rate in a foreign bank
+
+Now, considering again the example above of continuously varying interest rate, suppose that I am actually in Brazil and I want to see the evolution of this savings in terms of Brazillian Reais (Disclaimer: I don't have such an account!). Suppose, also, that this happened ten years ago, so we can use some real exchange rates. In this case, I use an exchange rate time series, as follows.
+
+```julia
+julia> BRLGBP_timeseries = Dict(
+           "2011-01-01" => ExchangeMarket(("BRL","GBP") => 0.38585),
+           "2012-01-01" => ExchangeMarket(("BRL","GBP") => 0.34587),
+           "2013-01-01" => ExchangeMarket(("BRL","GBP") => 0.29998),
+           "2014-01-01" => ExchangeMarket(("BRL","GBP") => 0.25562),
+           "2015-01-02" => ExchangeMarket(("BRL","GBP") => 0.24153),
+           "2016-01-03" => ExchangeMarket(("BRL","GBP") => 0.17093),
+           "2017-01-02" => ExchangeMarket(("BRL","GBP") => 0.24888),
+           "2018-01-02" => ExchangeMarket(("BRL","GBP") => 0.22569),
+           "2019-01-04" => ExchangeMarket(("BRL","GBP") => 0.21082),
+           "2020-01-04" => ExchangeMarket(("BRL","GBP") => 0.18784)
+       );
+
+julia> uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), extended=true)'
+1×10 LinearAlgebra.Adjoint{Quantity{Float64,BRLCURRENCY,Unitful.FreeUnits{(BRL,),BRLCURRENCY,nothing}},Array{Quantity{Float64,BRLCURRENCY,Unitful.FreeUnits{(BRL,),BRLCURRENCY,nothing}},1}}:
+ 2591.68 BRL  2891.26 BRL  4018.0 BRL  4743.38 BRL  …  4140.27 BRL  3912.06 BRL  4430.86 BRL  5323.68 BRL
+```
+
+Notice we used the optional argument `extended=true`, so it uses the inverse rate for the conversion. This is different than using the rate for the pair `("GBP", "BRL")` since we don't want to buy `GBP` with `BRL`, and neither do we want the direct rate for `("BRL", "GBP")` since we don't want to buy a specific amount of `BRL` with `GBP`. Instead, we want to find out how much `BRL` we can buy with a given amount of `GBP`.
 
 ## License
 
