@@ -92,30 +92,63 @@ julia> using Unitful
 
 julia> using UnitfulCurrencies
 
-julia> exch_mkt = ExchangeMarket(
-           ("EUR","USD") => 1.19172, ("USD","EUR") => 0.839125,
-           ("USD","CAD") => 1.30015, ("CAD","USD") => 0.769144,
-           ("USD","BRL") => 5.41576, ("BRL","USD") => 5.41239
+julia> test_mkt = ExchangeMarket(
+           ("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570,
+           ("EUR","GBP") => 1.11268, ("GBP","EUR") => 0.898734,
+           ("USD","CAD") => 1.29849, ("CAD","USD") => 0.770125,
+           ("USD","BRL") => 5.33897, ("BRL","USD") => 0.187302
        )
-Dict{Tuple{String,String},Real} with 6 entries:
-  ("USD", "BRL") => 5.41576
-  ("BRL", "USD") => 5.41239
-  ("EUR", "USD") => 1.19172
-  ("USD", "EUR") => 0.839125
-  ("CAD", "USD") => 0.769144
-  ("USD", "CAD") => 1.30015
+Dict{Tuple{String,String},Real} with 8 entries:
+  ("USD", "BRL") => 5.33897
+  ("BRL", "USD") => 0.187302
+  ("EUR", "USD") => 1.19536
+  ("GBP", "EUR") => 0.898734
+  ("USD", "EUR") => 0.83657
+  ("EUR", "GBP") => 1.11268
+  ("CAD", "USD") => 0.770125
+  ("USD", "CAD") => 1.29849
 ```
 
 Then, the conversions between these currencies can be done as follows:
 
 ```julia
 julia> uconvert(u"BRL", 100u"USD", test_mkt)
-541.576 BRL
+533.8969999999999 BRL
+```
+
+This means that I need about `533.90 BRL` to buy `100 USD`.
+
+If I have dollars and I want to buy about `500 BRL`, we do it the other way around:
+
+```julia
+julia> uconvert(u"USD", 500u"BRL", test_mkt)
+93.651 USD
+```
+
+Now, if, instead, I have `500 BRL` and I want to see how many dollars I can buy with it, I need the same exchange rate as in the first conversion, but in a inverse relation, which is accomplished with the option argument `mode=-1`, so that
+
+```julia
+julia> uconvert(u"USD", 500u"BRL", test_mkt, mode=-1)
+93.65102257551551 USD
+```
+
+Another situation is when we don't have a currency pair in the given exchange market, such as `("EUR", "CAD")`, which is not in `test_mkt`. In this case we can use an intermediate currency, if available. In the example market, `USD` works. The exchange with an intermediate currency is achieved with `mode=2`:
+
+```julia
+julia> uconvert(u"CAD", 100u"EUR", test_mkt, mode=2)
+155.21630064 CAD
+```
+
+Now, if we have `150 CAD` and want to see how many Euros we can buy with it, we use `mode=-2`:
+
+```julia
+julia> uconvert(u"EUR", 150u"CAD", test_mkt, mode=-2)
+96.63933451674102 EUR
 ```
 
 ### Continuously varying interest rate in a foreign bank
 
-Now, considering again the example above of continuously varying interest rate, suppose that I am actually in Brazil and I want to see the evolution of this savings in terms of Brazillian Reais (Disclaimer: I don't have such an account!). Suppose, also, that this happened ten years ago, so we can use some real exchange rates. In this case, I use an exchange rate time series, as follows.
+Now, considering again the example above of continuously varying interest rate, suppose that I am actually in Brazil and I want to see the evolution of my savings in terms of Brazillian Reais (Disclaimer: I don't have such an account!). Suppose, also, that this happened ten years ago, so we can use some real exchange rates. In this case, I use an exchange rate time series, as follows.
 
 ```julia
 julia> BRLGBP_timeseries = Dict(
@@ -131,12 +164,12 @@ julia> BRLGBP_timeseries = Dict(
            "2020-01-04" => ExchangeMarket(("BRL","GBP") => 0.18784)
        );
 
-julia> uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), extended=true)'
+julia> uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1)'
 1×10 LinearAlgebra.Adjoint{Quantity{Float64,BRLCURRENCY,Unitful.FreeUnits{(BRL,),BRLCURRENCY,nothing}},Array{Quantity{Float64,BRLCURRENCY,Unitful.FreeUnits{(BRL,),BRLCURRENCY,nothing}},1}}:
  2591.68 BRL  2891.26 BRL  4018.0 BRL  4743.38 BRL  …  4140.27 BRL  3912.06 BRL  4430.86 BRL  5323.68 BRL
 ```
 
-Notice we used the optional argument `extended=true`, so it uses the inverse rate for the conversion. This is different than using the rate for the pair `("GBP", "BRL")` since we don't want to buy `GBP` with `BRL`, and neither do we want the direct rate for `("BRL", "GBP")` since we don't want to buy a specific amount of `BRL` with `GBP`. Instead, we want to find out how much `BRL` we can buy with a given amount of `GBP`.
+Notice the optional argument `mode=-1`, so it uses the inverse rate for the conversion. This is different than using the rate for the pair `("GBP", "BRL")` since we don't want to buy `GBP` with `BRL`, and neither do we want the direct rate for `("BRL", "GBP")` since we don't want to buy a specific amount of `BRL` with `GBP`. Instead, we want to find out how much `BRL` we can buy with a given amount of `GBP`, so we use the inverse of the rate `("BRL", "GBP")`.
 
 ## License
 

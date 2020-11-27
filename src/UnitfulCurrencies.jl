@@ -77,24 +77,31 @@ end
 include("pkgdefaults.jl")
 
 """
-    uconvert(u::Units, x::Quantity, e::ExchangeMarket; extended::Bool = false)
+    uconvert(u::Units, x::Quantity, e::ExchangeMarket; mode::Int=1)
 
 Convert between currencies, allowing for inverse and secondary rates.
 
-If the given exchange market includes the conversion rate from `unit(x)`
-to `u`, then the function `uconvert(u,x,e)` is invoked. Otherwise, if
-`extended` is `true` and a conversion `rate` from `u` to `unit(x)` is
-included in the exchange market, then `1/rate` is used for the conversion
-of `x` to `u`.
+If mode=1, which is the default, a direct conversion is attempted, i.e. 
+if the given exchange market includes the conversion rate from `unit(x)`
+to `u`, then the conversion takes place with this rate.
 
-If `extended` is true and neither conversions from `unit(x)` to `u`
-or `u` to `unit(x)` is given in the exchange market, then the function
-looks for the first secondary conversion in the exchange market (i.e.
-an exchange rate from `unit(x)` to an intermediate unit `v` and an
-exchange rate from `v` to `u`, so that the compound rate is used).
-If there is no such conversion either, then an `ArgumentError` is thrown.
+If mode=-1 and the given exchange market includes the exchange rate from
+`u` to `unit(x)`, then the conversion of `x` to `u` is achieved with the rate
+which is the multiplicative inverse of the exchange rate from `u` to `unit(x)`.
 
-An `ArgumentError` is also thrown if either `unit(x)` or `u` is not a currency.
+If mode=2, and the given exchange market includes the exchange rate from
+`unit(x)` to an intermediate currency `v` and from  `v` to `u`, then 
+the exchange takes place with the product of these two exchange rates.
+If there is more than one intermediate currency available, then the first
+one encountered in a nested loop in which the second pair is in the
+inner loop is the one chosen.
+
+If mode=-2, a combination of `-1` and `2` is used, i.e. an intermediate
+currency is used for the inverse exchange rate from `u` to `unit(x)`.
+
+An `ArgumentError` is thrown if mode is none of the above or if `u` or `x`
+are not currencies, or if the necessary exchange rates cannot be accomplished
+with the given exchange market.
 
 # Examples
 
@@ -104,36 +111,51 @@ pair `("EUR","BRL") => 6.685598`, then the following exchange takes place:
 ```jldoctest
 julia> uconvert(u"BRL", 1u"EUR", forex_exchmkt["2020-11-01"])
 6.685598 BRL
-julia> uconvert(u"BRL", 1u"BRL", forex_exchmkt["2020-11-01"], extended=true)
+julia> uconvert(u"BRL", 1u"BRL", forex_exchmkt["2020-11-01"], mode=-1)
 0.149575251159283 EUR
 ```
 """
-function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; extended::Bool = false)
-    u_curr = string(Unitful.dimension(u))[1:3]
-    x_curr = string(Unitful.dimension(x))[1:3]
-    pair = (x_curr, u_curr)
-    pairinv = (u_curr, x_curr)
-    if pair in keys(e)
-        rate = Main.eval(Meta.parse(string(e[pair]) * "u\"" * u_curr * "/" * x_curr * "\""))
-        return Unitful.uconvert(u, rate * x)
-    elseif extended && pairinv in keys(e)
-        rate = Main.eval(Meta.parse(string(1/e[pairinv]) * "u\"" * u_curr * "/" * x_curr * "\""))
-        return Unitful.uconvert(u, rate * x)
-    elseif extended
-        for (pair1, rate1) in e
-            for (pair2, rate2) in e
-                if pair1[1] == x_curr && pair2[2] == u_curr && pair1[2] == pair2[1]
-                    rate = Main.eval(Meta.parse(string(rate1 * rate2) * "u\"" * u_curr * "/" * x_curr * "\""))
-                    return Unitful.uconvert(u, rate * x)
+function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode::Int=1)
+    u_curr_str = string(Unitful.dimension(u))
+    x_curr_str = string(Unitful.dimension(x))
+    if length(u_curr_str) >= 3 && length(x_curr_str) >= 3 && all(c -> 'A' <= c <= 'Z', u_curr_str) && all(c -> 'A' <= c <= 'Z', x_curr_str)
+        u_curr = u_curr_str[1:3]
+        x_curr = x_curr_str[1:3]
+        pair = (x_curr, u_curr)
+        pairinv = (u_curr, x_curr)
+        if mode == 1 && pair in keys(e)
+            rate = Main.eval(Meta.parse(string(e[pair]) * "u\"" * u_curr * "/" * x_curr * "\""))
+            return Unitful.uconvert(u, rate * x)
+        elseif mode == -1 && pairinv in keys(e)
+            rate = Main.eval(Meta.parse(string(1/e[pairinv]) * "u\"" * u_curr * "/" * x_curr * "\""))
+            return Unitful.uconvert(u, rate * x)
+        elseif mode == 2
+            for (pair1, rate1) in e
+                for (pair2, rate2) in e
+                    if pair1[1] == x_curr && pair2[2] == u_curr && pair1[2] == pair2[1]
+                        rate = Main.eval(Meta.parse(string(rate1 * rate2) * "u\"" * u_curr * "/" * x_curr * "\""))
+                        return Unitful.uconvert(u, rate * x)
+                    end
+                end
+            end
+        elseif mode == -2
+            for (pair1, rate1) in e
+                for (pair2, rate2) in e
+                    if pair1[1] == u_curr && pair2[2] == x_curr && pair1[2] == pair2[1]
+                        rate = Main.eval(Meta.parse(string(1 / (rate1 * rate2) ) * "u\"" * u_curr * "/" * x_curr * "\""))
+                        return Unitful.uconvert(u, rate * x)
+                    end
                 end
             end
         end
-    end
-    throw(ArgumentError(
-        "No (extended) exchange rate available in the given exchange" *
-        "market for the conversion from $(Unitful.unit(x)) to $u."
+        throw(ArgumentError(
+            "No such exchange rate available in the given exchange" *
+            "market for the conversion from $(Unitful.unit(x)) to $u."
+            )
         )
-    )
+    else
+        throw(ArgumentError("$u and $x must be currencies"))
+    end
 end
 
 include("exchmkt_tools.jl")
