@@ -22,9 +22,9 @@ is implemented as an extended dispatch for `Unitful.uconvert`.
 
 Let us see some examples using `UnitfulCurrencies.jl`.
 
-### Cost of a product
+### Cost of production
 
-As an example, let us say we have a product P that depends on two other products, P₁ and P₂, whose costs C₁ and C₂ are given as
+As an example, let us say we have a product P that depends on four materials, whose costs C₁, ... C₂ are given as
 
 ```julia
 julia> using Unitful
@@ -38,6 +38,8 @@ julia> C₂ = 0.78u"USD/lb"
 0.78 USD lb⁻¹
 ```
 
+Besides the cost
+
 Suppose we need one pound of P₁ and a half pound of P₂ to produce one unit of P. Thus, the cost of producing 100 pieces of product P is
 
 ```julia
@@ -46,6 +48,40 @@ julia> 100 * 1.0u"lb" * C₁ + 0.5u"lb" * C₂
 ```
 
 ### Continuously varying interest rate
+
+Now, let us suppose we have a £1,000 in a savings account in a British bank, with an expected variable interest rate for the next ten years of the form
+
+![formula](https://render.githubusercontent.com/render/math?math=\qquad\qquad\text{rate}(t)=\left(0.015%2B0.5\frac{(t/\text{yr})^2}{(1%2B(t/\text{yr})^3)}\right)/yr),
+
+and suppose we want to estimate how much we will have after ten years. This can be implemented as follows.
+
+```julia
+julia> using Unitful, UnitfulCurrencies, DifferentialEquations
+
+julia> rate(t) = (1.5 + 5(t * u"1/yr")^2 * ( 1 + (t * u"1/yr")^3)^-1)*u"percent/yr"
+rate (generic function with 1 method)
+
+julia> f(u,rate,t) = rate(t) * u
+f (generic function with 1 method)
+
+julia> tspan = Tuple([0.0,10.0]*u"yr")
+(0.0 yr, 10.0 yr)
+
+julia> u₀ = 1000.0u"GBP"
+1000.0 GBP
+
+julia> prob = ODEProblem(f,u₀,tspan,rate)
+ODEProblem with uType Quantity{Float64,GBPCURRENCY,Unitful.FreeUnits{(GBP,),GBPCURRENCY,nothing}} and tType Quantity{Float64,𝐓,Unitful.FreeUnits{(yr,),𝐓,nothing}}. In-place: false
+timespan: (0.0 yr, 10.0 yr)
+u0: 1000.0 GBP
+
+julia> savings = solve(prob);
+
+julia> println("After $(savings.t[end]), we expect to have $(savings.u[end])")
+After 10.0 yr, we expect to have 1303.6211777402004 GBP
+```
+
+Thus, we expect to have about £1,303.62 in our savings account.
 
 ### Exchange markets
 
