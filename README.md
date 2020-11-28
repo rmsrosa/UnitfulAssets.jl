@@ -48,9 +48,11 @@ julia> println("\nThe cost of raw material per t-shirt is of $cost_per_t_shirt")
 The cost of raw material per t-shirt is of 6.447611931829924 USD
 ```
 
+Thus, the cost of the raw material is about USD$ 6.48 per T-shirt.
+
 ### Production cost
 
-Suppose, now, that we have a small business to manufacture the T-shirts above. Besides the raw material expenses, we need eletricity for the sewing machine and the workplace, workers, rent, and so on. With that in mind, we assume we have a fixed cost of 24000 USD$ per year for rent and the essential utilities, specifi eletricity expenses at USD$ 0.13 per kilowatt-hour, and labor at USD$ 10.50 per worker per hour.
+Suppose, now, that we have a small business to manufacture the T-shirts above. Besides the raw material expenses, we need eletricity for the sewing machine and the workplace, workers, rent, insurance, and so on. With that in mind, we assume we have a fixed overhead cost of USD$ 24000 per year for rent and the essential utilities, insurance and things like that; eletricity expenses for the sewing machine at USD$ 0.13 per kilowatt-hour; and labor at USD$ 10.50 per worker per hour.
 
 In order to implement that, we add two nondimensional units, namely `tshirt` and `worker`, then we define the price constants above and two functions that give us the total cost and total material used. We do this as follows.
 
@@ -139,28 +141,39 @@ julia> """
 production_cost
 ```
 
-Now, if we want to see the cost and everything needed to produce 100 T-shirts *per week*, we do
+Now, if we want to see the cost and everything else needed to produce 50 T-shirts *per week*, we do
 
 ```julia
-julia> production_cost(100u"tshirt", 1u"wk")
-(3230.7201254211855 USD, 32.307201254211854 USD tshirt⁻¹, 200 hr, 5 worker, 200 hr kW)
+julia> production_cost(50u"tshirt", 1u"wk")
+(1845.3395288296892 USD, 36.906790576593785 USD tshirt⁻¹, 100 hr, 3 worker, 100 hr kW)
 
-julia> raw_material(100u"tshirt")
-(160.0 m², 200 oz, 100 oz, 4800 yd)
+julia> raw_material(50u"tshirt")
+(80.0 m², 100 oz, 50 oz, 2400 yd)
 ```
 
-So, it costs about USD$ 32,31 per T-shirt and so on.
+So, it costs about USD$ 36.91 per T-shirt in this case.
 
-If we want to reduce the cost per T-shirt, we look how much it takes to produce 1000 T-shirts *per month*, with workers working 44 hours per week:
+If we want to reduce the cost per T-shirt, we increase production, aiming for 2000 T-shirts *per month*, with workers working 44 hours per week:
 
 ```julia
-
 julia> production_cost(2000u"tshirt", 30u"d", 44u"hr/worker/wk")
 (57386.47643039496 USD, 28.693238215197482 USD tshirt⁻¹, 4000 hr, 22 worker, 4000 hr kW)
 
 julia> raw_material(2000u"tshirt")
 (3200.0 m², 4000 oz, 2000 oz, 96000 yd)
 ```
+
+With that, we are able to reduce the cost per T-shirt to about USD$ 28.69.
+
+**Exercises:**
+
+1. Add *benefit costs* for each worker, so that the number of workers properly affects the cost.
+
+2. Add a linear *revenue* function proportional to the number of T-shirts sold, with proportionality constant being the selling price per T-shirt.
+
+3. Add an affine *profit* function, which is the difference between the revenue function and the cost function.
+
+4. Find the *break-even* point, which is the number of T-shirts where profit vanishes, i.e. neiher profit nor loss incurred.
 
 ### Continuously varying interest rate
 
@@ -285,6 +298,8 @@ julia> uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1)'
 ```
 
 Notice the optional argument `mode=-1`, so it uses the inverse rate for the conversion. This is different than using the rate for the pair `("GBP", "BRL")` since we don't want to buy `GBP` with `BRL`, and neither do we want the direct rate for `("BRL", "GBP")` since we don't want to buy a specific amount of `BRL` with `GBP`. Instead, we want to find out how much `BRL` we can buy with a given amount of `GBP`, so we use the inverse of the rate `("BRL", "GBP")`.
+
+**Exercise:** In the ***Production Cost*** problem, suppose the raw materials come from a foreign country (or countries) and add an exchange market for properly taking into account the dependency of the production cost, the profit, and the break even point on the foreing currencies.
 
 ## License
 
