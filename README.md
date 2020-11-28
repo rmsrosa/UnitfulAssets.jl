@@ -301,6 +301,40 @@ Notice the optional argument `mode=-1`, so it uses the inverse rate for the conv
 
 **Exercise:** In the ***Production Cost*** problem, suppose the raw materials come from a foreign country (or countries) and add an exchange market for properly taking into account the dependency of the production cost, the profit, and the break even point on the foreing currencies.
 
+## To do
+
+I have been doing this mostly for learning purposes. Who knows it might even turn out to be a useful package for the community. In any case, if someone wants to contribute, there are still a number of things to be added and I will be happy to have help.
+
+Here are a few things to be done.
+
+1. Add Github Actions to integrate test.
+
+1. Add Github Actions to check code coverage.
+
+1. Add tools to read exchange market from web sources other than [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com).
+
+1. Add an option to directly obtain the exchange rates from the web sources using a given API.
+
+1. Maybe join all tools to read the exchange market from web sources in a single function, with the market source given as an argument, instead of having one function for each.
+
+1. Add further tests.
+
+1. Add Documentation.
+
+## Related packages
+
+After I started writing this package, I found out about [bhgomes/UnitfulCurrency.jl](https://github.com/bhgomes/UnitfulCurrency.jl), which, however, has been archived for unknown reasons.
+
+ UnifulCurrency has a single dimension for all currencies, which has the side-effect of being able to `uconvert` different quantities without an exchange market rate. Moreover, all currencies are reference units for the same dimension. I don't know what further side-effects come out of that.
+
+ There is no documentation and the README is short. It seems, though, that the exchange markets are defined for each pair, which is different than our approach, in which an exchange market contains a dictionary of currency pairs, allowing for more flexibility, in my point of view.
+
+ I also found out about [JuliaFinance/Currencies.jl](https://github.com/JuliaFinance/Currencies.jl). There are some nice concepts there, distinguishing currencies, from assets and cash. Take this excerpt for instance:
+
+ > "When a currency is thought of as a financial instrument (as opposed to a mere label), we choose to refer to it as "Cash" as it would appear, for example, in a balance sheet. Assets.jl provides a Cash instrument together with a specialized Position type that allows for basic algebraic manipulations of Cash and other financial instrument positions".
+
+However, this package is not based on `Unitful`.
+
 ## License
 
 This package is licensed under the [MIT license](https://opensource.org/licenses/MIT) (see file [LICENSE](LICENSE) in the root directory of the project).
