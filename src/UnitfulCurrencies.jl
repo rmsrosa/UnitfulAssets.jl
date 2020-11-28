@@ -161,6 +161,10 @@ end
 include("exchmkt_tools.jl")
 
 # Register the above units and dimensions in Unitful
-__init__() = Unitful.register(UnitfulCurrencies)
+const localpromotion = Unitful.promotion # only needed with new dimensions
+function __init__()
+    Unitful.register(UnitfulCurrencies) # needed for new Units
+    merge!(Unitful.promotion, localpromotion) # only needed with new dimensions
+end
 
 end # module
