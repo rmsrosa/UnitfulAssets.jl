@@ -32,12 +32,6 @@ julia> using Unitful, UnitfulCurrecies
 julia> fabric = 15u"USD"/8u"yd"/44u"inch"
 0.04261363636363636 USD inch⁻¹ yd⁻¹
 
-julia> 1.6u"m^2" * fabric
-0.06818181818181818 m² USD inch⁻¹ yd⁻¹
-
-julia> fabric = 15u"USD"/8u"yd"/44u"inch"
-0.04261363636363636 USD inch⁻¹ yd⁻¹
-
 julia> dyes = 20u"USD/lb"
 20 USD lb⁻¹
 
@@ -55,6 +49,118 @@ The cost of raw material per t-shirt is of 6.447611931829924 USD
 ```
 
 ### Production cost
+
+Suppose, now, that we have a small business to manufacture the T-shirts above. Besides the raw material expenses, we need eletricity for the sewing machine and the workplace, workers, rent, and so on. With that in mind, we assume we have a fixed cost of 24000 USD$ per year for rent and the essential utilities, specifi eletricity expenses at USD$ 0.13 per kilowatt-hour, and labor at USD$ 10.50 per worker per hour.
+
+In order to implement that, we add two nondimensional units, namely `tshirt` and `worker`, then we define the price constants above and two functions that give us the total cost and total material used. We do this as follows.
+
+```julia
+julia> using Unitful, UnitfulCurrencies
+
+julia> module ProductionUnits
+           using Unitful
+           using Unitful: @unit
+           @unit tshirt "tshirt" TShirt 1 false
+           @unit worker "worker" Worker 1 false
+       end
+
+julia> Unitful.register(ProductionUnits);
+
+julia> fabric = 15u"USD"/8u"yd"/44u"inch"
+0.04261363636363636 USD inch⁻¹ yd⁻¹
+
+julia> dyes = 20u"USD/lb"
+20 USD lb⁻¹
+
+julia> fixer = 8u"USD"/5u"lb"
+1.6 USD lb⁻¹
+
+julia> thread = 19u"USD"/1000u"yd"
+0.019 USD yd⁻¹
+
+julia> """
+           raw_material(n::Unitful.Quantity)
+
+       Return the amount of each raw material needed to manufacture `n` T-shirts.
+
+       The argument `n` must be given in `tshirt` units.
+
+       Returns a tuple with the following quantities, respectively:
+
+       * The necessary amount of cotton fabric.
+
+       * The necessary amount of dye.
+
+       * The necessary amount of fixer.
+
+       * The necessary amount of thread.
+
+       """
+       raw_material(n::Unitful.Quantity) = (1.6u"m^2" * n / u"tshirt", 2u"oz" * n / u"tshirt", 1u"oz" * n / u"tshirt", 48u"yd" * n / u"tshirt")
+raw_material
+
+julia> eletricity_price = 0.13u"USD/kW/hr"
+0.13 USD hr⁻¹ kW⁻¹
+
+julia> labor_price = 10.50u"USD/worker/hr"
+10.5 USD hr⁻¹ worker⁻¹
+
+julia> fixed_cost = 24000u"USD/yr"
+24000 USD yr⁻¹
+
+julia> """
+           manufacturing_cost(n::Unitful.Quantity, t::Unitful.Quantity, tlim::Unitful.Quantity=40u"hr/worker/wk")
+
+       Return the cost of manufacturing `n` T-shirts during a time period `t`.
+
+       The argument `n` must be given in `tshirt` units, and `t`, in time units.
+       The optional argument `tlim` is the time limit of work per worker, which       defaults to `40u"hr/worker/wk"`.
+
+       Return a tuple with the following quantities, respectively:
+
+       * The cost of the production, in US Dollars.
+
+       * The cost per T-shirt.
+
+       * The number of labor hours required to produce `n` t-shirts.
+
+       * The minimum number of workers considering the limit given by `tlim`.
+
+       * The eletricity required for the whole manufacturing process.
+       """
+       function production_cost(n::Unitful.Quantity, t::Unitful.Quantity, tlim::Unitful.Quantity=40u"hr/worker/wk")
+           labor_hours = 2u"hr/tshirt" * n
+           eletricity_spent = 2u"kW * hr/tshirt" * n
+           total_cost = n * raw_material_price + labor_hours * labor_price + eletricity_spent * eletricity_price + fixed_cost * t
+           cost_per_tshirt = total_cost / n
+           min_num_workers = Int(ceil(labor_hours/tlim/t)) * u"worker"
+           return total_cost, cost_per_tshirt, labor_hours, min_num_workers, eletricity_spent
+       end
+production_cost
+```
+
+Now, if we want to see the cost and everything needed to produce 100 T-shirts *per week*, we do
+
+```julia
+julia> production_cost(100u"tshirt", 1u"wk")
+(3230.7201254211855 USD, 32.307201254211854 USD tshirt⁻¹, 200 hr, 5 worker, 200 hr kW)
+
+julia> raw_material(100u"tshirt")
+(160.0 m², 200 oz, 100 oz, 4800 yd)
+```
+
+So, it costs about USD$ 32,31 per T-shirt and so on.
+
+If we want to reduce the cost per T-shirt, we look how much it takes to produce 1000 T-shirts *per month*, with workers working 44 hours per week:
+
+```julia
+
+julia> production_cost(2000u"tshirt", 30u"d", 44u"hr/worker/wk")
+(57386.47643039496 USD, 28.693238215197482 USD tshirt⁻¹, 4000 hr, 22 worker, 4000 hr kW)
+
+julia> raw_material(2000u"tshirt")
+(3200.0 m², 4000 oz, 2000 oz, 96000 yd)
+```
 
 ### Continuously varying interest rate
 
