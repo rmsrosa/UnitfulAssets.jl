@@ -307,9 +307,9 @@ I have been doing this mostly for learning purposes. Who knows it might even tur
 
 Here are a few things to be done.
 
-1. Add Github Actions to integrate test.
+1. Add Github Actions to integrate test...
 
-1. Add Github Actions to check code coverage.
+1. Add Github Actions to check code coverage...
 
 1. Add tools to read exchange market from web sources other than [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com).
 
