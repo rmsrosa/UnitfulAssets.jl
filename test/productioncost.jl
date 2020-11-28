@@ -75,11 +75,8 @@ function production_cost(n::Unitful.Quantity, t::Unitful.Quantity, tlim::Unitful
     return total_cost, cost_per_tshirt, labor_hours, min_num_workers, eletricity_spent
 end
 
-production_cost(100u"tshirt", 1u"wk")
-raw_material(100u"tshirt")
-
-production_cost(100u"tshirt", 30u"d")
-raw_material(100u"tshirt")
+production_cost(50u"tshirt", 1u"wk")
+raw_material(50u"tshirt")
 
 production_cost(2000u"tshirt", 30u"d", 44u"hr/worker/wk")
 raw_material(2000u"tshirt")
