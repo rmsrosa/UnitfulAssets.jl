@@ -22,30 +22,39 @@ is implemented as an extended dispatch for `Unitful.uconvert`.
 
 Let us see some examples using `UnitfulCurrencies.jl`.
 
-### Cost of production
+### Cost of raw material for a T-shirt
 
-As an example, let us say we have a product P that depends on four materials, whose costs C₁, ... C₂ are given as
-
-```julia
-julia> using Unitful
-
-julia> using UnitfulCurrecies
-
-julia> C₁ = 0.45u"USD/lb"
-0.45 USD lb⁻¹
-
-julia> C₂ = 0.78u"USD/lb"
-0.78 USD lb⁻¹
-```
-
-Besides the cost
-
-Suppose we need one pound of P₁ and a half pound of P₂ to produce one unit of P. Thus, the cost of producing 100 pieces of product P is
+As an example, consider a T-shirt with a Julia logo that requires as raw material 1.6 square-meters of 150GSM (grams-per-square-meter) cotton fabric at USD\$15 per 44 in x 8 yards bolt; two ounces in dyes at USD\$20 per pound; one ounce of dye fixer at US\$8 per five pounds; and 48 yards in stitching thread at USD\$19 per 1000 yards. Then, we may calculate the cost of the raw material as follows.
 
 ```julia
-julia> 100 * 1.0u"lb" * C₁ + 0.5u"lb" * C₂
-45.39 USD
+julia> using Unitful, UnitfulCurrecies
+
+julia> fabric = 15u"USD"/8u"yd"/44u"inch"
+0.04261363636363636 USD inch⁻¹ yd⁻¹
+
+julia> 1.6u"m^2" * fabric
+0.06818181818181818 m² USD inch⁻¹ yd⁻¹
+
+julia> fabric = 15u"USD"/8u"yd"/44u"inch"
+0.04261363636363636 USD inch⁻¹ yd⁻¹
+
+julia> dyes = 20u"USD/lb"
+20 USD lb⁻¹
+
+julia> fixer = 8u"USD"/5u"lb"
+1.6 USD lb⁻¹
+
+julia> thread = 19u"USD"/1000u"yd"
+0.019 USD yd⁻¹
+
+julia> cost_per_t_shirt = 1.6u"m^2" * fabric + 2u"oz" * dyes + 1u"oz" * fixer + 48u"yd" * thread;
+
+julia> println("\nThe cost of raw material per t-shirt is of $cost_per_t_shirt")
+
+The cost of raw material per t-shirt is of 6.447611931829924 USD
 ```
+
+### Production cost
 
 ### Continuously varying interest rate
 
