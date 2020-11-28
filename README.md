@@ -325,15 +325,17 @@ Here are a few things to be done.
 
 After I started writing this package, I found out about [bhgomes/UnitfulCurrency.jl](https://github.com/bhgomes/UnitfulCurrency.jl), which, however, has been archived for unknown reasons.
 
- UnifulCurrency has a single dimension for all currencies, which has the side-effect of being able to `uconvert` different quantities without an exchange market rate. Moreover, all currencies are reference units for the same dimension. I don't know what further side-effects come out of that.
+Based on `bhgomes/UnitfulCurrency`, I modified my initial approach of currency pairs to be `("EUR", "USD")`, instead of a six-length string `"EURUSD"`, for instance.
 
- There is no documentation and the README is short. It seems, though, that the exchange markets are defined for each pair, which is different than our approach, in which an exchange market contains a dictionary of currency pairs, allowing for more flexibility, in my point of view.
+`bhgomes/UnifulCurrency`, however, has a single dimension for all currencies, which has the side-effect of allowing to `uconvert` different quantities without an exchange market rate, on a one-to-one bases. Moreover, all currencies are reference units for the same dimension, which might have further side-effects, although I am not sure.
 
- I also found out about [JuliaFinance/Currencies.jl](https://github.com/JuliaFinance/Currencies.jl). There are some nice concepts there, distinguishing currencies, from assets and cash. Take this excerpt for instance:
+There is no documentation in `bhgomes/UnitfulCurrency`, and the README is short. It seems, though, that the exchange markets in `bhgomes/UnitfulCurrency` are defined for each pair, which is different than our approach, in which an exchange market contains a dictionary of currency pairs, allowing for more flexibility, in my point of view.
+
+Later I also found out about [JuliaFinance/Currencies.jl](https://github.com/JuliaFinance/Currencies.jl). There are some nice concepts there, distinguishing currencies from assets and cash. Take this excerpt for instance:
 
  > "When a currency is thought of as a financial instrument (as opposed to a mere label), we choose to refer to it as "Cash" as it would appear, for example, in a balance sheet. Assets.jl provides a Cash instrument together with a specialized Position type that allows for basic algebraic manipulations of Cash and other financial instrument positions".
 
-However, this package is not based on `Unitful`.
+However, `JuliaFinance/Currencies.jl` is not based on `Unitful`, so none of the examples above can be easily implemented.
 
 ## License
 
