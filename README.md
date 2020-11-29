@@ -66,7 +66,7 @@ Thus, the cost of the raw material is about USD$ 6.45 per T-shirt.
 
 ### Production cost
 
-Suppose, now, that we have a small business to manufacture the T-shirts above. Besides the raw material expenses, we need eletricity for the sewing machine and the workplace, workers, rent, insurance, and so on. With that in mind, we assume we have a fixed overhead cost of USD$ 24000 per year for rent and the essential utilities, insurance and things like that; eletricity expenses for the sewing machine at USD$ 0.13 per kilowatt-hour; and labor at USD$ 10.50 per worker per hour.
+Suppose, now, that we have a small business to manufacture the T-shirts above. Besides the raw material expenses, we need eletricity for the sewing machine and the workplace, workers, rent, insurance, and so on. With that in mind, we assume we have a fixed overhead cost of USD\$ 24000 per year for rent and the essential utilities, insurance and things like that; eletricity expenses for the sewing machine at USD\$ 0.13 per kilowatt-hour; and labor at USD$ 10.50 per worker per hour.
 
 In order to implement that, we add two nondimensional units, namely `tshirt` and `worker`, then we define the price constants above and two functions that give us the total cost and total material used. We do this as follows.
 
@@ -321,7 +321,13 @@ I have been doing this mostly for learning purposes. Who knows it might even tur
 
 Here are a few things to be done.
 
-1. Add Github Actions to check code coverage.
+1. Add Github Action to check code coverage.
+
+1. Add currency symbols such as `$`, `£`, `€`, `R$`, and so on, as units equivalent to the reference units for each currency.
+
+1. See whether it is possible to display currencies as, say `USD$ 10.50`, instead of `10.50 USD`.
+
+1. See whether it is possible to display 10-fold multiples of a currency in a better way than say `kEUR`, `MEUR`, `GMEUR`, and so on. It would be great to have `USD$ 10k`, `USD$ 10M`, and `USD$ 10B` (yeah, it would be great to have that! :-))
 
 1. Add tools to read exchange market from web sources other than [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com).
 
