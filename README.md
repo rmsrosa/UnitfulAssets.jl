@@ -62,7 +62,7 @@ julia> println("\nThe cost of raw material per t-shirt is of $cost_per_t_shirt")
 The cost of raw material per t-shirt is of 6.447611931829924 USD
 ```
 
-Thus, the cost of the raw material is about USD$ 6.48 per T-shirt.
+Thus, the cost of the raw material is about USD$ 6.45 per T-shirt.
 
 ### Production cost
 
@@ -187,7 +187,7 @@ With that, we are able to reduce the cost per T-shirt to about USD$ 28.69.
 
 3. Add an affine *profit* function, which is the difference between the revenue function and the cost function.
 
-4. Find the *break-even* point, which is the number of T-shirts where profit vanishes, i.e. neiher profit nor loss incurred.
+4. Find the *break-even* point, which is the number of T-shirts where profit vanishes, i.e. neiher profit nor loss is incurred.
 
 ### Continuously varying interest rate
 
