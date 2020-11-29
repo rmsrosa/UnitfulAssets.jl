@@ -22,6 +22,16 @@ Based on an given exchange market instance of `ExchangeMarket`, a conversion
 can be made from the "quote" currency to the "base" currency. This conversion
 is implemented as an extended dispatch for `Unitful.uconvert`.
 
+## Installation
+
+This package is compatible with Julia ≥ 1.0 and Unitful ≥ 1.0.
+
+Since it has not been registered yet, it can be installed directly from the github repo in the Julia REPL, by typing `]` and *adding* the url for the repo:
+
+```julia
+pkg> add https://github.com/rmsrosa/UnitfulCurrencies.jl
+```
+
 ## Examples
 
 Let us see some examples using `UnitfulCurrencies.jl`.
@@ -31,7 +41,7 @@ Let us see some examples using `UnitfulCurrencies.jl`.
 As an example, consider a T-shirt with a Julia logo that requires as raw material 1.6 square-meters of 150GSM (grams-per-square-meter) cotton fabric at USD\$15 per 44 in x 8 yards bolt; two ounces in dyes at USD\$20 per pound; one ounce of dye fixer at US\$8 per five pounds; and 48 yards in stitching thread at USD\$19 per 1000 yards. Then, we may calculate the cost of the raw material as follows.
 
 ```julia
-julia> using Unitful, UnitfulCurrecies
+julia> using Unitful, UnitfulCurrencies
 
 julia> fabric = 15u"USD"/8u"yd"/44u"inch"
 0.04261363636363636 USD inch⁻¹ yd⁻¹
