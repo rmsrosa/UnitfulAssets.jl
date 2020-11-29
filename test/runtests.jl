@@ -5,13 +5,13 @@ using Test
 # create exchange market from a fixer.io file
 fixer_exchmkt = Dict(
     "2020-11-01" => UnitfulCurrencies.get_fixer_exchmkt(
-        "test/exchange_markets/2020-11-01_fixer.json"
+        joinpath(@__DIR__, "exchange_markets", "2020-11-01_fixer.json")
     )
 )
 # create exchange market from a currencylayer file
 currencylayer_exchmkt = Dict(
     "2020-11-25" => UnitfulCurrencies.get_currencylayer_exchmkt(
-        "test/exchange_markets/2020-11-25_currencylayer.json"
+        joinpath(@__DIR__, "exchange_markets", "2020-11-25_currencylayer.json")
     )
 )
 # rates on Nov 27, 2020, for testing purposes
