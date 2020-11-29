@@ -24,7 +24,7 @@ is implemented as an extended dispatch for `Unitful.uconvert`.
 
 ## Installation
 
-This package is compatible with Julia ≥ 1.0 and Unitful ≥ 1.0.
+This package is compatible with Julia ≥ 1.2 and Unitful ≥ 1.0.
 
 Since it has not been registered yet, it can be installed directly from the github repo in the Julia REPL, by typing `]` and *adding* the url for the repo:
 
