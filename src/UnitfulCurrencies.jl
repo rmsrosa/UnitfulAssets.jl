@@ -18,7 +18,7 @@ is implemented as an extended dispatch for `Unitful.uconvert`.
 """
 module UnitfulCurrencies
 
-using Unitful #, CSV, JSON
+using Unitful, JSON
 using Unitful: @dimension, @refunit
 import Unitful: uconvert
 
