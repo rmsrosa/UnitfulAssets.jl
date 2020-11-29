@@ -1,5 +1,9 @@
 # UnitfulCurrencies
 
+![Main Tests Workflow Status](https://github.com/rmsrosa/UnitfulCurrencies.jl/workflows/CI/badge.svg)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/rmsrosa/UnitfulCurrencies.jl)
+
 A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/Unitful.jl) adding units for all currently active currencies in the world, along with tools to perform conversions based on exchange market rates.
 
 **This package is not registered and is current under development.**
@@ -307,9 +311,7 @@ I have been doing this mostly for learning purposes. Who knows it might even tur
 
 Here are a few things to be done.
 
-1. Add Github Actions to integrate test...
-
-1. Add Github Actions to check code coverage...
+1. Add Github Actions to check code coverage.
 
 1. Add tools to read exchange market from web sources other than [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com).
 
