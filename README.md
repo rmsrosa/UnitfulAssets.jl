@@ -1,6 +1,6 @@
 # UnitfulCurrencies
 
-![Main Tests Workflow Status](https://github.com/rmsrosa/UnitfulCurrencies.jl/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/rmsrosa/UnitfulCurrencies.jl/branch/main/graph/badge.svg?token=O9FZJWK968)](https://codecov.io/gh/rmsrosa/UnitfulCurrencies.jl) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/rmsrosa/UnitfulCurrencies.jl)
+![Main Tests Workflow Status](https://github.com/rmsrosa/UnitfulCurrencies.jl/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/rmsrosa/UnitfulCurrencies.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/rmsrosa/UnitfulCurrencies.jl) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/rmsrosa/UnitfulCurrencies.jl)
 
 A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/Unitful.jl) adding units for all currently active currencies in the world, along with tools to perform conversions based on exchange market rates.
 
