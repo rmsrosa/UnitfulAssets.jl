@@ -99,7 +99,7 @@ macro currency(code_symb, name)
             Unitful.@refunit($code_symb, $code_abbr, $name, $dimension, true)
         end)
     else
-        throw(ArgumentError("The code symbol `$code_symb` should be all in uppercase."))
+        :(throw(ArgumentError("The given code symb is not allowed, it should be all in uppercase.")))
     end
 end
 
