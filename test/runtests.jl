@@ -2,6 +2,8 @@ using Unitful
 using UnitfulCurrencies
 using Test
 
+using UnitfulCurrencies: @currency
+
 # create exchange market from a fixer.io file
 fixer_exchmkt = Dict(
     "2020-11-01" => UnitfulCurrencies.get_fixer_exchmkt(
@@ -50,8 +52,10 @@ BRLGBP_timeseries = Dict(
     @test uconvert(u"BRL", 1000u"CAD", test_mkt, mode=2) == 4111.674271249999u"BRL"
     @test uconvert(u"BRL", 1000u"CAD", test_mkt, mode=-2) == 4111.6768608248185u"BRL"
     @test uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1) ≈ [2591.68, 2891.26, 4018.00, 4743.38, 5850.35, 3333.56, 4140.27, 3912.06, 4430.86, 5323.68]u"BRL" (atol=0.01u"BRL")
+    @test typeof(@currency AAA TripleAs) <: Unitful.FreeUnits
     @test_throws ArgumentError uconvert(u"EUR", 1u"BRL", fixer_exchmkt["2020-11-01"])
     @test_throws ArgumentError uconvert(u"CAD", 1u"BRL", fixer_exchmkt["2020-11-01"], mode=2)
     @test_throws ArgumentError uconvert(u"EUR", 1u"CAD", test_mkt)
     @test_throws ArgumentError uconvert(u"m",1u"km", test_mkt)
+    @test_throws ArgumentError @currency aaa tripleas
 end
