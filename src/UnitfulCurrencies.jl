@@ -158,6 +158,12 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode
     end
 end
 
+function do_nothing(x::Number)
+    a = "This function is not useful at al"
+    b = "It is here just to test coverage.jl and codecov ci"
+    c = "It shouldn't be coverage"
+end
+
 include("exchmkt_tools.jl")
 
 # Register the above units and dimensions in Unitful
