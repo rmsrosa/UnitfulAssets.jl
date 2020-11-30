@@ -5,19 +5,19 @@ using Decimals
 
 using UnitfulCurrencies: @currency
 
-# create exchange market from a fixer.io file
+# create exchange market from a fixer.io json file
 fixer_exchmkt = Dict(
     "2020-11-01" => UnitfulCurrencies.get_fixer_exchmkt(
         joinpath(@__DIR__, "exchange_markets", "2020-11-01_fixer.json")
     )
 )
-# create exchange market from a currencylayer file
+# create exchange market from a currencylayer json file
 currencylayer_exchmkt = Dict(
     "2020-11-25" => UnitfulCurrencies.get_currencylayer_exchmkt(
         joinpath(@__DIR__, "exchange_markets", "2020-11-25_currencylayer.json")
     )
 )
-# rates on Nov 27, 2020, for testing purposes
+# rates on Nov 27, 2020
 exch_mkt_27nov2020 = generate_exchmkt([
     ("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570,
     ("EUR","GBP") => 1.11268, ("GBP","EUR") => 0.898734,
@@ -25,14 +25,17 @@ exch_mkt_27nov2020 = generate_exchmkt([
     ("USD","BRL") => 5.33897, ("BRL","USD") => 0.187302
 ])
 
+# rates with rational numbers
 exch_mkt_from_dict_and_rationals = generate_exchmkt(Dict([
            ("EUR","USD") => 119536//100000, ("USD","EUR") => 836570//100000
        ]))
 
+# rates with decimals
 exch_mkt_from_dict_and_decimals = generate_exchmkt(Dict([
         ("EUR","USD") => Decimal(1.19536), ("USD","EUR") => Decimal(0.836570)
     ]))
 
+# rates to test broadcasting
 BRLGBP_timeseries = Dict(
     "2011-01-01" => generate_exchmkt(("BRL","GBP") => 0.38585),
     "2012-01-01" => generate_exchmkt(("BRL","GBP") => 0.34587),
