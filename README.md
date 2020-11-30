@@ -20,6 +20,10 @@ Based on an given exchange market instance of `ExchangeMarket`, a conversion
 can be made from the "quote" currency to the "base" currency. This conversion
 is implemented as an extended dispatch for `Unitful.uconvert`.
 
+An `ExchangeMarket` type is defined as `Dict{CurrencyPair,Rate}`, in which `CurrencyPair` is a tuple of Strings with the ISO-4217 alphabetic codes corresponding to the base and quote currencies and `Rate` contains a positive Number with the corresponding quote-ask rate for the pair.
+
+Based on an given `ExchangeMarket` instance, a conversion can be made from the "quote" currency to the "base" currency. This conversion is implemented as an extended dispatch for `Unitful.uconvert`.
+
 ## Installation
 
 This package is compatible with Julia ≥ 1.2 and Unitful ≥ 1.0.
@@ -225,34 +229,32 @@ Thus, we expect to have about £1,303.62 in our savings account, after ten years
 
 ### Exchange markets
 
-For exchanging money, consider, for example, the following exchange market:
+For exchanging money, we provide a few dispatches of a function `generate_exchmkt` to generate an `ExchangeMarket` instance from a single Tuple, an Array or a Dict with `CurrencyPair` and `Rate` instances. Consider, for example, the following exchange market:
 
 ```julia
-julia> using Unitful
+julia> using Unitful, UnitfulCurrencies
 
-julia> using UnitfulCurrencies
-
-julia> test_mkt = ExchangeMarket(
+julia> exch_mkt_27nov2020 = generate_exchmkt([
            ("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570,
            ("EUR","GBP") => 1.11268, ("GBP","EUR") => 0.898734,
            ("USD","CAD") => 1.29849, ("CAD","USD") => 0.770125,
            ("USD","BRL") => 5.33897, ("BRL","USD") => 0.187302
-       )
-Dict{Tuple{String,String},Real} with 8 entries:
-  ("USD", "BRL") => 5.33897
-  ("BRL", "USD") => 0.187302
-  ("EUR", "USD") => 1.19536
-  ("GBP", "EUR") => 0.898734
-  ("USD", "EUR") => 0.83657
-  ("EUR", "GBP") => 1.11268
-  ("CAD", "USD") => 0.770125
-  ("USD", "CAD") => 1.29849
+       ])
+Dict{UnitfulCurrencies.CurrencyPair,UnitfulCurrencies.Rate} with 8 entries:
+  CurrencyPair("EUR", "GBP") => Rate(1.11268)
+  CurrencyPair("BRL", "USD") => Rate(0.187302)
+  CurrencyPair("GBP", "EUR") => Rate(0.898734)
+  CurrencyPair("USD", "BRL") => Rate(5.33897)
+  CurrencyPair("EUR", "USD") => Rate(1.19536)
+  CurrencyPair("CAD", "USD") => Rate(0.770125)
+  CurrencyPair("USD", "CAD") => Rate(1.29849)
+  CurrencyPair("USD", "EUR") => Rate(0.83657)
 ```
 
 Then, the conversions between these currencies can be done as follows:
 
 ```julia
-julia> uconvert(u"BRL", 100u"USD", test_mkt)
+julia> uconvert(u"BRL", 100u"USD", exch_mkt_27nov2020)
 533.8969999999999 BRL
 ```
 
@@ -261,28 +263,28 @@ This means that I need about `533.90 BRL` to buy `100 USD`.
 If I have dollars and I want to buy about `500 BRL`, we do it the other way around:
 
 ```julia
-julia> uconvert(u"USD", 500u"BRL", test_mkt)
+julia> uconvert(u"USD", 500u"BRL", exch_mkt_27nov2020)
 93.651 USD
 ```
 
 Now, if, instead, I have `500 BRL` and I want to see how many dollars I can buy with it, I need the same exchange rate as in the first conversion, but in a inverse relation, which is accomplished with the option argument `mode=-1`, so that
 
 ```julia
-julia> uconvert(u"USD", 500u"BRL", test_mkt, mode=-1)
+julia> uconvert(u"USD", 500u"BRL", exch_mkt_27nov2020, mode=-1)
 93.65102257551551 USD
 ```
 
 Another situation is when we don't have a currency pair in the given exchange market, such as `("EUR", "CAD")`, which is not in `test_mkt`. In this case we can use an intermediate currency, if available. In the example market, `USD` works. The exchange with an intermediate currency is achieved with `mode=2`:
 
 ```julia
-julia> uconvert(u"CAD", 100u"EUR", test_mkt, mode=2)
+julia> uconvert(u"CAD", 100u"EUR", exch_mkt_27nov2020, mode=2)
 155.21630064 CAD
 ```
 
 Now, if we have `150 CAD` and want to see how many Euros we can buy with it, we use `mode=-2`:
 
 ```julia
-julia> uconvert(u"EUR", 150u"CAD", test_mkt, mode=-2)
+julia> uconvert(u"EUR", 150u"CAD", exch_mkt_27nov2020, mode=-2)
 96.63933451674102 EUR
 ```
 
@@ -292,16 +294,16 @@ Now, considering again the example above of continuously varying interest rate, 
 
 ```julia
 julia> BRLGBP_timeseries = Dict(
-           "2011-01-01" => ExchangeMarket(("BRL","GBP") => 0.38585),
-           "2012-01-01" => ExchangeMarket(("BRL","GBP") => 0.34587),
-           "2013-01-01" => ExchangeMarket(("BRL","GBP") => 0.29998),
-           "2014-01-01" => ExchangeMarket(("BRL","GBP") => 0.25562),
-           "2015-01-02" => ExchangeMarket(("BRL","GBP") => 0.24153),
-           "2016-01-03" => ExchangeMarket(("BRL","GBP") => 0.17093),
-           "2017-01-02" => ExchangeMarket(("BRL","GBP") => 0.24888),
-           "2018-01-02" => ExchangeMarket(("BRL","GBP") => 0.22569),
-           "2019-01-04" => ExchangeMarket(("BRL","GBP") => 0.21082),
-           "2020-01-04" => ExchangeMarket(("BRL","GBP") => 0.18784)
+           "2011-01-01" => generate_exchmkt(("BRL","GBP") => 0.38585),
+           "2012-01-01" => generate_exchmkt(("BRL","GBP") => 0.34587),
+           "2013-01-01" => generate_exchmkt(("BRL","GBP") => 0.29998),
+           "2014-01-01" => generate_exchmkt(("BRL","GBP") => 0.25562),
+           "2015-01-02" => generate_exchmkt(("BRL","GBP") => 0.24153),
+           "2016-01-03" => generate_exchmkt(("BRL","GBP") => 0.17093),
+           "2017-01-02" => generate_exchmkt(("BRL","GBP") => 0.24888),
+           "2018-01-02" => generate_exchmkt(("BRL","GBP") => 0.22569),
+           "2019-01-04" => generate_exchmkt(("BRL","GBP") => 0.21082),
+           "2020-01-04" => generate_exchmkt(("BRL","GBP") => 0.18784)
        );
 
 julia> uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1)'
@@ -309,7 +311,7 @@ julia> uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1)'
  2591.68 BRL  2891.26 BRL  4018.0 BRL  4743.38 BRL  …  4140.27 BRL  3912.06 BRL  4430.86 BRL  5323.68 BRL
 ```
 
-Notice the optional argument `mode=-1`, so it uses the inverse rate for the conversion. This is different than using the rate for the pair `("GBP", "BRL")` since we don't want to buy `GBP` with `BRL`, and neither do we want the direct rate for `("BRL", "GBP")` since we don't want to buy a specific amount of `BRL` with `GBP`. Instead, we want to find out how much `BRL` we can buy with a given amount of `GBP`, so we use the inverse of the rate `("BRL", "GBP")`.
+Notice the optional argument `mode=-1`, so it uses the inverse rate for the conversion. As explained above, this is different than using the rate for the pair `("GBP", "BRL")` since we don't want to buy `GBP` with `BRL`, and neither do we want the direct rate for `("BRL", "GBP")` since we don't want to buy a specific amount of `BRL` with `GBP`. Instead, we want to find out how much `BRL` we can buy with a given amount of `GBP`, so we use the inverse of the rate `("BRL", "GBP")`.
 
 **Exercise:** In the ***Production Cost*** problem, suppose the raw materials come from a foreign country (or countries) and add an exchange market for properly taking into account the dependency of the production cost, the profit, and the break even point on the foreing currencies.
 
@@ -323,7 +325,7 @@ Here are a few things to be done.
 
 1. See whether it is possible to display currencies as, say `USD$ 10.50`, instead of `10.50 USD`.
 
-1. See whether it is possible to display 10-fold multiples of a currency in a better way than say `kEUR`, `MEUR`, `GMEUR`, and so on. It would be great to have `USD$ 10k`, `USD$ 10M`, and `USD$ 10B` (yeah, it would be great to have that! :-))
+1. See whether it is possible to display 10-fold multiples of a currency in a better way than say `kEUR`, `MEUR`, `GMEUR`, and so on. It would be great to have `USD$ 10k`, `USD$ 10M`, and `USD$ 10B` (yeah, it would great if I had that! :-))
 
 1. Add tools to read exchange market from web sources other than [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com).
 
@@ -331,15 +333,13 @@ Here are a few things to be done.
 
 1. Maybe join all tools to read the exchange market from web sources in a single function, with the market source given as an argument, instead of having one function for each.
 
-1. Add further tests.
-
 1. Add Documentation.
 
 ## Related packages
 
 After I started writing this package, I found out about [bhgomes/UnitfulCurrency.jl](https://github.com/bhgomes/UnitfulCurrency.jl), which, however, has been archived for unknown reasons.
 
-Based on `bhgomes/UnitfulCurrency`, I modified my initial approach of currency pairs to be `("EUR", "USD")`, instead of a six-length string `"EURUSD"`, for instance.
+Based on `bhgomes/UnitfulCurrency`, I modified my initial approach of currency pairs to be `Rate("EUR", "USD")`, instead of a six-length string `"EURUSD"`, for instance.
 
 `bhgomes/UnifulCurrency`, however, has a single dimension for all currencies, which has the side-effect of allowing to `uconvert` different quantities without an exchange market rate, on a one-to-one bases. Moreover, all currencies are reference units for the same dimension, which might have further side-effects, although I am not sure.
 

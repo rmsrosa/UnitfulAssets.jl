@@ -7,10 +7,10 @@ Module extending Unitful.jl with currencies.
 Currency dimensions are created for each currency, along with its reference
 unit. All active currencies around the world are defined.
 
-An `ExchangeMarket` type is also defined as an alias for
-`Dict{Tuple{String,String},Real}`, in which the tuple key contains the
-quote-ask currency pair (e.g. `("EUR", "USD")`) and the value is the
-exchange rate for the pair.
+An `ExchangeMarket` type is defined as `Dict{CurrencyPair,Rate}`, 
+in which `CurrencyPair` is a tuple of Strings with the ISO-4217 alphabetic
+codes corresponding to the base and quote currencies and `Rate` contains
+a positive Number with the corresponding quote-ask rate for the pair.
 
 Based on an given exchange market instance of `ExchangeMarket`, a conversion
 can be made from the "quote" currency to the "base" currency. This conversion
@@ -22,16 +22,17 @@ using Unitful, JSON
 using Unitful: @dimension, @refunit
 import Unitful: uconvert
 
-export ExchangeMarket, @currency, generate_exchmkt
+export generate_exchmkt
 
 """
     is_currency_code(code_string::String)::Bool
 
 Return whether or not `code_string` refers to a valid currency.
 
-`code_string` is expected to be a currency code abbr (a three-letter string
-corresponding to the currency code symbol), like "EUR", or a currency
-dimension abbr (the code abbr appended with "CURRENCY").
+`code_string` is expected to be an alphabetic ISO-4217 currency code
+(i.e. a three-letter uppercase ascii string corresponding to the
+currency code symbol), like "EUR", or a currency dimension abbr
+(the code abbr appended with "CURRENCY").
 
 The function checks whether `code_string` is at least three-characters long
 and whether it is all composed of ascii uppercase letters.
@@ -60,7 +61,7 @@ Type for currency pairs.
 
 Currency pairs are made of two String fields, a `base_curr` with the alphabetic
 code ISO-4217 corresponding to the base currency and `quote_curr` with the
-alphabetic code ISO-4217 corresponding to the quote currency.
+alphabetic ISO-4217 code corresponding to the quote currency.
 
 The alphabetic codes are made of three-character long uppercase ascii letters,
 so the structure's constructor checks whether this requirement is met,
@@ -84,8 +85,9 @@ struct CurrencyPair
     CurrencyPair(base_curr, quote_curr) = is_currency_code(base_curr) && 
         is_currency_code(quote_curr) ? new(base_curr,quote_curr) : 
             throw(ArgumentError("The given code symbol pair "
-                * "$((base_curr, quote_curr)) is not allowed, both should be all "
-                * "in ascii uppercase letters and at least three-character long."))
+                * "$((base_curr, quote_curr)) is not allowed, both should "
+                * "be all in ascii uppercase letters and at least "
+                * "three-character long."))
 end
 
 """
