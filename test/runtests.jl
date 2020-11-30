@@ -1,6 +1,7 @@
 using Unitful
 using UnitfulCurrencies
 using Test
+using Decimals
 
 using UnitfulCurrencies: @currency
 
@@ -24,10 +25,13 @@ exch_mkt_27nov2020 = generate_exchmkt([
     ("USD","BRL") => 5.33897, ("BRL","USD") => 0.187302
 ])
 
-exch_mkt_from_dict = generate_exchmkt(Dict([
-    ("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570,
-    ("EUR","GBP") => 1.11268, ("GBP","EUR") => 0.898734
-]))
+exch_mkt_from_dict_and_rationals = generate_exchmkt(Dict([
+           ("EUR","USD") => 119536//100000, ("USD","EUR") => 836570//100000
+       ]))
+
+exch_mkt_from_dict_and_decimals = generate_exchmkt(Dict([
+        ("EUR","USD") => Decimal(1.19536), ("USD","EUR") => Decimal(0.836570)
+    ]))
 
 BRLGBP_timeseries = Dict(
     "2011-01-01" => generate_exchmkt(("BRL","GBP") => 0.38585),
@@ -58,6 +62,8 @@ BRLGBP_timeseries = Dict(
     @test uconvert(u"BRL", 1000u"CAD", exch_mkt_27nov2020, mode=-2) == 4111.6768608248185u"BRL"
     @test uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1) ≈ [2591.68, 2891.26, 4018.00, 4743.38, 5850.35, 3333.56, 4140.27, 3912.06, 4430.86, 5323.68]u"BRL" (atol=0.01u"BRL")
     @test typeof(UnitfulCurrencies.@currency AAA TripleAs) <: Unitful.FreeUnits
+    @test typeof(exch_mkt_from_dict_and_rationals[UnitfulCurrencies.CurrencyPair("USD", "EUR")].value) <: Rational{Int}
+    @test typeof(exch_mkt_from_dict_and_decimals[UnitfulCurrencies.CurrencyPair("USD", "EUR")].value) == Decimal
     @test_throws ArgumentError uconvert(u"EUR", 1u"BRL", fixer_exchmkt["2020-11-01"])
     @test_throws ArgumentError uconvert(u"CAD", 1u"BRL", fixer_exchmkt["2020-11-01"], mode=2)
     @test_throws ArgumentError uconvert(u"EUR", 1u"CAD", exch_mkt_27nov2020)

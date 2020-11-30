@@ -150,7 +150,7 @@ Dict{CurrencyPair,Float64} with 1 entry:
   CurrencyPair("EUR", "USD") => Rate(1.16415)
 ```
 """
-function generate_exchmkt(d::Dict{Tuple{String,String},Float64})
+function generate_exchmkt(d::Dict{Tuple{String,String},T}) where {T<:Number}
     return Dict([CurrencyPair(key[1], key[2]) => Rate(value) for (key,value) in d])
 end
 
@@ -168,7 +168,7 @@ Dict{CurrencyPair,Float64} with 2 entries:
   CurrencyPair("USD", "EUR") => Rate(0.83657)
 ```
 """
-function generate_exchmkt(a::Array{Pair{Tuple{String,String},Float64},1})
+function generate_exchmkt(a::Array{Pair{Tuple{String,String},T},1}) where {T<:Number}
     return Dict([CurrencyPair(key[1], key[2]) => Rate(value) for (key,value) in a])
 end
 
@@ -185,7 +185,7 @@ Dict{CurrencyPair,Float64} with 1 entry:
   CurrencyPair("EUR", "USD") => Rate(1.16415)
 ```
 """
-function generate_exchmkt(p::Pair{Tuple{String,String},Float64})
+function generate_exchmkt(p::Pair{Tuple{String,String},T}) where {T<:Number}
     return Dict(CurrencyPair(p[1][1], p[1][2]) => Rate(p[2]))
 end
 
