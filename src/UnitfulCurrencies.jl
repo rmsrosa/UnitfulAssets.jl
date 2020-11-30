@@ -7,10 +7,10 @@ Module extending Unitful.jl with currencies.
 Currency dimensions are created for each currency, along with its reference
 unit. All active currencies around the world are defined.
 
-An `ExchangeMarket` type is defined as `Dict{CurrencyPair,Rate}`, 
+An `ExchangeMarket` type is defined as `Dict{CurrencyPair,ExchangeRate}`, 
 in which `CurrencyPair` is a tuple of Strings with the ISO-4217 alphabetic
-codes corresponding to the base and quote currencies and `Rate` contains
-a positive Number with the corresponding quote-ask rate for the pair.
+codes corresponding to the base and quote currencies and `ExchangeRate`
+contains a positive Number with the corresponding quote-ask rate for the pair.
 
 Based on an given exchange market instance of `ExchangeMarket`, a conversion
 can be made from the "quote" currency to the "base" currency. This conversion
@@ -91,7 +91,7 @@ struct CurrencyPair
 end
 
 """
-    Rate
+    ExchangeRate
 
 Type for exchange rates.
 
@@ -103,18 +103,18 @@ otherwise an ArgumentError is thrown.
 # Examples
 
 ```jldoctest
-julia> Rate(1.2)
-Rate(1.2)
+julia> ExchangeRate(1.2)
+ExchangeRate(1.2)
 
-julia> Rate(-2)
+julia> ExchangeRate(-2)
 ERROR: ArgumentError: The exchange rate must be a positive number
 Stacktrace:
   ...
 ```
 """
-struct Rate
+struct ExchangeRate
     value::Number
-    Rate(r) = r > 0 ? new(r) :
+    ExchangeRate(r) = r > 0 ? new(r) :
         throw(ArgumentError("The exchange rate must be a positive number"))
 end
 
@@ -123,19 +123,19 @@ end
 
 Type used for a dictionary of exchange rates pair quotes.
     
-It is given as a Dict{CurrencyPair,Rate}, where the keys are
+It is given as a Dict{CurrencyPair,ExchangeRate}, where the keys are
 currency pairs with the base and quote currencies and the value
 is the exchange rate for this pair (i..e. how much in quote currency
 is needed to buy one unit of the base currency).
 
 For instance, the exchange market
 
-    exchmkt = ExchangeMarket(CurrencyPair("EUR", "USD") => Rate(1.164151))
+    exchmkt = ExchangeMarket(CurrencyPair("EUR", "USD") => ExchangeRate(1.164151))
 
 contains the pair `CurrencyPair("EUR", "USD")` and the exchange rate
-`Rate(1.164151)`, which means that one can buy 1 EUR with 1.164151 USD.
+`ExchangeRate(1.164151)`, which means that one can buy 1 EUR with 1.164151 USD.
 """
-ExchangeMarket = Dict{CurrencyPair,Rate}
+ExchangeMarket = Dict{CurrencyPair, ExchangeRate}
 
 """
     generate_exchmkt(d::Dict{Tuple{String,String},Float64})
@@ -147,11 +147,11 @@ Generates an instance of an ExchangeMarket from a dictionary of base-quote-value
 ```jldoctest
 julia> generate_exchmkt(Dict(("EUR", "USD") => 1.164151))
 Dict{CurrencyPair,Float64} with 1 entry:
-  CurrencyPair("EUR", "USD") => Rate(1.16415)
+  CurrencyPair("EUR", "USD") => ExchangeRate(1.16415)
 ```
 """
 function generate_exchmkt(d::Dict{Tuple{String,String},T}) where {T<:Number}
-    return Dict([CurrencyPair(key[1], key[2]) => Rate(value) for (key,value) in d])
+    return Dict([CurrencyPair(key[1], key[2]) => ExchangeRate(value) for (key,value) in d])
 end
 
 """
@@ -164,12 +164,12 @@ Generates an instance of ExchangeMarket from an array of base-quote-value rates.
 ```jldoctest
 julia> generate_exchmkt([("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570])
 Dict{CurrencyPair,Float64} with 2 entries:
-  CurrencyPair("EUR", "USD") => Rate(1.19536)
-  CurrencyPair("USD", "EUR") => Rate(0.83657)
+  CurrencyPair("EUR", "USD") => ExchangeRate(1.19536)
+  CurrencyPair("USD", "EUR") => ExchangeRate(0.83657)
 ```
 """
 function generate_exchmkt(a::Array{Pair{Tuple{String,String},T},1}) where {T<:Number}
-    return Dict([CurrencyPair(key[1], key[2]) => Rate(value) for (key,value) in a])
+    return Dict([CurrencyPair(key[1], key[2]) => ExchangeRate(value) for (key,value) in a])
 end
 
 """
@@ -182,11 +182,11 @@ Generates an instance of ExchangeMarket from a single of base-quote-value rate.
 ```jldoctest
 julia> generate_exchmkt(("EUR", "USD") => 1.164151)
 Dict{CurrencyPair,Float64} with 1 entry:
-  CurrencyPair("EUR", "USD") => Rate(1.16415)
+  CurrencyPair("EUR", "USD") => ExchangeRate(1.16415)
 ```
 """
 function generate_exchmkt(p::Pair{Tuple{String,String},T}) where {T<:Number}
-    return Dict(CurrencyPair(p[1][1], p[1][2]) => Rate(p[2]))
+    return Dict(CurrencyPair(p[1][1], p[1][2]) => ExchangeRate(p[2]))
 end
 
 """
