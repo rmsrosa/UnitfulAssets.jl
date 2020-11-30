@@ -22,32 +22,7 @@ using Unitful, JSON
 using Unitful: @dimension, @refunit
 import Unitful: uconvert
 
-export ExchangeMarket, @currency
-
-#= struct CurrencyPair{T<:String}
-    base_curr::T
-    quote_curr::T
-end =#
-
-"""
-    ExchangeMarket
-
-Alias for the type used for exchange rates pairs, given as a
-Dict{Tuple{String,String},Float64}, where the key is expected 
-to be a tuple of three-character strings containing the 
-alphabetic codes ISO-4217 of the base and quote currencies,
-respectively, and the value is the exchange rate for this pair
-(i.e. how much in quote currency is needed to buy one unit of
-the base currency).
-
-For instance, the Dict
-
-    exchmkt = ExchangeMarket(("EUR", "USD") => 1.164151)
-
-is means that, in this exchange market, one can buy 1 EUR 
-with 1.164151 USD.
-"""
-ExchangeMarket = Dict{Tuple{String,String},Real}
+export ExchangeMarket, @currency, generate_exchmkt
 
 """
     is_currency_code(code_string::String)::Bool
@@ -58,8 +33,8 @@ Return whether or not `code_string` refers to a valid currency.
 corresponding to the currency code symbol), like "EUR", or a currency
 dimension abbr (the code abbr appended with "CURRENCY").
 
-The function checks whether `code_string` is at least three-caracters long
-and whether it is all composed of ascii uppercase.
+The function checks whether `code_string` is at least three-characters long
+and whether it is all composed of ascii uppercase letters.
 
 # Examples
 
@@ -76,6 +51,140 @@ false
 """
 function is_currency_code(code_string::String)
     return length(code_string) >= 3 && all(c -> 'A' <= c <= 'Z', code_string)
+end
+
+"""
+    CurrencyPair
+
+Type for currency pairs.
+
+Currency pairs are made of two String fields, a `base_curr` with the alphabetic
+code ISO-4217 corresponding to the base currency and `quote_curr` with the
+alphabetic code ISO-4217 corresponding to the quote currency.
+
+The alphabetic codes are made of three-character long uppercase ascii letters,
+so the structure's constructor checks whether this requirement is met,
+otherwise an ArgumentError is thrown.
+
+# Examples
+
+```jldoctest
+julia> CurrencyPair("EUR", "BRL")
+CurrencyPair("EUR", "BRL")
+
+julia> CurrencyPair("euro", "BRL")
+ERROR: ArgumentError: The given code symbol pair ("euro", "BRL") is not allowed, both should be all in ascii uppercase letters and at least three-character long.
+Stacktrace:
+  ...
+```
+"""
+struct CurrencyPair
+    base_curr::String
+    quote_curr::String
+    CurrencyPair(base_curr, quote_curr) = is_currency_code(base_curr) && 
+        is_currency_code(quote_curr) ? new(base_curr,quote_curr) : 
+            throw(ArgumentError("The given code symbol pair "
+                * "$((base_curr, quote_curr)) is not allowed, both should be all "
+                * "in ascii uppercase letters and at least three-character long."))
+end
+
+"""
+    Rate
+
+Type for exchange rates.
+
+An exchange rate is simply a positive Float64.
+
+The structure's constructor checks whether this requirement is met,
+otherwise an ArgumentError is thrown.
+
+# Examples
+
+```jldoctest
+julia> Rate(1.2)
+Rate(1.2)
+
+julia> Rate(-2)
+ERROR: ArgumentError: The exchange rate must be a positive Float64 number
+Stacktrace:
+  ...
+```
+"""
+struct Rate
+    value::Float64
+    Rate(r) = r > 0 ? new(r) :
+        throw(ArgumentError("The exchange rate must be a positive Float64 number"))
+end
+
+"""
+    ExchangeMarket
+
+Type used for a dictionary of exchange rates pair quotes.
+    
+It is given as a Dict{CurrencyPair,Float64}, where the keys are
+currency pairs with the base and quote currencies and the value
+is the exchange rate for this pair (i..e. how much in quote currency
+is needed to buy one unit of the base currency).
+
+For instance, the exchange market
+
+    exchmkt = ExchangeMarket(CurrencyPair("EUR", "USD") => 1.164151)
+
+contains the pair `CurrencyPair("EUR", "USD")` and the exchange rate
+which means that one can buy 1 EUR with 1.164151 USD.
+"""
+ExchangeMarket = Dict{CurrencyPair,Rate}
+
+"""
+    generate_exchmkt(d::Dict{Tuple{String,String},Float64})
+
+Generates an instance of an ExchangeMarket from a dictionary of base-quote-value rates.
+
+# Examples
+
+```jldoctest
+julia> generate_exchmkt(Dict(("EUR", "USD") => 1.164151))
+Dict{CurrencyPair,Float64} with 1 entry:
+  CurrencyPair("EUR", "USD") => 1.16415
+```
+"""
+function generate_exchmkt(d::Dict{Tuple{String,String},Float64})
+    return Dict([CurrencyPair(key[1], key[2]) => Rate(value) for (key,value) in d])
+end
+
+"""
+    generate_exchmkt(a::Array{Pair{Tuple{String,String},Float64},1})
+
+Generates an instance of ExchangeMarket from an array of base-quote-value rates.
+
+# Examples
+
+```jldoctest
+julia> generate_exchmkt([("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570])
+Dict{CurrencyPair,Float64} with 2 entries:
+  CurrencyPair("EUR", "USD") => 1.19536
+  CurrencyPair("USD", "EUR") => 0.83657
+```
+"""
+function generate_exchmkt(a::Array{Pair{Tuple{String,String},Float64},1})
+    return Dict([CurrencyPair(key[1], key[2]) => Rate(value) for (key,value) in a])
+end
+
+"""
+    generate_exchmkt(a::Array{Pair{Tuple{String,String},Float64},1})
+
+Generates an instance of ExchangeMarket from a single of base-quote-value rate.
+
+# Examples
+
+```jldoctest
+julia> generate_exchmkt(("EUR", "USD") => 1.164151)
+Dict{CurrencyPair,Float64} with 1 entry:
+  CurrencyPair("EUR", "USD") => 1.16415
+```
+"""
+function generate_exchmkt(p::Pair{Tuple{String,String},Float64})
+    return Dict(CurrencyPair(p[1][1], p[1][2]) => Rate(p[2]))
 end
 
 """
@@ -147,23 +256,22 @@ julia> uconvert(u"BRL", 1u"BRL", forex_exchmkt["2020-11-01"], mode=-1)
 function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode::Int=1)
     u_curr_str = string(Unitful.dimension(u))
     x_curr_str = string(Unitful.dimension(x))
-#    if length(u_curr_str) >= 3 && length(x_curr_str) >= 3 && all(c -> 'A' <= c <= 'Z', u_curr_str) && all(c -> 'A' <= c <= 'Z', x_curr_str)
     if is_currency_code(u_curr_str) && is_currency_code(x_curr_str)
         u_curr = u_curr_str[1:3]
         x_curr = x_curr_str[1:3]
-        pair = (x_curr, u_curr)
-        pairinv = (u_curr, x_curr)
+        pair = CurrencyPair(x_curr, u_curr)
+        pairinv = CurrencyPair(u_curr, x_curr)
         if mode == 1 && pair in keys(e)
-            rate = Main.eval(Meta.parse(string(e[pair]) * "u\"" * u_curr * "/" * x_curr * "\""))
+            rate = Main.eval(Meta.parse(string(e[pair].value) * "u\"" * u_curr * "/" * x_curr * "\""))
             return Unitful.uconvert(u, rate * x)
         elseif mode == -1 && pairinv in keys(e)
-            rate = Main.eval(Meta.parse(string(1/e[pairinv]) * "u\"" * u_curr * "/" * x_curr * "\""))
+            rate = Main.eval(Meta.parse(string(1/e[pairinv].value) * "u\"" * u_curr * "/" * x_curr * "\""))
             return Unitful.uconvert(u, rate * x)
         elseif mode == 2
             for (pair1, rate1) in e
                 for (pair2, rate2) in e
-                    if pair1[1] == x_curr && pair2[2] == u_curr && pair1[2] == pair2[1]
-                        rate = Main.eval(Meta.parse(string(rate1 * rate2) * "u\"" * u_curr * "/" * x_curr * "\""))
+                    if pair1.base_curr == x_curr && pair2.quote_curr == u_curr && pair1.quote_curr == pair2.base_curr
+                        rate = Main.eval(Meta.parse(string(rate1.value * rate2.value) * "u\"" * u_curr * "/" * x_curr * "\""))
                         return Unitful.uconvert(u, rate * x)
                     end
                 end
@@ -171,8 +279,8 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode
         elseif mode == -2
             for (pair1, rate1) in e
                 for (pair2, rate2) in e
-                    if pair1[1] == u_curr && pair2[2] == x_curr && pair1[2] == pair2[1]
-                        rate = Main.eval(Meta.parse(string(1 / (rate1 * rate2) ) * "u\"" * u_curr * "/" * x_curr * "\""))
+                    if pair1.base_curr == u_curr && pair2.quote_curr == x_curr && pair1.quote_curr == pair2.base_curr
+                        rate = Main.eval(Meta.parse(string(1 / (rate1.value * rate2.value) ) * "u\"" * u_curr * "/" * x_curr * "\""))
                         return Unitful.uconvert(u, rate * x)
                     end
                 end

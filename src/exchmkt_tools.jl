@@ -2,7 +2,8 @@
 File containing tools/functions to created ExchangeMarket instances
 from json files of some exchange market providers.
 
-Currently, tools for fixer.io and currencylayer.com providers are implemented.
+Currently, only tools for fixer.io and currencylayer.com providers
+are implemented, and only for options "historical" and "latest".
  =#
 """
     get_fixer_exchmkt(::Dict)
@@ -11,7 +12,7 @@ Return an ExchangeMarket instance from a fixer.io Dict.
 """
 function get_fixer_exchmkt(jfixer::Dict)
     base = jfixer["base"]
-    return ExchangeMarket([(base,curr) => rate for (curr,rate) in jfixer["rates"]])
+    return generate_exchmkt([(base,curr) => float(rate) for (curr,rate) in jfixer["rates"]])
 end
 
 """
@@ -29,5 +30,5 @@ end
 Return an ExchangeMarket instance from a currencylayer.com json file.
 """
 function get_currencylayer_exchmkt(filename::String)
-    return ExchangeMarket([(pair[1:3],pair[4:6]) => rate for (pair,rate) in JSON.parsefile(filename)["quotes"]])
+    return generate_exchmkt([(pair[1:3],pair[4:6]) => float(rate) for (pair,rate) in JSON.parsefile(filename)["quotes"]])
 end

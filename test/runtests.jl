@@ -17,24 +17,24 @@ currencylayer_exchmkt = Dict(
     )
 )
 # rates on Nov 27, 2020, for testing purposes
-test_mkt = ExchangeMarket(
+test_mkt = generate_exchmkt([
     ("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570,
     ("EUR","GBP") => 1.11268, ("GBP","EUR") => 0.898734,
     ("USD","CAD") => 1.29849, ("CAD","USD") => 0.770125,
     ("USD","BRL") => 5.33897, ("BRL","USD") => 0.187302
-)
+])
 
 BRLGBP_timeseries = Dict(
-    "2011-01-01" => ExchangeMarket(("BRL","GBP") => 0.38585),
-    "2012-01-01" => ExchangeMarket(("BRL","GBP") => 0.34587),
-    "2013-01-01" => ExchangeMarket(("BRL","GBP") => 0.29998),
-    "2014-01-01" => ExchangeMarket(("BRL","GBP") => 0.25562),
-    "2015-01-02" => ExchangeMarket(("BRL","GBP") => 0.24153),
-    "2016-01-03" => ExchangeMarket(("BRL","GBP") => 0.17093),
-    "2017-01-02" => ExchangeMarket(("BRL","GBP") => 0.24888),
-    "2018-01-02" => ExchangeMarket(("BRL","GBP") => 0.22569),
-    "2019-01-04" => ExchangeMarket(("BRL","GBP") => 0.21082),
-    "2020-01-04" => ExchangeMarket(("BRL","GBP") => 0.18784)
+    "2011-01-01" => generate_exchmkt(("BRL","GBP") => 0.38585),
+    "2012-01-01" => generate_exchmkt(("BRL","GBP") => 0.34587),
+    "2013-01-01" => generate_exchmkt(("BRL","GBP") => 0.29998),
+    "2014-01-01" => generate_exchmkt(("BRL","GBP") => 0.25562),
+    "2015-01-02" => generate_exchmkt(("BRL","GBP") => 0.24153),
+    "2016-01-03" => generate_exchmkt(("BRL","GBP") => 0.17093),
+    "2017-01-02" => generate_exchmkt(("BRL","GBP") => 0.24888),
+    "2018-01-02" => generate_exchmkt(("BRL","GBP") => 0.22569),
+    "2019-01-04" => generate_exchmkt(("BRL","GBP") => 0.21082),
+    "2020-01-04" => generate_exchmkt(("BRL","GBP") => 0.18784)
 )
 
 @testset "Currencies" begin
