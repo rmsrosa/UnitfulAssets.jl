@@ -50,6 +50,35 @@ with 1.164151 USD.
 ExchangeMarket = Dict{Tuple{String,String},Real}
 
 """
+    is_currency_code(code_string::String)::Bool
+
+Return whether or not `code_string` refers to a valid currency.
+
+`code_string` is expected to be a currency code abbr (a three-letter string
+corresponding to the currency code symbol), like "EUR", or a currency
+dimension abbr (the code abbr appended with "CURRENCY").
+
+The function checks whether `code_string` is at least three-caracters long
+and whether it is all composed of ascii uppercase.
+
+# Examples
+
+```jldoctest
+julia> is_currency_code("BRL")
+true
+
+julia> is_currency_code("USDCURRENCY")
+true
+
+julia> is_currency_code("euro")
+false
+```
+"""
+function is_currency_code(code_string::String)
+    return length(code_string) >= 3 && all(c -> 'A' <= c <= 'Z', code_string)
+end
+
+"""
     @currency code_symb name
 
 Create a dimension and a reference unit for a currency.
@@ -59,7 +88,7 @@ from `code_symb` and `name`.
 """
 macro currency(code_symb, name)
     code_abbr = string(code_symb)
-    if all(c -> 'A' <= c <= 'Z', code_abbr)
+    if is_currency_code(code_abbr)
         gap = Int('𝐀') - Int('A')
         code_abbr_bold = join([Char(Int(c) + gap) for c in code_abbr])
         dimension = Symbol(code_abbr_bold)
@@ -118,7 +147,8 @@ julia> uconvert(u"BRL", 1u"BRL", forex_exchmkt["2020-11-01"], mode=-1)
 function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode::Int=1)
     u_curr_str = string(Unitful.dimension(u))
     x_curr_str = string(Unitful.dimension(x))
-    if length(u_curr_str) >= 3 && length(x_curr_str) >= 3 && all(c -> 'A' <= c <= 'Z', u_curr_str) && all(c -> 'A' <= c <= 'Z', x_curr_str)
+#    if length(u_curr_str) >= 3 && length(x_curr_str) >= 3 && all(c -> 'A' <= c <= 'Z', u_curr_str) && all(c -> 'A' <= c <= 'Z', x_curr_str)
+    if is_currency_code(u_curr_str) && is_currency_code(x_curr_str)
         u_curr = u_curr_str[1:3]
         x_curr = x_curr_str[1:3]
         pair = (x_curr, u_curr)
@@ -156,12 +186,6 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode
     else
         throw(ArgumentError("$u and $x must be currencies"))
     end
-end
-
-function do_nothing(x::Number)
-    a = "This function is not useful at al"
-    b = "It is here just to test coverage.jl and codecov ci"
-    c = "It shouldn't be coverage"
 end
 
 include("exchmkt_tools.jl")
