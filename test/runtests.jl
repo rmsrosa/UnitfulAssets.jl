@@ -24,6 +24,11 @@ exch_mkt_27nov2020 = generate_exchmkt([
     ("USD","BRL") => 5.33897, ("BRL","USD") => 0.187302
 ])
 
+exch_mkt_from_dict = generate_exchmkt(Dict([
+    ("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570,
+    ("EUR","GBP") => 1.11268, ("GBP","EUR") => 0.898734
+]))
+
 BRLGBP_timeseries = Dict(
     "2011-01-01" => generate_exchmkt(("BRL","GBP") => 0.38585),
     "2012-01-01" => generate_exchmkt(("BRL","GBP") => 0.34587),
