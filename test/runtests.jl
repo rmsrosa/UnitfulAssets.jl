@@ -53,4 +53,5 @@ BRLGBP_timeseries = Dict(
     @test_throws ArgumentError uconvert(u"EUR", 1u"BRL", fixer_exchmkt["2020-11-01"])
     @test_throws ArgumentError uconvert(u"CAD", 1u"BRL", fixer_exchmkt["2020-11-01"], mode=2)
     @test_throws ArgumentError uconvert(u"EUR", 1u"CAD", test_mkt)
+    @test_throws ArgumentError uconvert(u"m",1u"km", test_mkt)
 end
