@@ -93,7 +93,7 @@ end
 
 Type for exchange rates.
 
-An exchange rate is simply a positive Float64.
+An exchange rate is simply a positive Number.
 
 The structure's constructor checks whether this requirement is met,
 otherwise an ArgumentError is thrown.
@@ -105,15 +105,15 @@ julia> Rate(1.2)
 Rate(1.2)
 
 julia> Rate(-2)
-ERROR: ArgumentError: The exchange rate must be a positive Float64 number
+ERROR: ArgumentError: The exchange rate must be a positive number
 Stacktrace:
   ...
 ```
 """
 struct Rate
-    value::Float64
+    value::Number
     Rate(r) = r > 0 ? new(r) :
-        throw(ArgumentError("The exchange rate must be a positive Float64 number"))
+        throw(ArgumentError("The exchange rate must be a positive number"))
 end
 
 """
@@ -121,17 +121,17 @@ end
 
 Type used for a dictionary of exchange rates pair quotes.
     
-It is given as a Dict{CurrencyPair,Float64}, where the keys are
+It is given as a Dict{CurrencyPair,Rate}, where the keys are
 currency pairs with the base and quote currencies and the value
 is the exchange rate for this pair (i..e. how much in quote currency
 is needed to buy one unit of the base currency).
 
 For instance, the exchange market
 
-    exchmkt = ExchangeMarket(CurrencyPair("EUR", "USD") => 1.164151)
+    exchmkt = ExchangeMarket(CurrencyPair("EUR", "USD") => Rate(1.164151))
 
 contains the pair `CurrencyPair("EUR", "USD")` and the exchange rate
-which means that one can buy 1 EUR with 1.164151 USD.
+`Rate(1.164151)`, which means that one can buy 1 EUR with 1.164151 USD.
 """
 ExchangeMarket = Dict{CurrencyPair,Rate}
 
@@ -145,7 +145,7 @@ Generates an instance of an ExchangeMarket from a dictionary of base-quote-value
 ```jldoctest
 julia> generate_exchmkt(Dict(("EUR", "USD") => 1.164151))
 Dict{CurrencyPair,Float64} with 1 entry:
-  CurrencyPair("EUR", "USD") => 1.16415
+  CurrencyPair("EUR", "USD") => Rate(1.16415)
 ```
 """
 function generate_exchmkt(d::Dict{Tuple{String,String},Float64})
@@ -162,8 +162,8 @@ Generates an instance of ExchangeMarket from an array of base-quote-value rates.
 ```jldoctest
 julia> generate_exchmkt([("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570])
 Dict{CurrencyPair,Float64} with 2 entries:
-  CurrencyPair("EUR", "USD") => 1.19536
-  CurrencyPair("USD", "EUR") => 0.83657
+  CurrencyPair("EUR", "USD") => Rate(1.19536)
+  CurrencyPair("USD", "EUR") => Rate(0.83657)
 ```
 """
 function generate_exchmkt(a::Array{Pair{Tuple{String,String},Float64},1})
@@ -180,7 +180,7 @@ Generates an instance of ExchangeMarket from a single of base-quote-value rate.
 ```jldoctest
 julia> generate_exchmkt(("EUR", "USD") => 1.164151)
 Dict{CurrencyPair,Float64} with 1 entry:
-  CurrencyPair("EUR", "USD") => 1.16415
+  CurrencyPair("EUR", "USD") => Rate(1.16415)
 ```
 """
 function generate_exchmkt(p::Pair{Tuple{String,String},Float64})
