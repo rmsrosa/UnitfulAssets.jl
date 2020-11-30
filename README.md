@@ -1,8 +1,6 @@
 # UnitfulCurrencies
 
-![Main Tests Workflow Status](https://github.com/rmsrosa/UnitfulCurrencies.jl/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/rmsrosa/UnitfulCurrencies.jl/branch/main/graph/badge.svg?token=O9FZJWK968)](https://codecov.io/gh/rmsrosa/UnitfulCurrencies.jl)
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/rmsrosa/UnitfulCurrencies.jl)
+![Main Tests Workflow Status](https://github.com/rmsrosa/UnitfulCurrencies.jl/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/rmsrosa/UnitfulCurrencies.jl/branch/main/graph/badge.svg?token=O9FZJWK968)](https://codecov.io/gh/rmsrosa/UnitfulCurrencies.jl) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/rmsrosa/UnitfulCurrencies.jl)
 
 A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/Unitful.jl) adding units for all currently active currencies in the world, along with tools to perform conversions based on exchange market rates.
 
@@ -320,8 +318,6 @@ Notice the optional argument `mode=-1`, so it uses the inverse rate for the conv
 I have been doing this mostly for learning purposes. Who knows it might even turn out to be a useful package for the community. In any case, if someone wants to contribute, there are still a number of things to be added and I will be happy to have help.
 
 Here are a few things to be done.
-
-1. Add Github Action to check code coverage.
 
 1. Add currency symbols such as `$`, `£`, `€`, `R$`, and so on, as units equivalent to the reference units for each currency.
 
