@@ -217,6 +217,15 @@ end
 include("pkgdefaults.jl")
 
 """
+    get_rate(u_curr::String, x_curr::String, rate_value::Number)
+
+Return the exchange rate as a Unitful.Quantity in proper currency units.
+"""
+function get_rate(u_curr::String, x_curr::String, rate_value::Number)
+    return Main.eval(Meta.parse("(" * string(rate_value) * ")u\"" * u_curr * "/" * x_curr * "\""))
+end
+
+"""
     uconvert(u::Units, x::Quantity, e::ExchangeMarket; mode::Int=1)
 
 Convert between currencies, allowing for inverse and secondary rates.
@@ -264,16 +273,16 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode
         pair = CurrencyPair(x_curr, u_curr)
         pairinv = CurrencyPair(u_curr, x_curr)
         if mode == 1 && pair in keys(e)
-            rate = Main.eval(Meta.parse("(" * string(e[pair].value) * ")u\"" * u_curr * "/" * x_curr * "\""))
+            rate = get_rate(u_curr, x_curr, e[pair].value)
             return Unitful.uconvert(u, rate * x)
         elseif mode == -1 && pairinv in keys(e)
-            rate = Main.eval(Meta.parse("(" * string(1/e[pairinv].value) * ")u\"" * u_curr * "/" * x_curr * "\""))
+            rate = get_rate(u_curr, x_curr, 1/e[pairinv].value)
             return Unitful.uconvert(u, rate * x)
         elseif mode == 2
             for (pair1, rate1) in e
                 for (pair2, rate2) in e
                     if pair1.base_curr == x_curr && pair2.quote_curr == u_curr && pair1.quote_curr == pair2.base_curr
-                        rate = Main.eval(Meta.parse("(" * string(rate1.value * rate2.value) * ")u\"" * u_curr * "/" * x_curr * "\""))
+                        rate = get_rate(u_curr, x_curr, rate1.value * rate2.value)
                         return Unitful.uconvert(u, rate * x)
                     end
                 end
@@ -282,7 +291,7 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode
             for (pair1, rate1) in e
                 for (pair2, rate2) in e
                     if pair1.base_curr == u_curr && pair2.quote_curr == x_curr && pair1.quote_curr == pair2.base_curr
-                        rate = Main.eval(Meta.parse("(" * string(1 / (rate1.value * rate2.value) ) * ")u\"" * u_curr * "/" * x_curr * "\""))
+                        rate = get_rate(u_curr, x_curr, 1 / (rate1.value * rate2.value))
                         return Unitful.uconvert(u, rate * x)
                     end
                 end
