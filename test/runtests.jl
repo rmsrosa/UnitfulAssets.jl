@@ -27,13 +27,13 @@ exch_mkt_27nov2020 = generate_exchmkt([
 
 # rates with rational numbers
 exch_mkt_from_dict_and_rationals = generate_exchmkt(Dict([
-           ("EUR","USD") => 119536//100000, ("USD","EUR") => 836570//100000
-       ]))
+    ("EUR","USD") => 119536//100000, ("USD","EUR") => 836570//1000000
+]))
 
 # rates with decimals
 exch_mkt_from_dict_and_decimals = generate_exchmkt(Dict([
-        ("EUR","USD") => Decimal(1.19536), ("USD","EUR") => Decimal(0.836570)
-    ]))
+    ("EUR","USD") => Decimal(1.19536), ("USD","EUR") => Decimal(0.836570)
+]))
 
 # rates to test broadcasting
 BRLGBP_timeseries = Dict(
