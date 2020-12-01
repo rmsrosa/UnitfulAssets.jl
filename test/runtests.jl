@@ -73,5 +73,6 @@ BRLGBP_timeseries = Dict(
     @test_throws ArgumentError uconvert(u"CAD", 1u"BRL", fixer_exchmkt["2020-11-01"], mode=2)
     @test_throws ArgumentError uconvert(u"EUR", 1u"CAD", exch_mkt_27nov2020)
     @test_throws ArgumentError uconvert(u"m",1u"km", exch_mkt_27nov2020)
+    @test_throws ArgumentError generate_exchmkt(("EUR","USD") => Decimal(-1.0))
     @test_throws ArgumentError UnitfulCurrencies.@currency aaa tripleas
 end
