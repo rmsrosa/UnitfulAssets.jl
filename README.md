@@ -14,8 +14,8 @@ A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/U
   - [Cost of raw material for a T-shirt](#cost-of-raw-material-for-a-t-shirt) - mixing currencies with [Unitul.jl](https://github.com/PainterQubits/Unitful.jl)'s quantities.
   - [Production cost](#production-cost) - creating functions with currencies as arguments.
   - [Continuously varying interest rate](#continuously-varying-interest-rate) - using [DifferentialEquations.jl](https://github.com/SciML/DifferentialEquations.jl) with currencies.
-  - [Exchange markets](#exchange-markets) - generating ExchangeMarkets and using different modes of exchange conversions.
-  - [Continuously varying interest rate in a foreign bank](#continuously-varying-interest-rate-in-a-foreign-bank) - exploiting broadcasting for array of currency quantities.
+  - [Exchange markets](#exchange-markets) - generating ExchangeMarkets and using different modes of exchange conversion.
+  - [Continuously varying interest rate in a foreign bank](#continuously-varying-interest-rate-in-a-foreign-bank) - exploiting broadcasting for an array of currency quantities.
   - [Decimal and rational exchange rates](#decimal-and-rational-exchange-rates) - using `Decimal` and `Rational` types.
 - [To-do](#to-do)
 - [Related packages](#related-packages)
