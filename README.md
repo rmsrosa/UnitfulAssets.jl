@@ -6,6 +6,21 @@ A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/U
 
 **This package is not registered and is current under development.**
 
+## Table of Contents
+
+- [Summary](#summary)
+- [Installation](#installation)
+- [Examples](#examples)
+  - [Cost of raw material for a T-shirt](#cost-of-raw-material-for-a-t-shirt) - mixing currencies with [Unitul.jl](https://github.com/PainterQubits/Unitful.jl)'s quantities.
+  - [Production cost](#production-cost) - creating functions with currencies as arguments.
+  - [Continuously varying interest rate](#continuously-varying-interest-rate) - using [DifferentialEquations.jl](https://github.com/SciML/DifferentialEquations.jl) with currencies.
+  - [Exchange markets](#exchange-markets) - generating ExchangeMarkets and using different modes of exchange conversions.
+  - [Continuously varying interest rate in a foreign bank](#continuously-varying-interest-rate-in-a-foreign-bank) - exploiting broadcasting for array of currency quantities.
+  - [Decimal and rational exchange rates](#decimal-and-rational-exchange-rates) - using `Decimal` and `Rational` types.
+- [To-do](#to-do)
+- [Related packages](#related-packages)
+- [License](#license)
+
 ## Summary
 
 Currency dimensions are created for each currency, along with its reference
@@ -20,7 +35,7 @@ Based on an given exchange market instance of `ExchangeMarket`, a conversion
 can be made from the "quote" currency to the "base" currency. This conversion
 is implemented as an extended dispatch for `Unitful.uconvert`.
 
-An `ExchangeMarket` type is defined as `Dict{CurrencyPair,Rate}`, in which `CurrencyPair` is a tuple of Strings with the ISO-4217 alphabetic codes corresponding to the base and quote currencies and `Rate` contains a positive Number with the corresponding quote-ask rate for the pair.
+An `ExchangeMarket` type is defined as `Dict{CurrencyPair,ExchangeRate}`, in which `CurrencyPair` is a tuple of Strings with the ISO-4217 alphabetic codes corresponding to the base and quote currencies and `ExchangeRate` contains a positive Number with the corresponding quote-ask rate for the pair.
 
 Based on an given `ExchangeMarket` instance, a conversion can be made from the "quote" currency to the "base" currency. This conversion is implemented as an extended dispatch for `Unitful.uconvert`.
 
@@ -193,7 +208,9 @@ With that, we are able to reduce the cost per T-shirt to about USD$ 28.69.
 
 ### Continuously varying interest rate
 
-Now, let us suppose we have a £1,000 in a savings account in a British bank, with an expected variable interest rate for the next ten years of the form
+Here we use the package [DifferentialEquations.jl](https://github.com/SciML/DifferentialEquations.jl).
+
+Suppose we have a £1,000 in a savings account in a British bank, with an expected variable interest rate for the next ten years of the form
 
 ![formula](https://render.githubusercontent.com/render/math?math=\qquad\qquad\text{rate}(t)=\left(0.015%2B0.5\frac{(t/\text{yr})^2}{(1%2B(t/\text{yr})^3)}\right)/yr),
 
@@ -229,7 +246,7 @@ Thus, we expect to have about £1,303.62 in our savings account, after ten years
 
 ### Exchange markets
 
-For exchanging money, we provide a few dispatches of a function `generate_exchmkt` to generate an `ExchangeMarket` instance from a single Tuple, an Array or a Dict with `CurrencyPair` and `Rate` instances. Consider, for example, the following exchange market:
+For exchanging money, we provide a few dispatches of a function `generate_exchmkt` to generate an `ExchangeMarket` instance from a single Tuple, an Array or a Dict with `CurrencyPair` and `ExchangeRate` instances. Consider, for example, the following exchange market:
 
 ```julia
 julia> using Unitful, UnitfulCurrencies
@@ -240,15 +257,15 @@ julia> exch_mkt_27nov2020 = generate_exchmkt([
            ("USD","CAD") => 1.29849, ("CAD","USD") => 0.770125,
            ("USD","BRL") => 5.33897, ("BRL","USD") => 0.187302
        ])
-Dict{UnitfulCurrencies.CurrencyPair,UnitfulCurrencies.Rate} with 8 entries:
-  CurrencyPair("EUR", "GBP") => Rate(1.11268)
-  CurrencyPair("BRL", "USD") => Rate(0.187302)
-  CurrencyPair("GBP", "EUR") => Rate(0.898734)
-  CurrencyPair("USD", "BRL") => Rate(5.33897)
-  CurrencyPair("EUR", "USD") => Rate(1.19536)
-  CurrencyPair("CAD", "USD") => Rate(0.770125)
-  CurrencyPair("USD", "CAD") => Rate(1.29849)
-  CurrencyPair("USD", "EUR") => Rate(0.83657)
+Dict{UnitfulCurrencies.CurrencyPair,UnitfulCurrencies.ExchangeRate} with 8 entries:
+  CurrencyPair("EUR", "GBP") => ExchangeRate(1.11268)
+  CurrencyPair("BRL", "USD") => ExchangeRate(0.187302)
+  CurrencyPair("GBP", "EUR") => ExchangeRate(0.898734)
+  CurrencyPair("USD", "BRL") => ExchangeRate(5.33897)
+  CurrencyPair("EUR", "USD") => ExchangeRate(1.19536)
+  CurrencyPair("CAD", "USD") => ExchangeRate(0.770125)
+  CurrencyPair("USD", "CAD") => ExchangeRate(1.29849)
+  CurrencyPair("USD", "EUR") => ExchangeRate(0.83657)
 ```
 
 Then, the conversions between these currencies can be done as follows:
@@ -315,6 +332,27 @@ Notice the optional argument `mode=-1`, so it uses the inverse rate for the conv
 
 **Exercise:** In the ***Production Cost*** problem, suppose the raw materials come from a foreign country (or countries) and add an exchange market for properly taking into account the dependency of the production cost, the profit, and the break even point on the foreing currencies.
 
+### Decimal and rational exchange rates
+
+Since the type `ExchangeRate` has been defined with of value of type `Number`, it is possible to work with decimals and rational exchange rates. For example, the following code generates an `ExchangeMarket` instance with Rational rates:
+
+```julia
+julia> exch_mkt_from_dict_and_rationals = generate_exchmkt(Dict([
+           ("EUR","USD") => 119536//100000, ("USD","EUR") => 836570//1000000
+       ]))
+Dict{UnitfulCurrencies.CurrencyPair,UnitfulCurrencies.Rate} with 2 entries:
+  CurrencyPair("USD", "EUR") => ExchangeRate(83657//100000)
+  CurrencyPair("EUR", "USD") => ExchangeRate(7471//6250)
+```
+
+For Decimal rates, it is similar:
+
+```julia
+Dict{UnitfulCurrencies.CurrencyPair,UnitfulCurrencies.Rate} with 2 entries:
+  CurrencyPair("USD", "EUR") => ExchangeRate(Decimal(0, 83657, -5))
+  CurrencyPair("EUR", "USD") => ExchangeRate(Decimal(0, 119536, -5))
+```
+
 ## To do
 
 I have been doing this mostly for learning purposes. Who knows it might even turn out to be a useful package for the community. In any case, if someone wants to contribute, there are still a number of things to be added and I will be happy to have help.
@@ -339,7 +377,7 @@ Here are a few things to be done.
 
 After I started writing this package, I found out about [bhgomes/UnitfulCurrency.jl](https://github.com/bhgomes/UnitfulCurrency.jl), which, however, has been archived for unknown reasons.
 
-Based on `bhgomes/UnitfulCurrency`, I modified my initial approach of currency pairs to be `Rate("EUR", "USD")`, instead of a six-length string `"EURUSD"`, for instance.
+Based on `bhgomes/UnitfulCurrency`, I modified my initial approach of currency pairs to be `ExchangeRate("EUR", "USD")`, instead of a six-length string `"EURUSD"`, for instance.
 
 `bhgomes/UnifulCurrency`, however, has a single dimension for all currencies, which has the side-effect of allowing to `uconvert` different quantities without an exchange market rate, on a one-to-one bases. Moreover, all currencies are reference units for the same dimension, which might have further side-effects, although I am not sure.
 
