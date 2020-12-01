@@ -169,7 +169,7 @@ Dict{CurrencyPair,Float64} with 2 entries:
 ```
 """
 function generate_exchmkt(a::Array{Pair{Tuple{String,String},T},1}) where {T<:Number}
-    return Dict([CurrencyPair(key[1], key[2]) => ExchangeRate(value) for (key,value) in a])
+    return generate_exchmkt(Dict(a))
 end
 
 """
@@ -186,7 +186,7 @@ Dict{CurrencyPair,Float64} with 1 entry:
 ```
 """
 function generate_exchmkt(p::Pair{Tuple{String,String},T}) where {T<:Number}
-    return Dict(CurrencyPair(p[1][1], p[1][2]) => ExchangeRate(p[2]))
+    return generate_exchmkt([p])
 end
 
 """
