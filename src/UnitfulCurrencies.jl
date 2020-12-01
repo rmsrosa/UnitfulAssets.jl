@@ -264,10 +264,10 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode
         pair = CurrencyPair(x_curr, u_curr)
         pairinv = CurrencyPair(u_curr, x_curr)
         if mode == 1 && pair in keys(e)
-            rate = Main.eval(Meta.parse(string(e[pair].value) * "u\"" * u_curr * "/" * x_curr * "\""))
+            rate = Main.eval(Meta.parse("(" * string(e[pair].value) * ")u\"" * u_curr * "/" * x_curr * "\""))
             return Unitful.uconvert(u, rate * x)
         elseif mode == -1 && pairinv in keys(e)
-            rate = Main.eval(Meta.parse(string(1/e[pairinv].value) * "u\"" * u_curr * "/" * x_curr * "\""))
+            rate = Main.eval(Meta.parse("(" * string(1/e[pairinv].value) * ")u\"" * u_curr * "/" * x_curr * "\""))
             return Unitful.uconvert(u, rate * x)
         elseif mode == 2
             for (pair1, rate1) in e

@@ -64,9 +64,9 @@ BRLGBP_timeseries = Dict(
     @test uconvert(u"BRL", 1000u"CAD", exch_mkt_27nov2020, mode=2) == 4111.674271249999u"BRL"
     @test uconvert(u"BRL", 1000u"CAD", exch_mkt_27nov2020, mode=-2) == 4111.6768608248185u"BRL"
     @test uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1) ≈ [2591.68, 2891.26, 4018.00, 4743.38, 5850.35, 3333.56, 4140.27, 3912.06, 4430.86, 5323.68]u"BRL" (atol=0.01u"BRL")
+    @test uconvert(u"EUR", Decimal(1)u"USD", exch_mkt_from_dict_and_decimals) == Decimal(0, 83657, -5) * u"EUR"
+    @test uconvert(u"EUR", (1//1)u"USD", exch_mkt_from_dict_and_rationals) == (83657//100000)u"EUR"
     @test typeof(UnitfulCurrencies.@currency AAA TripleAs) <: Unitful.FreeUnits
-    @test typeof(exch_mkt_from_dict_and_rationals[UnitfulCurrencies.CurrencyPair("USD", "EUR")].value) <: Rational{Int}
-    @test typeof(exch_mkt_from_dict_and_decimals[UnitfulCurrencies.CurrencyPair("USD", "EUR")].value) == Decimal
     @test_throws ArgumentError uconvert(u"EUR", 1u"BRL", fixer_exchmkt["2020-11-01"])
     @test_throws ArgumentError uconvert(u"CAD", 1u"BRL", fixer_exchmkt["2020-11-01"], mode=2)
     @test_throws ArgumentError uconvert(u"EUR", 1u"CAD", exch_mkt_27nov2020)
