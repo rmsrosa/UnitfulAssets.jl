@@ -273,7 +273,7 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode
             for (pair1, rate1) in e
                 for (pair2, rate2) in e
                     if pair1.base_curr == x_curr && pair2.quote_curr == u_curr && pair1.quote_curr == pair2.base_curr
-                        rate = Main.eval(Meta.parse(string(rate1.value * rate2.value) * "u\"" * u_curr * "/" * x_curr * "\""))
+                        rate = Main.eval(Meta.parse("(" * string(rate1.value * rate2.value) * ")u\"" * u_curr * "/" * x_curr * "\""))
                         return Unitful.uconvert(u, rate * x)
                     end
                 end
@@ -282,7 +282,7 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode
             for (pair1, rate1) in e
                 for (pair2, rate2) in e
                     if pair1.base_curr == u_curr && pair2.quote_curr == x_curr && pair1.quote_curr == pair2.base_curr
-                        rate = Main.eval(Meta.parse(string(1 / (rate1.value * rate2.value) ) * "u\"" * u_curr * "/" * x_curr * "\""))
+                        rate = Main.eval(Meta.parse("(" * string(1 / (rate1.value * rate2.value) ) * ")u\"" * u_curr * "/" * x_curr * "\""))
                         return Unitful.uconvert(u, rate * x)
                     end
                 end
