@@ -26,16 +26,7 @@ A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/U
 Currency dimensions are created for each currency, along with its reference
 unit. Being an extension of [Unitful.jl](https://github.com/PainterQubits/Unitful.jl), currency units play nicely along with Unitful's quantities.
 
-An `ExchangeMarket` type is also defined as an alias for
-`Dict{Tuple{String,String},Real}`, in which the tuple key contains the
-quote-ask currency pair (e.g. `("EUR", "USD")`) and the value is the
-exchange rate for the pair.
-
-Based on an given exchange market instance of `ExchangeMarket`, a conversion
-can be made from the "quote" currency to the "base" currency. This conversion
-is implemented as an extended dispatch for `Unitful.uconvert`.
-
-An `ExchangeMarket` type is defined as `Dict{CurrencyPair,ExchangeRate}`, in which `CurrencyPair` is a tuple of Strings with the ISO-4217 alphabetic codes corresponding to the base and quote currencies and `ExchangeRate` contains a positive Number with the corresponding quote-ask rate for the pair.
+An `ExchangeMarket` type is defined as `Dict{CurrencyPair,ExchangeRate}`, in which `CurrencyPair` is a tuple of Strings with the ISO-4217 alphabetic codes corresponding to the base and quote currencies and `ExchangeRate` contains a positive `Unitful.Quantity` with the corresponding quote-ask rate for the pair.
 
 Based on an given `ExchangeMarket` instance, a conversion can be made from the "quote" currency to the "base" currency. This conversion is implemented as an extended dispatch for `Unitful.uconvert`.
 
@@ -252,20 +243,20 @@ For exchanging money, we provide a few dispatches of a function `generate_exchmk
 julia> using Unitful, UnitfulCurrencies
 
 julia> exch_mkt_27nov2020 = generate_exchmkt([
-           ("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570,
-           ("EUR","GBP") => 1.11268, ("GBP","EUR") => 0.898734,
-           ("USD","CAD") => 1.29849, ("CAD","USD") => 0.770125,
-           ("USD","BRL") => 5.33897, ("BRL","USD") => 0.187302
-       ])
+                  ("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570,
+                  ("EUR","GBP") => 1.11268, ("GBP","EUR") => 0.898734,
+                  ("USD","CAD") => 1.29849, ("CAD","USD") => 0.770125,
+                  ("USD","BRL") => 5.33897, ("BRL","USD") => 0.187302
+              ])
 Dict{UnitfulCurrencies.CurrencyPair,UnitfulCurrencies.ExchangeRate} with 8 entries:
-  CurrencyPair("EUR", "GBP") => ExchangeRate(1.11268)
-  CurrencyPair("BRL", "USD") => ExchangeRate(0.187302)
-  CurrencyPair("GBP", "EUR") => ExchangeRate(0.898734)
-  CurrencyPair("USD", "BRL") => ExchangeRate(5.33897)
-  CurrencyPair("EUR", "USD") => ExchangeRate(1.19536)
-  CurrencyPair("CAD", "USD") => ExchangeRate(0.770125)
-  CurrencyPair("USD", "CAD") => ExchangeRate(1.29849)
-  CurrencyPair("USD", "EUR") => ExchangeRate(0.83657)
+  CurrencyPair("USD", "BRL") => ExchangeRate(5.33897 BRL USD⁻¹)
+  CurrencyPair("USD", "EUR") => ExchangeRate(0.83657 EUR USD⁻¹)
+  CurrencyPair("EUR", "GBP") => ExchangeRate(1.11268 GBP EUR⁻¹)
+  CurrencyPair("GBP", "EUR") => ExchangeRate(0.898734 EUR GBP⁻¹)
+  CurrencyPair("USD", "CAD") => ExchangeRate(1.29849 CAD USD⁻¹)
+  CurrencyPair("EUR", "USD") => ExchangeRate(1.19536 USD EUR⁻¹)
+  CurrencyPair("CAD", "USD") => ExchangeRate(0.770125 USD CAD⁻¹)
+  CurrencyPair("BRL", "USD") => ExchangeRate(0.187302 USD BRL⁻¹)
 ```
 
 Then, the conversions between these currencies can be done as follows:
@@ -338,19 +329,22 @@ Since the type `ExchangeRate` has been defined with of value of type `Number`, i
 
 ```julia
 julia> exch_mkt_from_dict_and_rationals = generate_exchmkt(Dict([
-           ("EUR","USD") => 119536//100000, ("USD","EUR") => 836570//1000000
-       ]))
-Dict{UnitfulCurrencies.CurrencyPair,UnitfulCurrencies.Rate} with 2 entries:
-  CurrencyPair("USD", "EUR") => ExchangeRate(83657//100000)
-  CurrencyPair("EUR", "USD") => ExchangeRate(7471//6250)
+                  ("EUR","USD") => 119536//100000, ("USD","EUR") => 836570//1000000
+              ]))
+Dict{UnitfulCurrencies.CurrencyPair,UnitfulCurrencies.ExchangeRate} with 2 entries:
+  CurrencyPair("USD", "EUR") => ExchangeRate(83657//100000 EUR USD⁻¹)
+  CurrencyPair("EUR", "USD") => ExchangeRate(7471//6250 USD EUR⁻¹)
 ```
 
 For Decimal rates, it is similar:
 
 ```julia
-Dict{UnitfulCurrencies.CurrencyPair,UnitfulCurrencies.Rate} with 2 entries:
-  CurrencyPair("USD", "EUR") => ExchangeRate(Decimal(0, 83657, -5))
-  CurrencyPair("EUR", "USD") => ExchangeRate(Decimal(0, 119536, -5))
+julia> exch_mkt_from_dict_and_decimals = generate_exchmkt(Dict([
+           ("EUR","USD") => Decimal(1.19536), ("USD","EUR") => Decimal(0.836570)
+       ]))
+Dict{UnitfulCurrencies.CurrencyPair,UnitfulCurrencies.ExchangeRate} with 2 entries:
+  CurrencyPair("USD", "EUR") => ExchangeRate(0.83657 EUR USD⁻¹)
+  CurrencyPair("EUR", "USD") => ExchangeRate(1.19536 USD EUR⁻¹)
 ```
 
 ## To do
