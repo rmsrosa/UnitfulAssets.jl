@@ -17,6 +17,7 @@ A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/U
   - [Exchange markets](#exchange-markets) - generating ExchangeMarkets and using different modes of exchange conversion.
   - [Continuously varying interest rate in a foreign bank](#continuously-varying-interest-rate-in-a-foreign-bank) - exploiting broadcasting for an array of currency quantities.
   - [Decimal and rational exchange rates](#decimal-and-rational-exchange-rates) - using `Decimal` and `Rational` types.
+- [Exchange rate as Unitful quantity](#exchange-rate-as-unitful-quantity)
 - [To-do](#to-do)
 - [Related packages](#related-packages)
 - [License](#license)
@@ -321,7 +322,7 @@ julia> uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1)'
 
 Notice the optional argument `mode=-1`, so it uses the inverse rate for the conversion. As explained above, this is different than using the rate for the pair `("GBP", "BRL")` since we don't want to buy `GBP` with `BRL`, and neither do we want the direct rate for `("BRL", "GBP")` since we don't want to buy a specific amount of `BRL` with `GBP`. Instead, we want to find out how much `BRL` we can buy with a given amount of `GBP`, so we use the inverse of the rate `("BRL", "GBP")`.
 
-**Exercise:** In the ***Production Cost*** problem, suppose the raw materials come from a foreign country (or countries) and add an exchange market for properly taking into account the dependency of the production cost, the profit, and the break even point on the foreing currencies.
+**Exercise:** In the [Production cost](#production-cost) problem, suppose the raw materials come from a foreign country (or countries) and add an exchange market for properly taking into account the dependency of the production cost, the profit, and the break even point on the foreing currencies.
 
 ### Decimal and rational exchange rates
 
@@ -345,6 +346,24 @@ julia> exch_mkt_from_dict_and_decimals = generate_exchmkt(Dict([
 Dict{UnitfulCurrencies.CurrencyPair,UnitfulCurrencies.ExchangeRate} with 2 entries:
   CurrencyPair("USD", "EUR") => ExchangeRate(0.83657 EUR USD⁻¹)
   CurrencyPair("EUR", "USD") => ExchangeRate(1.19536 USD EUR⁻¹)
+```
+
+## Exchange rate as Unitful quantity
+
+At some point, I changed the exchange rate from a plain number, such as `ExchangeRate(1.19536)`, to a `Unitful.Quantity`, such as `ExchangeRate(1.19536 USD EUR⁻¹)`. With that, the associated unit does not need to be formed each time during the conversion from one currency to the other. It becomes simply a multiplication in `Unitful`. That is especially useful when broadcasting, significantly speeding up the conversion of arrays of currency quantities.
+
+For instance, the example in [Continuously varying interest rate in a foreign bank](#continuously-varying-interest-rate-in-a-foreign-bank) got more than a 100-fold reduction in speed. These were the respective results in the same machine, using `BenchmarkTools`, first with the `plain rate`:
+
+```julia
+julia> @btime uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1)'
+  2.695 ms (1262 allocations: 71.54 KiB)
+```
+
+and the second with the `UnitfulQuantity` rate:
+
+```julia
+julia> @btime uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1)'
+  21.419 μs (282 allocations: 14.82 KiB)
 ```
 
 ## To do
