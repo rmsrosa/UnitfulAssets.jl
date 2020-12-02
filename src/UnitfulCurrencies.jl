@@ -24,6 +24,8 @@ import Unitful: uconvert
 
 export generate_exchmkt
 
+# Currency constructors
+
 """
     is_currency_code(code_string::String)::Bool
 
@@ -53,6 +55,35 @@ false
 function is_currency_code(code_string::String)
     return length(code_string) >= 3 && all(c -> 'A' <= c <= 'Z', code_string)
 end
+
+"""
+    @currency code_symb name
+
+Create a dimension and a reference unit for a currency.
+
+The macros `@dimension` and `@refunit` are called with arguments derived
+from `code_symb` and `name`.
+"""
+macro currency(code_symb, name)
+    code_abbr = string(code_symb)
+    if is_currency_code(code_abbr)
+        gap = Int('𝐀') - Int('A')
+        code_abbr_bold = join([Char(Int(c) + gap) for c in code_abbr])
+        dimension = Symbol(code_abbr_bold)
+        dim_abbr = string(code_symb) * "CURRENCY"
+        dim_name = Symbol(code_abbr_bold * "𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘")
+        esc(quote
+            Unitful.@dimension($dimension, $dim_abbr, $dim_name)
+            Unitful.@refunit($code_symb, $code_abbr, $name, $dimension, true)
+        end)
+    else
+        :(throw(ArgumentError("The given code symb is not allowed, it should be all in uppercase.")))
+    end
+end
+
+include("pkgdefaults.jl")
+
+# ExchangeMarket constructors
 
 """
     CurrencyPair
@@ -208,33 +239,6 @@ Dict{CurrencyPair,Float64} with 1 entry:
 function generate_exchmkt(p::Pair{Tuple{String,String},T}) where {T<:Number}
     return generate_exchmkt([p])
 end
-
-"""
-    @currency code_symb name
-
-Create a dimension and a reference unit for a currency.
-
-The macros `@dimension` and `@refunit` are called with arguments derived
-from `code_symb` and `name`.
-"""
-macro currency(code_symb, name)
-    code_abbr = string(code_symb)
-    if is_currency_code(code_abbr)
-        gap = Int('𝐀') - Int('A')
-        code_abbr_bold = join([Char(Int(c) + gap) for c in code_abbr])
-        dimension = Symbol(code_abbr_bold)
-        dim_abbr = string(code_symb) * "CURRENCY"
-        dim_name = Symbol(code_abbr_bold * "𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘")
-        esc(quote
-            Unitful.@dimension($dimension, $dim_abbr, $dim_name)
-            Unitful.@refunit($code_symb, $code_abbr, $name, $dimension, true)
-        end)
-    else
-        :(throw(ArgumentError("The given code symb is not allowed, it should be all in uppercase.")))
-    end
-end
-
-include("pkgdefaults.jl")
 
 """
     uconvert(u::Units, x::Quantity, e::ExchangeMarket; mode::Int=1)
