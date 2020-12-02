@@ -65,7 +65,7 @@ BRLGBP_timeseries = Dict(
     @test uconvert(u"BRL", 1000u"CAD", exch_mkt_27nov2020, mode=-2) == 4111.6768608248185u"BRL"
     @test uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1) ≈ [2591.68, 2891.26, 4018.00, 4743.38, 5850.35, 3333.56, 4140.27, 3912.06, 4430.86, 5323.68]u"BRL" (atol=0.01u"BRL")
     @test uconvert(u"EUR", Decimal(1.5)u"USD", exch_mkt_from_dict_and_decimals) == Decimal(0, 1254855, -6) * u"EUR"
-    @test uconvert(u"EUR", Decimal(1.5)u"USD", exch_mkt_from_dict_and_decimals, mode=-1) == Decimal(0, 125485209476643015, -17)u"EUR"
+    @test uconvert(u"EUR", Decimal(1.5)u"USD", exch_mkt_from_dict_and_decimals, mode=-1) == Decimal(0, 125485209476643019676, -20)u"EUR"
     @test uconvert(u"EUR", (3//2)u"USD", exch_mkt_from_dict_and_rationals) == (250971//200000)u"EUR"
     @test uconvert(u"EUR", (3//2)u"USD", exch_mkt_from_dict_and_rationals, mode=-1) == (9375//7471)u"EUR"
     @test typeof(UnitfulCurrencies.@currency AAA TripleAs) <: Unitful.FreeUnits
