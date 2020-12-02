@@ -114,8 +114,8 @@ Stacktrace:
 """
 struct ExchangeRate
     value::Number
-    ExchangeRate(r) = r > 0 ? new(r) :
-        throw(ArgumentError("The exchange rate must be a positive number"))
+    ExchangeRate(r) = r > 0*Unitful.unit(r) ? new(r) :
+        throw(ArgumentError("The exchange rate must be positive"))
 end
 
 """
@@ -138,7 +138,26 @@ contains the pair `CurrencyPair("EUR", "USD")` and the exchange rate
 ExchangeMarket = Dict{CurrencyPair, ExchangeRate}
 
 """
-    generate_exchmkt(d::Dict{Tuple{String,String},Float64})
+    get_rate(u::String, v::String, rate_value::Number)
+
+Return the exchange rate as a Unitful.Quantity in proper currency units.
+"""
+function get_rate(u::String, v::String, rate_value::Number)
+    return Main.eval(Meta.parse("(" * string(rate_value) * ")u\"" * u * "/" * v * "\""))
+end
+
+"""
+    exist_currency(code_abbr::String)
+
+Check whether `code_abbr` refers to a registered currency unit.
+"""
+function exist_currency(code_abbr)
+    has_unit = m->(isdefined(m,Symbol(code_abbr)))
+    return length(findall(has_unit, [Main.UnitfulCurrencies])) > 0
+end
+
+"""
+    generate_exchmkt(d::Dict{Tuple{String,String},T}) where {T<:Number}
 
 Generates an instance of an ExchangeMarket from a dictionary of base-quote-value rates.
 
@@ -151,7 +170,8 @@ Dict{CurrencyPair,Float64} with 1 entry:
 ```
 """
 function generate_exchmkt(d::Dict{Tuple{String,String},T}) where {T<:Number}
-    return Dict([CurrencyPair(key[1], key[2]) => ExchangeRate(value) for (key,value) in d])
+    valid_d = Dict(key => value for (key, value) in d if exist_currency(key[1]) && exist_currency(key[2]))
+    return Dict([CurrencyPair(key[1], key[2]) => ExchangeRate(get_rate(key[2], key[1], value)) for (key,value) in valid_d])
 end
 
 """
@@ -217,15 +237,6 @@ end
 include("pkgdefaults.jl")
 
 """
-    get_rate(u_curr::String, x_curr::String, rate_value::Number)
-
-Return the exchange rate as a Unitful.Quantity in proper currency units.
-"""
-function get_rate(u_curr::String, x_curr::String, rate_value::Number)
-    return Main.eval(Meta.parse("(" * string(rate_value) * ")u\"" * u_curr * "/" * x_curr * "\""))
-end
-
-"""
     uconvert(u::Units, x::Quantity, e::ExchangeMarket; mode::Int=1)
 
 Convert between currencies, allowing for inverse and secondary rates.
@@ -273,17 +284,14 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode
         pair = CurrencyPair(x_curr, u_curr)
         pairinv = CurrencyPair(u_curr, x_curr)
         if mode == 1 && pair in keys(e)
-            rate = get_rate(u_curr, x_curr, e[pair].value)
-            return Unitful.uconvert(u, rate * x)
+            return Unitful.uconvert(u, e[pair].value * x)
         elseif mode == -1 && pairinv in keys(e)
-            rate = get_rate(u_curr, x_curr, 1/e[pairinv].value)
-            return Unitful.uconvert(u, rate * x)
+            return Unitful.uconvert(u, x / e[pairinv].value)
         elseif mode == 2
             for (pair1, rate1) in e
                 for (pair2, rate2) in e
                     if pair1.base_curr == x_curr && pair2.quote_curr == u_curr && pair1.quote_curr == pair2.base_curr
-                        rate = get_rate(u_curr, x_curr, rate1.value * rate2.value)
-                        return Unitful.uconvert(u, rate * x)
+                        return Unitful.uconvert(u, rate1.value * rate2.value * x)
                     end
                 end
             end
@@ -291,8 +299,7 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode
             for (pair1, rate1) in e
                 for (pair2, rate2) in e
                     if pair1.base_curr == u_curr && pair2.quote_curr == x_curr && pair1.quote_curr == pair2.base_curr
-                        rate = get_rate(u_curr, x_curr, 1 / (rate1.value * rate2.value))
-                        return Unitful.uconvert(u, rate * x)
+                        return Unitful.uconvert(u, x / (rate1.value * rate2.value))
                     end
                 end
             end
