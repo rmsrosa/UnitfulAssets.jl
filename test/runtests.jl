@@ -5,6 +5,18 @@ using Decimals
 
 using UnitfulCurrencies: @currency
 
+module TestCurrency
+    using Unitful
+    using UnitfulCurrencies
+    using UnitfulCurrencies: @currency
+
+    @currency TSP TestPataca
+end
+
+const localpromotion = Unitful.promotion # needed for the new currency dimension
+Unitful.register(TestCurrency) # needed for new Units
+merge!(Unitful.promotion, localpromotion) # only needed with new dimensions
+
 # create exchange market from a fixer.io json file
 fixer_exchmkt = Dict(
     "2020-11-01" => UnitfulCurrencies.get_fixer_exchmkt(
@@ -35,6 +47,8 @@ exch_mkt_from_dict_and_decimals = generate_exchmkt(Dict([
     ("EUR","USD") => Decimal(1.19536), ("USD","EUR") => Decimal(0.836570)
 ]))
 
+test_exch_mkt = generate_exchmkt(("EUR","TSP") => 1234567.89)
+
 # rates to test broadcasting
 BRLGBP_timeseries = Dict(
     "2011-01-01" => generate_exchmkt(("BRL","GBP") => 0.38585),
@@ -52,6 +66,17 @@ BRLGBP_timeseries = Dict(
 @testset "Currencies" begin
     # conversions
 #    @test uconvert(u"€", 1u"EUR") == 1u"€"
+    @test Unitful.Quantity(1,u"EUR") == 1u"EUR"
+    @test Unitful.unit(1u"BRL") == u"BRL"
+    @test Unitful.unit(1u"TSP") == u"TSP"
+    @test UnitfulCurrencies.exist_currency("USD")
+    @test UnitfulCurrencies.exist_currency("TSP")
+    @test ! UnitfulCurrencies.exist_currency("ABC")
+    @test typeof(UnitfulCurrencies.@currency AAA TripleAs) <: Unitful.FreeUnits
+    @test_throws ArgumentError UnitfulCurrencies.@currency aaa tripleas
+end
+
+@testset "Exchanges" begin
     @test uconvert(u"BRL", 1u"EUR", fixer_exchmkt["2020-11-01"]) == 6.685598u"BRL"
     @test uconvert(u"kBRL", 2u"MEUR", fixer_exchmkt["2020-11-01"]) == 13371.196u"kBRL"
     @test uconvert(u"EUR", 1u"BRL", fixer_exchmkt["2020-11-01"], mode=-1) == 0.149575251159283u"EUR"
@@ -68,11 +93,10 @@ BRLGBP_timeseries = Dict(
     @test uconvert(u"EUR", Decimal(1.5)u"USD", exch_mkt_from_dict_and_decimals, mode=-1) == Decimal(0, 125485209476643019676, -20)u"EUR"
     @test uconvert(u"EUR", (3//2)u"USD", exch_mkt_from_dict_and_rationals) == (250971//200000)u"EUR"
     @test uconvert(u"EUR", (3//2)u"USD", exch_mkt_from_dict_and_rationals, mode=-1) == (9375//7471)u"EUR"
-    @test typeof(UnitfulCurrencies.@currency AAA TripleAs) <: Unitful.FreeUnits
+    @test uconvert(u"TSP", 1u"EUR", test_exch_mkt) == 1234567.89u"TSP"
     @test_throws ArgumentError uconvert(u"EUR", 1u"BRL", fixer_exchmkt["2020-11-01"])
     @test_throws ArgumentError uconvert(u"CAD", 1u"BRL", fixer_exchmkt["2020-11-01"], mode=2)
     @test_throws ArgumentError uconvert(u"EUR", 1u"CAD", exch_mkt_27nov2020)
     @test_throws ArgumentError uconvert(u"m",1u"km", exch_mkt_27nov2020)
     @test_throws ArgumentError generate_exchmkt(("EUR","USD") => Decimal(-1.0))
-    @test_throws ArgumentError UnitfulCurrencies.@currency aaa tripleas
 end
