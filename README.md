@@ -283,7 +283,7 @@ julia> uconvert(u"USD", 500u"BRL", exch_mkt_27nov2020, mode=-1)
 93.65102257551551 USD
 ```
 
-Another situation is when we don't have a currency pair in the given exchange market, such as `("EUR", "CAD")`, which is not in `test_mkt`. In this case we can use an intermediate currency, if available. In the example market, `USD` works. The exchange with an intermediate currency is achieved with `mode=2`:
+Another situation is when we don't have a currency pair in the given exchange market, such as `("EUR", "CAD")`, which is not in `exch_mkt_27nov2020`. In this case we can use an intermediate currency, if available. In the example market, `USD` works. The exchange with an intermediate currency is achieved with `mode=2`:
 
 ```julia
 julia> uconvert(u"CAD", 100u"EUR", exch_mkt_27nov2020, mode=2)
