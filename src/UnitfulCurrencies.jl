@@ -184,7 +184,7 @@ Check whether `code_abbr` refers to a registered currency unit.
 """
 function exist_currency(code_abbr)
     has_unit = m->(isdefined(m,Symbol(code_abbr)))
-    return length(findall(has_unit, [Main.UnitfulCurrencies])) > 0
+    return length(findall(has_unit, Unitful.unitmodules)) > 0
 end
 
 """
