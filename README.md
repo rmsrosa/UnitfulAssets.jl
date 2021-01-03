@@ -1,4 +1,4 @@
-# UnitfulCurrencies
+# ![Logo](tools/logo/logo_200x200.png)
 
 ![Main Tests Workflow Status](https://github.com/rmsrosa/UnitfulCurrencies.jl/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/rmsrosa/UnitfulCurrencies.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/rmsrosa/UnitfulCurrencies.jl) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/rmsrosa/UnitfulCurrencies.jl)
 
