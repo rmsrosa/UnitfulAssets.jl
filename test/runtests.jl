@@ -100,3 +100,5 @@ end
     @test_throws ArgumentError uconvert(u"m",1u"km", exch_mkt_27nov2020)
     @test_throws ArgumentError generate_exchmkt(("EUR","USD") => Decimal(-1.0))
 end
+
+nothing
