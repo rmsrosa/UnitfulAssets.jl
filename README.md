@@ -1,4 +1,4 @@
-# UnitfulCurrencies - a supplemental package for Unitful.jl
+# UnitfulCurrencies - supplemental pkg for Unitful.jl
 
 ![Logo](tools/logo/logo_200x200.png)
 
@@ -29,7 +29,7 @@ A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/U
 Currency dimensions are created for each currency, along with its reference
 unit. Being an extension of [Unitful.jl](https://github.com/PainterQubits/Unitful.jl), currency units play nicely along with Unitful's quantities.
 
-An `ExchangeMarket` type is defined as `Dict{CurrencyPair,ExchangeRate}`, in which `CurrencyPair` is a tuple of Strings with the ISO-4217 alphabetic codes corresponding to the base and quote currencies and `ExchangeRate` contains a positive `Unitful.Quantity` with the corresponding quote-ask rate for the pair.
+An `ExchangeMarket` type is defined as `Dict{CurrencyPair,ExchangeRate}`, in which `CurrencyPair` is a tuple of Strings with the ISO-4217 alphabetic codes corresponding to the base and quote currencies, and `ExchangeRate` contains a positive `Unitful.Quantity` with the corresponding quote-ask rate for the pair.
 
 Based on an given `ExchangeMarket` instance, a conversion can be made from the "quote" currency to the "base" currency. This conversion is implemented as an extended dispatch for `Unitful.uconvert`.
 
@@ -394,7 +394,7 @@ After I started writing this package, I found out about [bhgomes/UnitfulCurrency
 
 Based on `bhgomes/UnitfulCurrency`, I modified my initial approach of currency pairs to be `ExchangeRate("EUR", "USD")`, instead of a six-length string `"EURUSD"`, for instance.
 
-`bhgomes/UnifulCurrency`, however, has a single dimension for all currencies, which has the side-effect of allowing to `uconvert` different quantities without an exchange market rate, on a one-to-one bases. Moreover, all currencies are reference units for the same dimension, which might have further side-effects, although I am not sure.
+`bhgomes/UnifulCurrency`, however, has a single dimension for all currencies, which has the side-effect of allowing to `uconvert` different quantities without an exchange market rate, on a one-to-one basis. Moreover, all currencies are reference units for the same dimension, which might have further side-effects, although I am not sure.
 
 There is no documentation in `bhgomes/UnitfulCurrency`, and the README is short. It seems, though, that the exchange markets in `bhgomes/UnitfulCurrency` are defined for each pair, which is different than our approach, in which an exchange market contains a dictionary of currency pairs, allowing for more flexibility, in my point of view.
 
