@@ -20,14 +20,14 @@ A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/U
   - [Continuously varying interest rate in a foreign bank](#continuously-varying-interest-rate-in-a-foreign-bank) - exploiting broadcasting for an array of currency quantities.
   - [Decimal and rational exchange rates](#decimal-and-rational-exchange-rates) - using `Decimal` and `Rational` types.
 - [Exchange rate as Unitful quantity](#exchange-rate-as-unitful-quantity)
+- [About the list of currencies](#about-the-list-of-currencies)
 - [To-do](#to-do)
 - [Related packages](#related-packages)
 - [License](#license)
 
 ## Summary
 
-Currency dimensions are created for each currency, along with its reference
-unit. Being an extension of [Unitful.jl](https://github.com/PainterQubits/Unitful.jl), currency units play nicely along with Unitful's quantities.
+Currency dimensions are created for each currency, along with its reference unit. Being an extension of [Unitful.jl](https://github.com/PainterQubits/Unitful.jl), currency units play nicely along with Unitful's quantities.
 
 An `ExchangeMarket` type is defined as `Dict{CurrencyPair,ExchangeRate}`, in which `CurrencyPair` is a tuple of Strings with the ISO-4217 alphabetic codes corresponding to the base and quote currencies, and `ExchangeRate` contains a positive `Unitful.Quantity` with the corresponding quote-ask rate for the pair.
 
@@ -367,6 +367,12 @@ and the second with the `UnitfulQuantity` rate:
 julia> @btime uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1)'
   21.419 μs (282 allocations: 14.82 KiB)
 ```
+
+## About the list of currencies
+
+The list of currencies is obtained from [SNV - Standards Connect the World](https://www.currency-iso.org/), more specifically from the `xls` file in [Current currency & funds code list](https://www.currency-iso.org/en/home/tables/table-a1.html), which is converted to a [list_currency_iso.csv](tools/list_currency_iso.csv) and then to a julia script [pkgdefaults.jl](src/pkgdefaults.jl) that calls the macro to generate the currencies.
+
+The list contains not only the currencies, but also some bonds and the metals gold, palladium, platinum, and silver.
 
 ## To do
 
