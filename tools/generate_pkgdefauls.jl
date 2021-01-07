@@ -6,7 +6,7 @@ dropmissing!(df, "Alphabetic Code")
 
 nrows = size(df)[1]
 
-df = crossjoin(DataFrame(Macro = fill("@currency", nrows)), combine(df, "Alphabetic Code" => :Code,
+df = hcat(DataFrame(Macro = fill("@currency", nrows)), combine(df, "Alphabetic Code" => :Code,
              :Currency => x -> replace.(titlecase.(x; strict=false), r" |’" => ""),
              renamecols=false))
 
