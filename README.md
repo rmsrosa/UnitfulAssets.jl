@@ -1,4 +1,4 @@
-# UnitfulCurrencies - supplemental pkg for Unitful.jl
+# UnitfulCurrencies.jl
 
 ![Logo](tools/logo/logo_200x200.png)
 
