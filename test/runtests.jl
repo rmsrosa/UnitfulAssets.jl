@@ -17,6 +17,16 @@ const localpromotion = Unitful.promotion # needed for the new currency dimension
 Unitful.register(TestCurrency) # needed for new Units
 merge!(Unitful.promotion, localpromotion) # only needed with new dimensions
 
+module TestCurrencySymbol
+    using Unitful
+    using UnitfulCurrencies
+
+    @unit ¥ "¥" YuanSign 1.0u"CNY" true
+end
+
+Unitful.register(TestCurrencySymbol) # needed for new Units
+
+
 # create exchange market from a fixer.io json file
 fixer_exchmkt = Dict(
     "2020-11-01" => UnitfulCurrencies.get_fixer_exchmkt(
@@ -65,7 +75,6 @@ BRLGBP_timeseries = Dict(
 
 @testset "Currencies" begin
     # conversions
-#    @test uconvert(u"€", 1u"EUR") == 1u"€"
     @test Unitful.Quantity(1,u"EUR") == 1u"EUR"
     @test Unitful.unit(1u"BRL") == u"BRL"
     @test Unitful.unit(1u"TSP") == u"TSP"
@@ -74,6 +83,15 @@ BRLGBP_timeseries = Dict(
     @test ! UnitfulCurrencies.exist_currency("ABC")
     @test typeof(UnitfulCurrencies.@currency AAA TripleAs) <: Unitful.FreeUnits
     @test_throws ArgumentError UnitfulCurrencies.@currency aaa tripleas
+end
+
+@testset "UnitSymbols" begin
+    @test uconvert(u"€", 1u"EUR") == 1u"€"
+    @test uconvert(u"USdollar", 1u"USD") == 1u"USdollar"
+    @test uconvert(u"CAdollar", 1u"CAD") == 1u"CAdollar"
+    @test uconvert(u"BRL", 1u"Real") == 1u"BRL"
+    @test uconvert(u"£", 1u"GBP") == 1u"£"
+    @test uconvert(u"¥", 1u"CNY") == 1u"¥"
 end
 
 @testset "Exchanges" begin

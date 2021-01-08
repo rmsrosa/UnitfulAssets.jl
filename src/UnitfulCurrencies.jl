@@ -82,6 +82,7 @@ macro currency(code_symb, name)
 end
 
 include("pkgdefaults.jl")
+include("currencysymbols.jl")
 
 # ExchangeMarket constructors
 

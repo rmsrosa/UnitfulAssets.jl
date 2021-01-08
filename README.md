@@ -20,7 +20,8 @@ A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/U
   - [Continuously varying interest rate in a foreign bank](#continuously-varying-interest-rate-in-a-foreign-bank) - exploiting broadcasting for an array of currency quantities.
   - [Decimal and rational exchange rates](#decimal-and-rational-exchange-rates) - using `Decimal` and `Rational` types.
 - [Exchange rate as Unitful quantity](#exchange-rate-as-unitful-quantity)
-- [About the list of currencies](#about-the-list-of-currencies)
+- [The list of currencies](#the-list-of-currencies)
+- [Currency symbols](#currency-symbols)
 - [To-do](#to-do)
 - [Related packages](#related-packages)
 - [License](#license)
@@ -32,6 +33,8 @@ Currency dimensions are created for each currency, along with its reference unit
 An `ExchangeMarket` type is defined as `Dict{CurrencyPair,ExchangeRate}`, in which `CurrencyPair` is a tuple of Strings with the ISO-4217 alphabetic codes corresponding to the base and quote currencies, and `ExchangeRate` contains a positive `Unitful.Quantity` with the corresponding quote-ask rate for the pair.
 
 Based on an given `ExchangeMarket` instance, a conversion can be made from the "quote" currency to the "base" currency. This conversion is implemented as an extended dispatch for `Unitful.uconvert`.
+
+All defined currencies are listed in [src/pkgdefaults.jl](src/pkgdefaults.jl). Some currency symbols are also defined and are listed in [src/currencysymbols.jl](src/currencysymbols.jl).
 
 ## Installation
 
@@ -368,11 +371,72 @@ julia> @btime uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1)'
   21.419 μs (282 allocations: 14.82 KiB)
 ```
 
-## About the list of currencies
+## The list of currencies
 
-The list of currencies is obtained from [SNV - Standards Connect the World](https://www.currency-iso.org/), more specifically from the `xls` file in [Current currency & funds code list](https://www.currency-iso.org/en/home/tables/table-a1.html), which is converted to a [list_currency_iso.csv](tools/list_currency_iso.csv) and then to a julia script [pkgdefaults.jl](src/pkgdefaults.jl) that calls the macro to generate the currencies.
+The list of currencies is obtained from [SNV - Standards Connect the World](https://www.currency-iso.org/), more specifically from the `xls` file in [Current currency & funds code list](https://www.currency-iso.org/en/home/tables/table-a1.html), which is converted to a `csv` file and then to a julia script that calls the macro to generate the currencies.
 
-The list contains not only the currencies, but also some bonds and the metals gold, palladium, platinum, and silver.
+The list contains not only the currencies, but also some bonds and the metals, such as gold and platinum. The full list of currencies, bonds and metals defined in this package are given in [src/pkgdefaults.jl](src/pkgdefaults.jl).
+
+## Currency symbols
+
+Some currency symbols are also defined as Unitful units, namely the US Dollar symbol `US\$`, equivalent to `USD`; the Canadian dollar `CA\$`,equivalent to `CAD`; the sterling `£`, equivalent to `GBR`; the euro `€`, equivalent to `EUR`; and the Brazilian Real `R$`, equivalent to `BRL`.
+
+Both the euro and the sterling pound symbols are used as units, so that one may use directly `10u"€"` and `1u"£"`. Both are unicode characters that can be obtained in the REPL or in some proper Julia environment with tab completion `\euro+[TAB]` and `\sterling+[TAB]`.
+
+The dollar sign, however, is a reserved sign in Julia, so we do not use it as a unit symbol, but we do use it as an abbreviation. The unit definitions for `US\$`, `CA\$`, and `R$` are, respectively, `USdollar`, `CAdollar`, and `Real`, so for instance we have
+
+```julia
+julia> 1u"USdollar"
+1 US$
+```
+
+The list of units with their symbols defined in this package is given in [src/currencysymbols.jl](src/currencysymbols.jl)
+
+Many symbols are used for different currencies, so we do not attempt to define all symbols here. For instance, the yen sign `¥` is used both for China's Renminbi, with code `CNY`, also known as Yuan, as well as for Japan's Yen, with code `JPY`.
+
+If one desires to include the Yen sign for, say China, then one should create a module and not forget about registering the module with Unitful:
+
+```julia
+module NewUnits
+    using Unitful
+    using UnitfulCurrencies
+
+    @unit ¥ "¥" YuanSign 1.0u"CNY" true
+end
+
+Unitful.register(NewUnits)
+```
+
+In this case,
+
+```julia
+julia> 1u"¥"
+1 ¥
+```
+
+One can even have the same sign for the Chinese yuan and the Japanese yen as abbreviation but with different symbols:
+
+```julia
+module NewUnits
+    using Unitful
+    using UnitfulCurrencies
+
+    @unit yuan "¥" YuanSign 1.0u"CNY" true
+    @unit yen "¥" YenSign 1.0u"JPY" true
+end
+
+Unitful.register(NewUnits)
+```
+
+In this case, we have
+
+```julia
+julia> 1u"yen"
+1 ¥
+
+julia> 1u"yuan"
+1 ¥
+```
 
 ## To do
 
@@ -380,11 +444,9 @@ I have been doing this mostly for learning purposes. Who knows it might even tur
 
 Here are a few things to be done.
 
-1. Add currency symbols such as `$`, `£`, `€`, `R$`, and so on, as units equivalent to the reference units for each currency.
-
 1. See whether it is possible to display currencies as, say `USD$ 10.50`, instead of `10.50 USD`.
 
-1. See whether it is possible to display 10-fold multiples of a currency in a better way than say `kEUR`, `MEUR`, `GMEUR`, and so on. It would be great to have `USD$ 10k`, `USD$ 10M`, and `USD$ 10B` (yeah, it would great if I had that! :-))
+1. See whether it is possible to display 10-fold multiples of a currency in a better way than say `kEUR`, `MEUR`, `GMEUR`, and so on. It would be great to have `USD$ 10k`, `USD$ 10M`, and `USD$ 10B`.
 
 1. Add tools to read exchange market from web sources other than [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com).
 
