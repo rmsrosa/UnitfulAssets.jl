@@ -7,11 +7,7 @@ Return whether or not `code_string` refers to a valid currency.
 
 `code_string` is expected to be an alphabetic ISO-4217 currency code
 (i.e. a three-letter uppercase ascii string corresponding to the
-currency code symbol), like "EUR", or a currency dimension abbr
-(the code abbr appended with "CURRENCY").
-
-The function checks whether `code_string` is at least three-characters long
-and whether it is all composed of ascii uppercase letters.
+currency code symbol), like "EUR".
 
 # Examples
 
@@ -19,15 +15,12 @@ and whether it is all composed of ascii uppercase letters.
 julia> is_currency_code("BRL")
 true
 
-julia> is_currency_code("USDCURRENCY")
-true
-
 julia> is_currency_code("euro")
 false
 ```
 """
-function is_currency_code(code_string::String)
-    return length(code_string) >= 3 && all(c -> 'A' <= c <= 'Z', code_string)
+function is_currency_code(code_string::AbstractString)
+    return match(r"^(?:[A-Z]{3})$", code_string) !== nothing
 end
 
 """
@@ -44,8 +37,8 @@ macro currency(code_symb, name)
         gap = Int('𝐀') - Int('A')
         code_abbr_bold = join([Char(Int(c) + gap) for c in code_abbr])
         dimension = Symbol(code_abbr_bold)
-        dim_abbr = string(code_symb) * "CURRENCY"
-        dim_name = Symbol(code_abbr_bold * "𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘")
+        dim_abbr = "Currency{" * code_abbr * "}"
+        dim_name = Symbol("Currency{" * code_abbr * "}")
         esc(quote
             Unitful.@dimension($dimension, $dim_abbr, $dim_name)
             Unitful.@refunit($code_symb, $code_abbr, $name, $dimension, true)
@@ -255,11 +248,12 @@ julia> uconvert(u"BRL", 1u"BRL", forex_exchmkt["2020-11-01"], mode=-1)
 ```
 """
 function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode::Int=1)
-    u_curr_str = string(Unitful.dimension(u))
-    x_curr_str = string(Unitful.dimension(x))
-    if is_currency_code(u_curr_str) && is_currency_code(x_curr_str)
-        u_curr = u_curr_str[1:3]
-        x_curr = x_curr_str[1:3]
+    u_match = match(r"Currency\{([A-Z]{3})\}", string(Unitful.dimension(u)))
+    x_match = match(r"Currency\{([A-Z]{3})\}", string(Unitful.dimension(x)))
+
+    if (u_match !== nothing) && (x_match !== nothing)
+        u_curr = u_match.captures[1]
+        x_curr = x_match.captures[1]
         pair = CurrencyPair(x_curr, u_curr)
         pairinv = CurrencyPair(u_curr, x_curr)
         if mode == 1 && pair in keys(e)
