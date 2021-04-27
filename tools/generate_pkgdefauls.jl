@@ -6,8 +6,8 @@ dropmissing!(df, "Alphabetic Code")
 unique!(df, :Currency)
 
 nrows = size(df)[1]
-df = hcat(DataFrame(Macro = fill("@currency", nrows)), combine(df, "Alphabetic Code" => :Code,
+df = hcat(DataFrame(Macro = fill("@intrument Currency", nrows)), combine(df, "Alphabetic Code" => :Code,
              :Currency => x -> replace.(titlecase.(x; strict=false), r" |’" => ""),
              renamecols=false))
 
-CSV.write("src/pkgdefaults.jl", df, delim="  ", header = false)
+CSV.write(joinpath("src", "pkgdefaults.jl"), df, delim="  ", header = false)
