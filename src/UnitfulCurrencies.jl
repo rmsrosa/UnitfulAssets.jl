@@ -22,13 +22,13 @@ using Unitful, JSON
 using Unitful: @dimension, @refunit
 import Unitful: uconvert
 
-export generate_exchmkt
+export ExchangeMarket, generate_exchmkt
 
 include("main.jl")
 
 include("exchmkt_tools.jl")
 
-# Register the above units and dimensions in Unitful
+# Register the new units and dimensions in Unitful
 const localpromotion = Unitful.promotion # only needed with new dimensions
 function __init__()
     Unitful.register(UnitfulCurrencies) # needed for new Units
