@@ -1,179 +1,179 @@
-@currency  AFN  Afghani
-@currency  EUR  Euro
-@currency  ALL  Lek
-@currency  DZD  AlgerianDinar
-@currency  USD  USDollar
-@currency  AOA  Kwanza
-@currency  XCD  EastCaribbeanDollar
-@currency  ARS  ArgentinePeso
-@currency  AMD  ArmenianDram
-@currency  AWG  ArubanFlorin
-@currency  AUD  AustralianDollar
-@currency  AZN  AzerbaijanManat
-@currency  BSD  BahamianDollar
-@currency  BHD  BahrainiDinar
-@currency  BDT  Taka
-@currency  BBD  BarbadosDollar
-@currency  BYN  BelarusianRuble
-@currency  BZD  BelizeDollar
-@currency  XOF  CFAFrancBCEAO
-@currency  BMD  BermudianDollar
-@currency  INR  IndianRupee
-@currency  BTN  Ngultrum
-@currency  BOB  Boliviano
-@currency  BOV  Mvdol
-@currency  BAM  ConvertibleMark
-@currency  BWP  Pula
-@currency  NOK  NorwegianKrone
-@currency  BRL  BrazilianReal
-@currency  BND  BruneiDollar
-@currency  BGN  BulgarianLev
-@currency  BIF  BurundiFranc
-@currency  CVE  CaboVerdeEscudo
-@currency  KHR  Riel
-@currency  XAF  CFAFrancBEAC
-@currency  CAD  CanadianDollar
-@currency  KYD  CaymanIslandsDollar
-@currency  CLP  ChileanPeso
-@currency  CLF  UnidadDeFomento
-@currency  CNY  YuanRenminbi
-@currency  COP  ColombianPeso
-@currency  COU  UnidadDeValorReal
-@currency  KMF  ComorianFranc
-@currency  CDF  CongoleseFranc
-@currency  NZD  NewZealandDollar
-@currency  CRC  CostaRicanColon
-@currency  HRK  Kuna
-@currency  CUP  CubanPeso
-@currency  CUC  PesoConvertible
-@currency  ANG  NetherlandsAntilleanGuilder
-@currency  CZK  CzechKoruna
-@currency  DKK  DanishKrone
-@currency  DJF  DjiboutiFranc
-@currency  DOP  DominicanPeso
-@currency  EGP  EgyptianPound
-@currency  SVC  ElSalvadorColon
-@currency  ERN  Nakfa
-@currency  SZL  Lilangeni
-@currency  ETB  EthiopianBirr
-@currency  FKP  FalklandIslandsPound
-@currency  FJD  FijiDollar
-@currency  XPF  CFPFranc
-@currency  GMD  Dalasi
-@currency  GEL  Lari
-@currency  GHS  GhanaCedi
-@currency  GIP  GibraltarPound
-@currency  GTQ  Quetzal
-@currency  GBP  PoundSterling
-@currency  GNF  GuineanFranc
-@currency  GYD  GuyanaDollar
-@currency  HTG  Gourde
-@currency  HNL  Lempira
-@currency  HKD  HongKongDollar
-@currency  HUF  Forint
-@currency  ISK  IcelandKrona
-@currency  IDR  Rupiah
-@currency  XDR  SDR(SpecialDrawingRight)
-@currency  IRR  IranianRial
-@currency  IQD  IraqiDinar
-@currency  ILS  NewIsraeliSheqel
-@currency  JMD  JamaicanDollar
-@currency  JPY  Yen
-@currency  JOD  JordanianDinar
-@currency  KZT  Tenge
-@currency  KES  KenyanShilling
-@currency  KPW  NorthKoreanWon
-@currency  KRW  Won
-@currency  KWD  KuwaitiDinar
-@currency  KGS  Som
-@currency  LAK  LaoKip
-@currency  LBP  LebanesePound
-@currency  LSL  Loti
-@currency  ZAR  Rand
-@currency  LRD  LiberianDollar
-@currency  LYD  LibyanDinar
-@currency  CHF  SwissFranc
-@currency  MOP  Pataca
-@currency  MKD  Denar
-@currency  MGA  MalagasyAriary
-@currency  MWK  MalawiKwacha
-@currency  MYR  MalaysianRinggit
-@currency  MVR  Rufiyaa
-@currency  MRU  Ouguiya
-@currency  MUR  MauritiusRupee
-@currency  XUA  ADBUnitOfAccount
-@currency  MXN  MexicanPeso
-@currency  MXV  MexicanUnidadDeInversion(UDI)
-@currency  MDL  MoldovanLeu
-@currency  MNT  Tugrik
-@currency  MAD  MoroccanDirham
-@currency  MZN  MozambiqueMetical
-@currency  MMK  Kyat
-@currency  NAD  NamibiaDollar
-@currency  NPR  NepaleseRupee
-@currency  NIO  CordobaOro
-@currency  NGN  Naira
-@currency  OMR  RialOmani
-@currency  PKR  PakistanRupee
-@currency  PAB  Balboa
-@currency  PGK  Kina
-@currency  PYG  Guarani
-@currency  PEN  Sol
-@currency  PHP  PhilippinePeso
-@currency  PLN  Zloty
-@currency  QAR  QatariRial
-@currency  RON  RomanianLeu
-@currency  RUB  RussianRuble
-@currency  RWF  RwandaFranc
-@currency  SHP  SaintHelenaPound
-@currency  WST  Tala
-@currency  STN  Dobra
-@currency  SAR  SaudiRiyal
-@currency  RSD  SerbianDinar
-@currency  SCR  SeychellesRupee
-@currency  SLL  Leone
-@currency  SGD  SingaporeDollar
-@currency  XSU  Sucre
-@currency  SBD  SolomonIslandsDollar
-@currency  SOS  SomaliShilling
-@currency  SSP  SouthSudanesePound
-@currency  LKR  SriLankaRupee
-@currency  SDG  SudanesePound
-@currency  SRD  SurinamDollar
-@currency  SEK  SwedishKrona
-@currency  CHE  WIREuro
-@currency  CHW  WIRFranc
-@currency  SYP  SyrianPound
-@currency  TWD  NewTaiwanDollar
-@currency  TJS  Somoni
-@currency  TZS  TanzanianShilling
-@currency  THB  Baht
-@currency  TOP  PaAnga
-@currency  TTD  TrinidadAndTobagoDollar
-@currency  TND  TunisianDinar
-@currency  TRY  TurkishLira
-@currency  TMT  TurkmenistanNewManat
-@currency  UGX  UgandaShilling
-@currency  UAH  Hryvnia
-@currency  AED  UAEDirham
-@currency  USN  USDollar(NextDay)
-@currency  UYU  PesoUruguayo
-@currency  UYI  UruguayPesoEnUnidadesIndexadas(UI)
-@currency  UYW  UnidadPrevisional
-@currency  UZS  UzbekistanSum
-@currency  VUV  Vatu
-@currency  VES  BolívarSoberano
-@currency  VND  Dong
-@currency  YER  YemeniRial
-@currency  ZMW  ZambianKwacha
-@currency  ZWL  ZimbabweDollar
-@currency  XBA  BondMarketsUnitEuropeanCompositeUnit(EURCO)
-@currency  XBB  BondMarketsUnitEuropeanMonetaryUnit(E.M.U.-6)
-@currency  XBC  BondMarketsUnitEuropeanUnitOfAccount9(E.U.A.-9)
-@currency  XBD  BondMarketsUnitEuropeanUnitOfAccount17(E.U.A.-17)
-@currency  XTS  CodesSpecificallyReservedForTestingPurposes
-@currency  XXX  TheCodesAssignedForTransactionsWhereNoCurrencyIsInvolved
-@currency  XAU  Gold
-@currency  XPD  Palladium
-@currency  XPT  Platinum
-@currency  XAG  Silver
+@instrument Currency  AFN  Afghani
+@instrument Currency  EUR  Euro
+@instrument Currency  ALL  Lek
+@instrument Currency  DZD  AlgerianDinar
+@instrument Currency  USD  USDollar
+@instrument Currency  AOA  Kwanza
+@instrument Currency  XCD  EastCaribbeanDollar
+@instrument Currency  ARS  ArgentinePeso
+@instrument Currency  AMD  ArmenianDram
+@instrument Currency  AWG  ArubanFlorin
+@instrument Currency  AUD  AustralianDollar
+@instrument Currency  AZN  AzerbaijanManat
+@instrument Currency  BSD  BahamianDollar
+@instrument Currency  BHD  BahrainiDinar
+@instrument Currency  BDT  Taka
+@instrument Currency  BBD  BarbadosDollar
+@instrument Currency  BYN  BelarusianRuble
+@instrument Currency  BZD  BelizeDollar
+@instrument Currency  XOF  CFAFrancBCEAO
+@instrument Currency  BMD  BermudianDollar
+@instrument Currency  INR  IndianRupee
+@instrument Currency  BTN  Ngultrum
+@instrument Currency  BOB  Boliviano
+@instrument Currency  BOV  Mvdol
+@instrument Currency  BAM  ConvertibleMark
+@instrument Currency  BWP  Pula
+@instrument Currency  NOK  NorwegianKrone
+@instrument Currency  BRL  BrazilianReal
+@instrument Currency  BND  BruneiDollar
+@instrument Currency  BGN  BulgarianLev
+@instrument Currency  BIF  BurundiFranc
+@instrument Currency  CVE  CaboVerdeEscudo
+@instrument Currency  KHR  Riel
+@instrument Currency  XAF  CFAFrancBEAC
+@instrument Currency  CAD  CanadianDollar
+@instrument Currency  KYD  CaymanIslandsDollar
+@instrument Currency  CLP  ChileanPeso
+@instrument Currency  CLF  UnidadDeFomento
+@instrument Currency  CNY  YuanRenminbi
+@instrument Currency  COP  ColombianPeso
+@instrument Currency  COU  UnidadDeValorReal
+@instrument Currency  KMF  ComorianFranc
+@instrument Currency  CDF  CongoleseFranc
+@instrument Currency  NZD  NewZealandDollar
+@instrument Currency  CRC  CostaRicanColon
+@instrument Currency  HRK  Kuna
+@instrument Currency  CUP  CubanPeso
+@instrument Currency  CUC  PesoConvertible
+@instrument Currency  ANG  NetherlandsAntilleanGuilder
+@instrument Currency  CZK  CzechKoruna
+@instrument Currency  DKK  DanishKrone
+@instrument Currency  DJF  DjiboutiFranc
+@instrument Currency  DOP  DominicanPeso
+@instrument Currency  EGP  EgyptianPound
+@instrument Currency  SVC  ElSalvadorColon
+@instrument Currency  ERN  Nakfa
+@instrument Currency  SZL  Lilangeni
+@instrument Currency  ETB  EthiopianBirr
+@instrument Currency  FKP  FalklandIslandsPound
+@instrument Currency  FJD  FijiDollar
+@instrument Currency  XPF  CFPFranc
+@instrument Currency  GMD  Dalasi
+@instrument Currency  GEL  Lari
+@instrument Currency  GHS  GhanaCedi
+@instrument Currency  GIP  GibraltarPound
+@instrument Currency  GTQ  Quetzal
+@instrument Currency  GBP  PoundSterling
+@instrument Currency  GNF  GuineanFranc
+@instrument Currency  GYD  GuyanaDollar
+@instrument Currency  HTG  Gourde
+@instrument Currency  HNL  Lempira
+@instrument Currency  HKD  HongKongDollar
+@instrument Currency  HUF  Forint
+@instrument Currency  ISK  IcelandKrona
+@instrument Currency  IDR  Rupiah
+@instrument Currency  XDR  SDR(SpecialDrawingRight)
+@instrument Currency  IRR  IranianRial
+@instrument Currency  IQD  IraqiDinar
+@instrument Currency  ILS  NewIsraeliSheqel
+@instrument Currency  JMD  JamaicanDollar
+@instrument Currency  JPY  Yen
+@instrument Currency  JOD  JordanianDinar
+@instrument Currency  KZT  Tenge
+@instrument Currency  KES  KenyanShilling
+@instrument Currency  KPW  NorthKoreanWon
+@instrument Currency  KRW  Won
+@instrument Currency  KWD  KuwaitiDinar
+@instrument Currency  KGS  Som
+@instrument Currency  LAK  LaoKip
+@instrument Currency  LBP  LebanesePound
+@instrument Currency  LSL  Loti
+@instrument Currency  ZAR  Rand
+@instrument Currency  LRD  LiberianDollar
+@instrument Currency  LYD  LibyanDinar
+@instrument Currency  CHF  SwissFranc
+@instrument Currency  MOP  Pataca
+@instrument Currency  MKD  Denar
+@instrument Currency  MGA  MalagasyAriary
+@instrument Currency  MWK  MalawiKwacha
+@instrument Currency  MYR  MalaysianRinggit
+@instrument Currency  MVR  Rufiyaa
+@instrument Currency  MRU  Ouguiya
+@instrument Currency  MUR  MauritiusRupee
+@instrument Currency  XUA  ADBUnitOfAccount
+@instrument Currency  MXN  MexicanPeso
+@instrument Currency  MXV  MexicanUnidadDeInversion(UDI)
+@instrument Currency  MDL  MoldovanLeu
+@instrument Currency  MNT  Tugrik
+@instrument Currency  MAD  MoroccanDirham
+@instrument Currency  MZN  MozambiqueMetical
+@instrument Currency  MMK  Kyat
+@instrument Currency  NAD  NamibiaDollar
+@instrument Currency  NPR  NepaleseRupee
+@instrument Currency  NIO  CordobaOro
+@instrument Currency  NGN  Naira
+@instrument Currency  OMR  RialOmani
+@instrument Currency  PKR  PakistanRupee
+@instrument Currency  PAB  Balboa
+@instrument Currency  PGK  Kina
+@instrument Currency  PYG  Guarani
+@instrument Currency  PEN  Sol
+@instrument Currency  PHP  PhilippinePeso
+@instrument Currency  PLN  Zloty
+@instrument Currency  QAR  QatariRial
+@instrument Currency  RON  RomanianLeu
+@instrument Currency  RUB  RussianRuble
+@instrument Currency  RWF  RwandaFranc
+@instrument Currency  SHP  SaintHelenaPound
+@instrument Currency  WST  Tala
+@instrument Currency  STN  Dobra
+@instrument Currency  SAR  SaudiRiyal
+@instrument Currency  RSD  SerbianDinar
+@instrument Currency  SCR  SeychellesRupee
+@instrument Currency  SLL  Leone
+@instrument Currency  SGD  SingaporeDollar
+@instrument Currency  XSU  Sucre
+@instrument Currency  SBD  SolomonIslandsDollar
+@instrument Currency  SOS  SomaliShilling
+@instrument Currency  SSP  SouthSudanesePound
+@instrument Currency  LKR  SriLankaRupee
+@instrument Currency  SDG  SudanesePound
+@instrument Currency  SRD  SurinamDollar
+@instrument Currency  SEK  SwedishKrona
+@instrument Currency  CHE  WIREuro
+@instrument Currency  CHW  WIRFranc
+@instrument Currency  SYP  SyrianPound
+@instrument Currency  TWD  NewTaiwanDollar
+@instrument Currency  TJS  Somoni
+@instrument Currency  TZS  TanzanianShilling
+@instrument Currency  THB  Baht
+@instrument Currency  TOP  PaAnga
+@instrument Currency  TTD  TrinidadAndTobagoDollar
+@instrument Currency  TND  TunisianDinar
+@instrument Currency  TRY  TurkishLira
+@instrument Currency  TMT  TurkmenistanNewManat
+@instrument Currency  UGX  UgandaShilling
+@instrument Currency  UAH  Hryvnia
+@instrument Currency  AED  UAEDirham
+@instrument Currency  USN  USDollar(NextDay)
+@instrument Currency  UYU  PesoUruguayo
+@instrument Currency  UYI  UruguayPesoEnUnidadesIndexadas(UI)
+@instrument Currency  UYW  UnidadPrevisional
+@instrument Currency  UZS  UzbekistanSum
+@instrument Currency  VUV  Vatu
+@instrument Currency  VES  BolívarSoberano
+@instrument Currency  VND  Dong
+@instrument Currency  YER  YemeniRial
+@instrument Currency  ZMW  ZambianKwacha
+@instrument Currency  ZWL  ZimbabweDollar
+@instrument Currency  XBA  BondMarketsUnitEuropeanCompositeUnit(EURCO)
+@instrument Currency  XBB  BondMarketsUnitEuropeanMonetaryUnit(E.M.U.-6)
+@instrument Currency  XBC  BondMarketsUnitEuropeanUnitOfAccount9(E.U.A.-9)
+@instrument Currency  XBD  BondMarketsUnitEuropeanUnitOfAccount17(E.U.A.-17)
+@instrument Currency  XTS  CodesSpecificallyReservedForTestingPurposes
+@instrument Currency  XXX  TheCodesAssignedForTransactionsWhereNoCurrencyIsInvolved
+@instrument Currency  XAU  Gold
+@instrument Currency  XPD  Palladium
+@instrument Currency  XPT  Platinum
+@instrument Currency  XAG  Silver

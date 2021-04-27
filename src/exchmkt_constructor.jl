@@ -29,8 +29,8 @@ Stacktrace:
 struct CurrencyPair
     base_curr::String
     quote_curr::String
-    CurrencyPair(base_curr, quote_curr) = is_currency_code(base_curr) && 
-        is_currency_code(quote_curr) ? new(base_curr,quote_curr) : 
+    CurrencyPair(base_curr, quote_curr) = is_instrument_code(base_curr) && 
+        is_instrument_code(quote_curr) ? new(base_curr,quote_curr) : 
             throw(ArgumentError("The given code symbol pair "
                 * "$((base_curr, quote_curr)) is not allowed, both should "
                 * "be all in ascii uppercase letters and at least "

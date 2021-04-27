@@ -6,7 +6,7 @@ dropmissing!(df, "Alphabetic Code")
 unique!(df, :Currency)
 
 nrows = size(df)[1]
-df = hcat(DataFrame(Macro = fill("@intrument Currency", nrows)), combine(df, "Alphabetic Code" => :Code,
+df = hcat(DataFrame(Macro = fill("@instrument Currency", nrows)), combine(df, "Alphabetic Code" => :Code,
              :Currency => x -> replace.(titlecase.(x; strict=false), r" |’" => ""),
              renamecols=false))
 
