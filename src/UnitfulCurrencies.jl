@@ -24,8 +24,10 @@ import Unitful: uconvert
 
 export ExchangeMarket, generate_exchmkt
 
-include("main.jl")
-
+include("currency_constructor.jl")
+include("pkgdefaults.jl")
+include("currency_symbols.jl")
+include("exchmkt_constructor.jl")
 include("exchmkt_tools.jl")
 
 # Register the new units and dimensions in Unitful
