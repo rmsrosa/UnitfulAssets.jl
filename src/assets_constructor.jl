@@ -6,8 +6,7 @@
 
 Return whether or not `code_string` refers to a valid asset code.
 
-Valid asset codes must be all uppercase ascii characters
-and at least three characters long
+Valid asset codes must be all uppercase and with at most one colon. 
 
 # Examples
 
@@ -15,14 +14,18 @@ and at least three characters long
 julia> is_asset_code("BRL")
 true
 
-julia> is_asset_code("euro")
-false
+julia> is_asset_code("GOLD")
+true
 
 julia> is_asset_code("GOLD")
+true
+
+julia> is_asset_code("euro")
+false
 ```
 """
 function is_asset_code(code_string::AbstractString)
-    return match(r"^(?:[A-Z]{3,})$", code_string) !== nothing
+    return match(r"^(?:[A-Z]{1,})(?:\:[A-Z]{1,})?$", code_string) !== nothing
 end
 
 """

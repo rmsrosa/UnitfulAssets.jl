@@ -26,7 +26,6 @@ end
 
 Unitful.register(TestCurrencySymbol) # needed for new Units
 
-
 # create exchange market from a fixer.io json file
 fixer_exchmkt = Dict(
     "2020-11-01" => UnitfulCurrencies.get_fixer_exchmkt(
@@ -40,7 +39,7 @@ currencylayer_exchmkt = Dict(
     )
 )
 # rates on Nov 27, 2020
-exch_mkt_27nov2020 = generate_exchmkt([
+exch_mkt_27nov2020 = generate_mkt([
     ("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570,
     ("EUR","GBP") => 1.11268, ("GBP","EUR") => 0.898734,
     ("USD","CAD") => 1.29849, ("CAD","USD") => 0.770125,
@@ -48,50 +47,51 @@ exch_mkt_27nov2020 = generate_exchmkt([
 ])
 
 # rates with rational numbers
-exch_mkt_from_dict_and_rationals = generate_exchmkt(Dict([
+exch_mkt_from_dict_and_rationals = generate_mkt(Dict([
     ("EUR","USD") => 119536//100000, ("USD","EUR") => 836570//1000000
 ]))
 
 # rates with decimals
-exch_mkt_from_dict_and_decimals = generate_exchmkt(Dict([
+exch_mkt_from_dict_and_decimals = generate_mkt(Dict([
     ("EUR","USD") => Decimal(1.19536), ("USD","EUR") => Decimal(0.836570)
 ]))
 
-test_exch_mkt = generate_exchmkt(("EUR","TSP") => 1234567.89)
+test_exch_mkt = generate_mkt(("EUR","TSP") => 1234567.89)
 
 # rates to test broadcasting
 BRLGBP_timeseries = Dict(
-    "2011-01-01" => generate_exchmkt(("BRL","GBP") => 0.38585),
-    "2012-01-01" => generate_exchmkt(("BRL","GBP") => 0.34587),
-    "2013-01-01" => generate_exchmkt(("BRL","GBP") => 0.29998),
-    "2014-01-01" => generate_exchmkt(("BRL","GBP") => 0.25562),
-    "2015-01-02" => generate_exchmkt(("BRL","GBP") => 0.24153),
-    "2016-01-03" => generate_exchmkt(("BRL","GBP") => 0.17093),
-    "2017-01-02" => generate_exchmkt(("BRL","GBP") => 0.24888),
-    "2018-01-02" => generate_exchmkt(("BRL","GBP") => 0.22569),
-    "2019-01-04" => generate_exchmkt(("BRL","GBP") => 0.21082),
-    "2020-01-04" => generate_exchmkt(("BRL","GBP") => 0.18784)
+    "2011-01-01" => generate_mkt(("BRL","GBP") => 0.38585),
+    "2012-01-01" => generate_mkt(("BRL","GBP") => 0.34587),
+    "2013-01-01" => generate_mkt(("BRL","GBP") => 0.29998),
+    "2014-01-01" => generate_mkt(("BRL","GBP") => 0.25562),
+    "2015-01-02" => generate_mkt(("BRL","GBP") => 0.24153),
+    "2016-01-03" => generate_mkt(("BRL","GBP") => 0.17093),
+    "2017-01-02" => generate_mkt(("BRL","GBP") => 0.24888),
+    "2018-01-02" => generate_mkt(("BRL","GBP") => 0.22569),
+    "2019-01-04" => generate_mkt(("BRL","GBP") => 0.21082),
+    "2020-01-04" => generate_mkt(("BRL","GBP") => 0.18784)
 )
 
-@testset "Currencies" begin
+@testset "Assets" begin
     # conversions
     @test Unitful.Quantity(1,u"EUR") == 1u"EUR"
     @test Unitful.unit(1u"BRL") == u"BRL"
     @test Unitful.unit(1u"TSP") == u"TSP"
-    @test UnitfulCurrencies.exist_currency("USD")
-    @test UnitfulCurrencies.exist_currency("TSP")
-    @test ! UnitfulCurrencies.exist_currency("ABC")
+    @test UnitfulCurrencies.is_asset("USD")
+    @test UnitfulCurrencies.is_asset("TSP")
+    @test !UnitfulCurrencies.is_asset("ABC")
     @test typeof(UnitfulCurrencies.@asset Currency AAA TripleAs) <: Unitful.FreeUnits
     @test_throws ArgumentError UnitfulCurrencies.@asset Currency aaa tripleas
 end
 
-@testset "UnitSymbols" begin
-    @test uconvert(u"€", 1u"EUR") == 1u"€"
-    @test uconvert(u"USdollar", 1u"USD") == 1u"USdollar"
-    @test uconvert(u"CAdollar", 1u"CAD") == 1u"CAdollar"
-    @test uconvert(u"BRL", 1u"Real") == 1u"BRL"
-    @test uconvert(u"£", 1u"GBP") == 1u"£"
-    @test uconvert(u"¥", 1u"CNY") == 1u"¥"
+@testset "Arithmetics" begin
+    @test 1u"EUR" + 2u"EUR" === 3u"EUR"
+    @test 1.0u"USD" + 2.0u"USD" === 3.0u"USD"
+    @test (1//2)u"CAD" + (3//2)u"CAD" === (2//1)u"CAD"
+    #@test Decimal(1.5)u"BRL" + Decimal(2.5)u"BRL" === Decimal(0,4,0)u"BRL"
+    @test 13u"EUR"/2u"BRL" === 6.5u"EUR/BRL"
+    @test 10u"AUD"/2u"AUD" === 5.0
+    #@test_throws DimensionError (1u"BRL" + 1u"EUR")
 end
 
 @testset "Exchanges" begin
@@ -116,7 +116,16 @@ end
     @test_throws ArgumentError uconvert(u"CAD", 1u"BRL", fixer_exchmkt["2020-11-01"], mode=2)
     @test_throws ArgumentError uconvert(u"EUR", 1u"CAD", exch_mkt_27nov2020)
     @test_throws ArgumentError uconvert(u"m",1u"km", exch_mkt_27nov2020)
-    @test_throws ArgumentError generate_exchmkt(("EUR","USD") => Decimal(-1.0))
+    @test_throws ArgumentError generate_mkt(("EUR","USD") => Decimal(-1.0))
+end
+
+@testset "Symbols" begin
+    @test uconvert(u"€", 1u"EUR") == 1u"€"
+    @test uconvert(u"USdollar", 1u"USD") == 1u"USdollar"
+    @test uconvert(u"CAdollar", 1u"CAD") == 1u"CAdollar"
+    @test uconvert(u"BRL", 1u"Real") == 1u"BRL"
+    @test uconvert(u"£", 1u"GBP") == 1u"£"
+    @test uconvert(u"¥", 1u"CNY") == 1u"¥"
 end
 
 nothing
