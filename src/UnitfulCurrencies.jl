@@ -24,7 +24,7 @@ import Unitful: uconvert
 
 export ExchangeMarket, generate_exchmkt
 
-include("instrument_constructor.jl")
+include("asset_constructor.jl")
 include("pkgdefaults.jl")
 include("currency_symbols.jl")
 include("exchmkt_constructor.jl")

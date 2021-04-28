@@ -1,0 +1,8 @@
+"List one: Currency, fund and precious metal codes",,,,,
+Published:,,,,,
+"August 29, 2018", ,,,,
+ENTITY,Name,Alphabetic Code,Numeric Code,Minor unit,Fund
+ZZ08_Gold,Gold,XAU,959,N.A.,
+ZZ09_Palladium,Palladium,XPD,964,N.A.,
+ZZ10_Platinum,Platinum,XPT,962,N.A.,
+ZZ11_Silver,Silver,XAG,961,N.A.,

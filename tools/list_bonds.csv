@@ -1,0 +1,8 @@
+"List one: Currency, fund and precious metal codes",,,,,
+Published:,,,,,
+"August 29, 2018", ,,,,
+ENTITY,Name,Alphabetic Code,Numeric Code,Minor unit,Fund
+ZZ01_Bond Markets Unit European_EURCO,Bond Markets Unit European Composite Unit (EURCO),XBA,955,N.A.,
+ZZ02_Bond Markets Unit European_EMU-6,Bond Markets Unit European Monetary Unit (E.M.U.-6),XBB,956,N.A.,
+ZZ03_Bond Markets Unit European_EUA-9,Bond Markets Unit European Unit of Account 9 (E.U.A.-9),XBC,957,N.A.,
+ZZ04_Bond Markets Unit European_EUA-17,Bond Markets Unit European Unit of Account 17 (E.U.A.-17),XBD,958,N.A.,

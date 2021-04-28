@@ -3,14 +3,14 @@ using UnitfulCurrencies
 using Test
 using Decimals
 
-using UnitfulCurrencies: @instrument
+using UnitfulCurrencies: @asset
 
 module TestCurrency
     using Unitful
     using UnitfulCurrencies
-    using UnitfulCurrencies: @instrument
+    using UnitfulCurrencies: @asset
 
-    @instrument Currency TSP TestPataca
+    @asset Currency TSP TestPataca
 end
 
 const localpromotion = Unitful.promotion # needed for the new currency dimension
@@ -81,8 +81,8 @@ BRLGBP_timeseries = Dict(
     @test UnitfulCurrencies.exist_currency("USD")
     @test UnitfulCurrencies.exist_currency("TSP")
     @test ! UnitfulCurrencies.exist_currency("ABC")
-    @test typeof(UnitfulCurrencies.@instrument Currency AAA TripleAs) <: Unitful.FreeUnits
-    @test_throws ArgumentError UnitfulCurrencies.@instrument Currency aaa tripleas
+    @test typeof(UnitfulCurrencies.@asset Currency AAA TripleAs) <: Unitful.FreeUnits
+    @test_throws ArgumentError UnitfulCurrencies.@asset Currency aaa tripleas
 end
 
 @testset "UnitSymbols" begin
