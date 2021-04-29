@@ -1,15 +1,15 @@
 using Unitful
-using UnitfulCurrencies
+using UnitfulAssets
 using Test
 using Decimals
 using FixedPointDecimals
 
-using UnitfulCurrencies: @asset
+using UnitfulAssets: @asset
 
 module TestCurrency
     using Unitful
-    using UnitfulCurrencies
-    using UnitfulCurrencies: @asset
+    using UnitfulAssets
+    using UnitfulAssets: @asset
 
     @asset Cash TSP TestPataca
 end
@@ -20,7 +20,7 @@ merge!(Unitful.promotion, localpromotion) # only needed with new dimensions
 
 module TestCurrencySymbol
     using Unitful
-    using UnitfulCurrencies
+    using UnitfulAssets
 
     @unit ¥ "¥" YuanSign 1.0u"CNY" true
 end
@@ -29,13 +29,13 @@ Unitful.register(TestCurrencySymbol) # needed for new Units
 
 # create exchange market from a fixer.io json file
 fixer_exchmkt = Dict(
-    "2020-11-01" => UnitfulCurrencies.get_fixer_exchmkt(
+    "2020-11-01" => UnitfulAssets.get_fixer_exchmkt(
         joinpath(@__DIR__, "exchange_markets", "2020-11-01_fixer.json")
     )
 )
 # create exchange market from a currencylayer json file
 currencylayer_exchmkt = Dict(
-    "2020-11-25" => UnitfulCurrencies.get_currencylayer_exchmkt(
+    "2020-11-25" => UnitfulAssets.get_currencylayer_exchmkt(
         joinpath(@__DIR__, "exchange_markets", "2020-11-25_currencylayer.json")
     )
 )
@@ -78,11 +78,11 @@ BRLGBP_timeseries = Dict(
     @test Unitful.Quantity(1,u"EUR") == 1u"EUR"
     @test Unitful.unit(1u"BRL") == u"BRL"
     @test Unitful.unit(1u"TSP") == u"TSP"
-    @test UnitfulCurrencies.is_asset("USD")
-    @test UnitfulCurrencies.is_asset("TSP")
-    @test !UnitfulCurrencies.is_asset("ABC")
-    @test typeof(UnitfulCurrencies.@asset Cash AAA TripleAs) <: Unitful.FreeUnits
-    @test_throws ArgumentError UnitfulCurrencies.@asset Cash aaa tripleas
+    @test UnitfulAssets.is_asset("USD")
+    @test UnitfulAssets.is_asset("TSP")
+    @test !UnitfulAssets.is_asset("ABC")
+    @test typeof(UnitfulAssets.@asset Cash AAA TripleAs) <: Unitful.FreeUnits
+    @test_throws ArgumentError UnitfulAssets.@asset Cash aaa tripleas
 end
 
 @testset "Arithmetics" begin

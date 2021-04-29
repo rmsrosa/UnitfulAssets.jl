@@ -1,6 +1,6 @@
 __precompile__(true)
 """
-    UnitfulCurrencies
+    UnitfulAssets
 
 Module extending Unitful.jl with currencies.
 
@@ -16,7 +16,7 @@ Based on an given exchange market instance of `ExchangeMarket`, a conversion
 can be made from the "quote" currency to the "base" currency. This conversion
 is implemented as an extended dispatch for `Unitful.uconvert`.
 """
-module UnitfulCurrencies
+module UnitfulAssets
 
 using Unitful, JSON
 using Unitful: @dimension, @refunit
@@ -33,7 +33,7 @@ include("exchmkt_tools.jl")
 # Register the new units and dimensions in Unitful
 const localpromotion = Unitful.promotion # only needed with new dimensions
 function __init__()
-    Unitful.register(UnitfulCurrencies) # needed for new Units
+    Unitful.register(UnitfulAssets) # needed for new Units
     merge!(Unitful.promotion, localpromotion) # only needed with new dimensions
 end
 
