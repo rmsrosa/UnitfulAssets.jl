@@ -1,4 +1,4 @@
-using Unitful, UnitfulCurrencies
+using Unitful, UnitfulAssets
 
 module ProductionUnits
     using Unitful
@@ -26,13 +26,9 @@ Return the amount of each raw material needed to manufacture `n` T-shirts.
 The argument `n` must be given in `tshirt` units.
 
 Returns a tuple with the following quantities, respectively:
-
 * The necessary amount of cotton fabric.
-
 * The necessary amount of dye.
-
 * The necessary amount of fixer.
-
 * The necessary amount of thread.
 
 """
@@ -54,15 +50,10 @@ The optional argument `tlim` is the time limit of work per worker, which
 defaults to `40u"hr/worker/wk"`.
 
 Return a tuple with the following quantities, respectively:
-
 * The cost of the production, in US Dollars.
-
 * The cost per T-shirt.
-
 * The number of labor hours required to produce `n` t-shirts.
-
 * The minimum number of workers considering the limit given by `tlim`.
-
 * The eletricity required for the whole manufacturing process.
 """
 function production_cost(n::Unitful.Quantity, t::Unitful.Quantity, tlim::Unitful.Quantity=40u"hr/worker/wk")
@@ -71,7 +62,6 @@ function production_cost(n::Unitful.Quantity, t::Unitful.Quantity, tlim::Unitful
     total_cost = n * raw_material_price + labor_hours * labor_price + eletricity_spent * eletricity_price + fixed_cost * t
     cost_per_tshirt = total_cost / n
     min_num_workers = Int(ceil(labor_hours/tlim/t)) * u"worker"
-#    min_num_workers = ceil(typeof(1u"worker"), labor_hours/tlim/t)
     return total_cost, cost_per_tshirt, labor_hours, min_num_workers, eletricity_spent
 end
 
