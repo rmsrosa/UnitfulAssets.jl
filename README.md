@@ -1,12 +1,12 @@
 # UnitfulAssets.jl
 
-![Logo](tools/logo/logo_200x200.png)
-
 ![Main Tests Workflow Status](https://github.com/rmsrosa/UnitfulAssets.jl/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/rmsrosa/UnitfulAssets.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/rmsrosa/UnitfulAssets.jl) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/rmsrosa/UnitfulAssets.jl) [![Lifecycle Experimental](https://img.shields.io/badge/lifecycle-experimental-orange)](https://lifecycle.r-lib.org/articles/stages.html)
+
+![Logo](tools/logo/logo_200x200.png)
 
 A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/Unitful.jl), adding units for all currently active currencies, some stocks and commodities, along with tools to perform conversions based on exchange market rates.
 
-**This package is currently under intitial development and is not yet registered.**
+**This package is currently under development and is not yet registered.**
 
 ## Table of Contents
 
