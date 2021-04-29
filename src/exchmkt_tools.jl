@@ -1,5 +1,5 @@
 #= 
-File containing tools/functions to created ExchangeMarket instances
+File containing tools/functions to create ExchangeMarket instances
 from json files of some exchange market providers.
 
 Currently, only tools for fixer.io and currencylayer.com providers
@@ -8,17 +8,17 @@ are implemented, and only for options "historical" and "latest".
 """
     get_fixer_exchmkt(::Dict)
 
-Return a `Market` instance from a fixer.io Dict.
+Return an `ExchangeMarket` instance from a fixer.io Dict.
 """
 function get_fixer_exchmkt(jfixer::Dict)
     base = jfixer["base"]
-    return generate_mkt([(base,curr) => float(rate) for (curr,rate) in jfixer["rates"]])
+    return generate_exchmkt([(base,curr) => float(rate) for (curr,rate) in jfixer["rates"]])
 end
 
 """
     get_fixer_exchmkt(::String)
 
-Return a `Market` instance from a fixer.io json file.
+Return a `ExchangeMarket` instance from a fixer.io json file.
 """
 function get_fixer_exchmkt(filename::String)
     return get_fixer_exchmkt(JSON.parsefile(filename))
@@ -27,8 +27,8 @@ end
 """
     get_currencylayer_exchmkt(::String)
 
-Return a `Market` instance from a currencylayer.com json file.
+Return a `ExchangeMarket` instance from a currencylayer.com json file.
 """
 function get_currencylayer_exchmkt(filename::String)
-    return generate_mkt([(pair[1:3],pair[4:6]) => float(rate) for (pair,rate) in JSON.parsefile(filename)["quotes"]])
+    return generate_exchmkt([(pair[1:3],pair[4:6]) => float(rate) for (pair,rate) in JSON.parsefile(filename)["quotes"]])
 end

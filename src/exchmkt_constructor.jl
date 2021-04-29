@@ -1,5 +1,5 @@
 
-# Market constructor
+# ExchangeMarket constructor
 
 """
     AssetsPair
@@ -61,7 +61,7 @@ struct Rate
 end
 
 """
-    Market
+    ExchangeMarket
 
 Type used for a dictionary of `AssetsPair() => Rate()` pair quotes.
     
@@ -72,12 +72,12 @@ is needed to buy/trande one unit of the base asset).
 
 For instance, the market
 
-    mkt = Market(AssetsPair("EUR", "USD") => Rate(1.164151))
+    mkt = ExchangeMarket(AssetsPair("EUR", "USD") => Rate(1.164151))
 
 contains the pair `AssetsPair("EUR", "USD")` and the exchange rate
 `Rate(1.164151)`, which means that one can buy 1 EUR with 1.164151 USD.
 """
-Market = Dict{AssetsPair, Rate}
+ExchangeMarket = Dict{AssetsPair, Rate}
 
 """
     get_rate(u::String, v::String, rate_value::Number)
@@ -99,60 +99,60 @@ function is_asset(code_abbr)
 end
 
 """
-    generate_mkt(d::Dict{Tuple{String,String},T}) where {T<:Number}
+    generate_exchmkt(d::Dict{Tuple{String,String},T}) where {T<:Number}
 
-Generate an instance of `Market` from a dictionary of base-quote-value rates.
+Generate an instance of `ExchangeMarket` from a dictionary of base-quote-value rates.
 
 # Examples
 
 ```jldoctest
-julia> generate_mkt(Dict(("EUR", "USD") => 1.164151))
+julia> generate_exchmkt(Dict(("EUR", "USD") => 1.164151))
 Dict{AssetsPair,Float64} with 1 entry:
   AssetsPair("EUR", "USD") => Rate(1.16415)
 ```
 """
-function generate_mkt(d::Dict{Tuple{String,String},T}) where {T<:Number}
+function generate_exchmkt(d::Dict{Tuple{String,String},T}) where {T<:Number}
     valid_d = Dict(key => value for (key, value) in d if is_asset(key[1]) && is_asset(key[2]))
     return Dict([AssetsPair(key[1], key[2]) => Rate(get_rate(key[2], key[1], value)) for (key,value) in valid_d])
 end
 
 """
-    generate_mkt(a::Array{Pair{Tuple{String,String},Float64},1})
+    generate_exchmkt(a::Array{Pair{Tuple{String,String},Float64},1})
 
-Generate an instance of `Market` from an array of base-quote-value rates.
+Generate an instance of `ExchangeMarket` from an array of base-quote-value rates.
 
 # Examples
 
 ```jldoctest
-julia> generate_mkt([("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570])
+julia> generate_exchmkt([("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570])
 Dict{AssetsPair,Float64} with 2 entries:
   AssetsPair("EUR", "USD") => Rate(1.19536)
   AssetsPair("USD", "EUR") => Rate(0.83657)
 ```
 """
-function generate_mkt(a::Array{Pair{Tuple{String,String},T},1}) where {T<:Number}
-    return generate_mkt(Dict(a))
+function generate_exchmkt(a::Array{Pair{Tuple{String,String},T},1}) where {T<:Number}
+    return generate_exchmkt(Dict(a))
 end
 
 """
-    generate_mkt(a::Array{Pair{Tuple{String,String},Float64},1})
+    generate_exchmkt(a::Array{Pair{Tuple{String,String},Float64},1})
 
-Generates an instance of Market from a single of base-quote-value rate.
+Generates an instance of `ExchangeMarket` from a single of base-quote-value rate.
 
 # Examples
 
 ```jldoctest
-julia> generate_mkt(("EUR", "USD") => 1.164151)
+julia> generate_exchmkt(("EUR", "USD") => 1.164151)
 Dict{AssetsPair,Float64} with 1 entry:
   AssetsPair("EUR", "USD") => Rate(1.16415)
 ```
 """
-function generate_mkt(p::Pair{Tuple{String,String},T}) where {T<:Number}
-    return generate_mkt([p])
+function generate_exchmkt(p::Pair{Tuple{String,String},T}) where {T<:Number}
+    return generate_exchmkt([p])
 end
 
 """
-    uconvert(u::Units, x::Quantity, e::Market; mode::Int=1)
+    uconvert(u::Units, x::Quantity, e::ExchangeMarket; mode::Int=1)
 
 Convert between assets, allowing for inverse and secondary rates.
 
@@ -179,7 +179,7 @@ are not assets, or if the necessary rates cannot be found.
 
 # Examples
 
-Assuming `forex_exchmkt["2020-11-01"]` Market contains the key-value
+Assuming `forex_exchmkt["2020-11-01"]` ExchangeMarket contains the key-value
 pair `("EUR","BRL") => 6.685598`, then the following exchange takes place:
 
 ```jldoctest
@@ -189,7 +189,7 @@ julia> uconvert(u"BRL", 1u"BRL", forex_exchmkt["2020-11-01"], mode=-1)
 0.149575251159283 EUR
 ```
 """
-function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::Market; mode::Int=1)
+function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode::Int=1)
     u_match = match(r"[a-zA-Z]+\{([A-Z]{3})\}", string(Unitful.dimension(u)))
     x_match = match(r"[a-zA-Z]+\{([A-Z]{3})\}", string(Unitful.dimension(x)))
 

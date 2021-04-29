@@ -40,7 +40,7 @@ currencylayer_exchmkt = Dict(
     )
 )
 # rates on Nov 27, 2020
-exch_mkt_27nov2020 = generate_mkt([
+exch_mkt_27nov2020 = generate_exchmkt([
     ("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570,
     ("EUR","GBP") => 1.11268, ("GBP","EUR") => 0.898734,
     ("USD","CAD") => 1.29849, ("CAD","USD") => 0.770125,
@@ -48,29 +48,29 @@ exch_mkt_27nov2020 = generate_mkt([
 ])
 
 # rates with rational numbers
-exch_mkt_from_dict_and_rationals = generate_mkt(Dict([
+exch_mkt_from_dict_and_rationals = generate_exchmkt(Dict([
     ("EUR","USD") => 119536//100000, ("USD","EUR") => 836570//1000000
 ]))
 
 # rates with decimals
-exch_mkt_from_dict_and_decimals = generate_mkt(Dict([
+exch_mkt_from_dict_and_decimals = generate_exchmkt(Dict([
     ("EUR","USD") => Decimal(1.19536), ("USD","EUR") => Decimal(0.836570)
 ]))
 
-test_exch_mkt = generate_mkt(("EUR","TSP") => 1234567.89)
+test_exch_mkt = generate_exchmkt(("EUR","TSP") => 1234567.89)
 
 # rates to test broadcasting
 BRLGBP_timeseries = Dict(
-    "2011-01-01" => generate_mkt(("BRL","GBP") => 0.38585),
-    "2012-01-01" => generate_mkt(("BRL","GBP") => 0.34587),
-    "2013-01-01" => generate_mkt(("BRL","GBP") => 0.29998),
-    "2014-01-01" => generate_mkt(("BRL","GBP") => 0.25562),
-    "2015-01-02" => generate_mkt(("BRL","GBP") => 0.24153),
-    "2016-01-03" => generate_mkt(("BRL","GBP") => 0.17093),
-    "2017-01-02" => generate_mkt(("BRL","GBP") => 0.24888),
-    "2018-01-02" => generate_mkt(("BRL","GBP") => 0.22569),
-    "2019-01-04" => generate_mkt(("BRL","GBP") => 0.21082),
-    "2020-01-04" => generate_mkt(("BRL","GBP") => 0.18784)
+    "2011-01-01" => generate_exchmkt(("BRL","GBP") => 0.38585),
+    "2012-01-01" => generate_exchmkt(("BRL","GBP") => 0.34587),
+    "2013-01-01" => generate_exchmkt(("BRL","GBP") => 0.29998),
+    "2014-01-01" => generate_exchmkt(("BRL","GBP") => 0.25562),
+    "2015-01-02" => generate_exchmkt(("BRL","GBP") => 0.24153),
+    "2016-01-03" => generate_exchmkt(("BRL","GBP") => 0.17093),
+    "2017-01-02" => generate_exchmkt(("BRL","GBP") => 0.24888),
+    "2018-01-02" => generate_exchmkt(("BRL","GBP") => 0.22569),
+    "2019-01-04" => generate_exchmkt(("BRL","GBP") => 0.21082),
+    "2020-01-04" => generate_exchmkt(("BRL","GBP") => 0.18784)
 )
 
 @testset "Assets" begin
@@ -118,7 +118,7 @@ end
     @test_throws ArgumentError uconvert(u"CAD", 1u"BRL", fixer_exchmkt["2020-11-01"], mode=2)
     @test_throws ArgumentError uconvert(u"EUR", 1u"CAD", exch_mkt_27nov2020)
     @test_throws ArgumentError uconvert(u"m",1u"km", exch_mkt_27nov2020)
-    @test_throws ArgumentError generate_mkt(("EUR","USD") => Decimal(-1.0))
+    @test_throws ArgumentError generate_exchmkt(("EUR","USD") => Decimal(-1.0))
 end
 
 @testset "Symbols" begin

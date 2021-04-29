@@ -22,12 +22,12 @@ using Unitful, JSON
 using Unitful: @dimension, @refunit
 import Unitful: uconvert
 
-export Market, generate_mkt
+export Market, generate_exchmkt
 
 include("assets_constructor.jl")
 include("pkgdefaults.jl")
 include("currency_symbols.jl")
-include("mkt_constructor.jl")
+include("exchmkt_constructor.jl")
 include("exchmkt_tools.jl")
 
 # Register the new units and dimensions in Unitful

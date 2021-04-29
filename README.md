@@ -4,7 +4,7 @@
 
 ![Lifecycle Experimental](https://img.shields.io/badge/lifecycle-experimental-orange) ![Main Tests Workflow Status](https://github.com/rmsrosa/UnitfulAssets.jl/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/rmsrosa/UnitfulAssets.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/rmsrosa/UnitfulAssets.jl) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/rmsrosa/UnitfulAssets.jl)
 
-A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/Unitful.jl), adding units for all currently active currencies, some stocks and commodities, along with tools to perform conversions based on exchange/stock market rates.
+A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/Unitful.jl), adding units for all currently active currencies, some stocks and commodities, along with tools to perform conversions based on exchange market rates.
 
 **This package is currently under intitial development and is not yet registered.**
 
@@ -16,7 +16,7 @@ A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/U
   - [Cost of raw material for a T-shirt](#cost-of-raw-material-for-a-t-shirt) - mixing assets with [Unitul.jl](https://github.com/PainterQubits/Unitful.jl)'s quantities.
   - [Production cost](#production-cost) - creating functions with assets as arguments.
   - [Continuously varying interest rate](#continuously-varying-interest-rate) - using [DifferentialEquations.jl](https://github.com/SciML/DifferentialEquations.jl) with assets.
-  - [Markets](#markets) - generating exchange Markets and using different modes of exchange conversion.
+  - [Exchange markets](#exchange-markets) - generating exchange markets and using different modes of exchange conversion.
   - [Continuously varying interest rate in a foreign bank](#continuously-varying-interest-rate-in-a-foreign-bank) - exploiting broadcasting for an array of currency quantities.
   - [Decimal, fixed decimals, and rational rates](#decimal-fixed-decimals-and-rational-rates) - using `Decimal` and `Rational` types.
 - [Assets rate as Unitful quantity](#assets-rate-as-unitful-quantity)
@@ -30,9 +30,9 @@ A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/U
 
 Several **assets** such as cash, stock, and commodity are created as Unitful objects. A new dimension is created for each asset, along with its reference unit. Being an extension of [Unitful.jl](https://github.com/PainterQubits/Unitful.jl), asset units play nicely along with Unitful's quantities, units, and dimensions.
 
-A `Market` type is defined as `Dict{AssetsPair,Rate}`, in which `AssetsPair` is a tuple of Strings corresponding to the base and quote assets, and `Rate` contains a positive `Unitful.Quantity` with the corresponding quote-ask rate for the pair.
+An `ExchangeMarket` type is defined as `Dict{AssetsPair,Rate}`, in which `AssetsPair` is a tuple of Strings corresponding to the base and quote assets, and `Rate` contains a positive `Unitful.Quantity` with the corresponding quote-ask rate for the pair.
 
-Based on an given `Market` instance, a conversion can be made from the "quote" asset to the "base" asset. This conversion is implemented as an extended dispatch for `Unitful.uconvert`.
+Based on a given `ExchangeMarket` instance, a conversion can be made from the "quote" asset to the "base" asset. This conversion is implemented as an extended dispatch for `Unitful.uconvert`.
 
 All defined assets are listed in [src/pkgdefaults.jl](src/pkgdefaults.jl). Some currency symbols are also defined and are listed in [src/currencysymbols.jl](src/currencysymbols.jl).
 
@@ -232,14 +232,14 @@ After 10.0 yr, we expect to have 1303.6211777402004 GBP
 
 Thus, we expect to have about £1,303.62 in our savings account, after ten years.
 
-### Markets
+### Exchange markets
 
-For exchanging/trading assets, we provide a few dispatches of a function `generate_mkt` to generate a `Market` instance from a single Tuple, an Array or a Dict with `AssetsPair` and `Rate` instances. Consider, for example, the following exchange market:
+For exchanging/trading assets, we provide a few dispatches of a function `generate_exchmkt` to generate a `ExchangeMarket` instance from a single Tuple, an Array or a Dict with `AssetsPair` and `Rate` instances. Consider, for example, the following exchange market:
 
 ```julia
 julia> using Unitful, UnitfulAssets
 
-julia> exch_mkt_27nov2020 = generate_mkt([
+julia> exch_mkt_27nov2020 = generate_exchmkt([
                   ("EUR","USD") => 1.19536, ("USD","EUR") => 0.836570,
                   ("EUR","GBP") => 1.11268, ("GBP","EUR") => 0.898734,
                   ("USD","CAD") => 1.29849, ("CAD","USD") => 0.770125,
@@ -299,16 +299,16 @@ Now, considering again the example above of continuously varying interest rate, 
 
 ```julia
 julia> BRLGBP_timeseries = Dict(
-           "2011-01-01" => generate_mkt(("BRL","GBP") => 0.38585),
-           "2012-01-01" => generate_mkt(("BRL","GBP") => 0.34587),
-           "2013-01-01" => generate_mkt(("BRL","GBP") => 0.29998),
-           "2014-01-01" => generate_mkt(("BRL","GBP") => 0.25562),
-           "2015-01-02" => generate_mkt(("BRL","GBP") => 0.24153),
-           "2016-01-03" => generate_mkt(("BRL","GBP") => 0.17093),
-           "2017-01-02" => generate_mkt(("BRL","GBP") => 0.24888),
-           "2018-01-02" => generate_mkt(("BRL","GBP") => 0.22569),
-           "2019-01-04" => generate_mkt(("BRL","GBP") => 0.21082),
-           "2020-01-04" => generate_mkt(("BRL","GBP") => 0.18784)
+           "2011-01-01" => generate_exchmkt(("BRL","GBP") => 0.38585),
+           "2012-01-01" => generate_exchmkt(("BRL","GBP") => 0.34587),
+           "2013-01-01" => generate_exchmkt(("BRL","GBP") => 0.29998),
+           "2014-01-01" => generate_exchmkt(("BRL","GBP") => 0.25562),
+           "2015-01-02" => generate_exchmkt(("BRL","GBP") => 0.24153),
+           "2016-01-03" => generate_exchmkt(("BRL","GBP") => 0.17093),
+           "2017-01-02" => generate_exchmkt(("BRL","GBP") => 0.24888),
+           "2018-01-02" => generate_exchmkt(("BRL","GBP") => 0.22569),
+           "2019-01-04" => generate_exchmkt(("BRL","GBP") => 0.21082),
+           "2020-01-04" => generate_exchmkt(("BRL","GBP") => 0.18784)
        );
 
 julia> uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1)'
@@ -322,10 +322,10 @@ Notice the optional argument `mode=-1`, so it uses the inverse rate for the conv
 
 ### Decimal, fixed decimals and rational rates
 
-Since the type `Rate` has been defined with of value of type `Number`, it is possible to work with any subtype of `Number`, such as `Decimal`, `FixedDecimals` and `Rational` rates. For example, the following code generates a `Market` instance with Rational rates:
+Since the type `Rate` has been defined with of value of type `Number`, it is possible to work with any subtype of `Number`, such as `Decimal`, `FixedDecimals` and `Rational` rates. For example, the following code generates an `ExchangeMarket` instance with Rational rates:
 
 ```julia
-julia> exch_mkt_from_dict_and_rationals = generate_mkt(Dict([
+julia> exch_mkt_from_dict_and_rationals = generate_exchmkt(Dict([
                   ("EUR","USD") => 119536//100000, ("USD","EUR") => 836570//1000000
               ]))
 Dict{UnitfulAssets.AssetsPair,UnitfulAssets.Rate} with 2 entries:
@@ -338,7 +338,7 @@ For Decimal rates, it is similar:
 ```julia
 julia> using Decimals
 
-julia> exch_mkt_from_dict_and_decimals = generate_mkt(Dict([
+julia> exch_mkt_from_dict_and_decimals = generate_exchmkt(Dict([
            ("EUR","USD") => Decimal(1.19536), ("USD","EUR") => Decimal(0.836570)
        ]))
 Dict{UnitfulAssets.AssetsPair,UnitfulAssets.Rate} with 2 entries:
@@ -351,7 +351,7 @@ Similarly for `FixedDecimal` rates:
 ```julia
 julia> using FixedPointDecimals
 
-julia> exch_mkt_from_dict_and_fixeddecimals = generate_mkt(Dict([
+julia> exch_mkt_from_dict_and_fixeddecimals = generate_exchmkt(Dict([
                          ("EUR","USD") => FixedDecimal{Int,4}(1.19536), ("USD","EUR") => FixedDecimal{Int,4}(0.836570)
                      ]))
 Dict{UnitfulAssets.AssetsPair, UnitfulAssets.Rate} with 2 entries:
@@ -456,7 +456,7 @@ There are still a number of things to be added:
 
 1. See whether it is possible to display 10-fold multiples of a currency in a better way than say `kEUR`, `MEUR`, `GMEUR`, and so on. It would be great to have `USD$ 10k`, `USD$ 10M`, and `USD$ 10B`.
 
-1. Add tools to read exchange/trade market from web sources other than [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com).
+1. Add tools to read exchange markets from web sources other than [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com).
 
 1. Add an option to directly obtain the exchange/trade rates from the web sources using a given API.
 
