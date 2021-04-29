@@ -1,4 +1,5 @@
 [deps]
 Decimals = "abce61dc-4473-55a0-ba07-351d65e31d42"
+FixedPointDecimals = "fb4d412d-6eee-574d-9565-ede6634db7b0"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"

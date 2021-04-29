@@ -2,6 +2,7 @@ using Unitful
 using UnitfulCurrencies
 using Test
 using Decimals
+using FixedPointDecimals
 
 using UnitfulCurrencies: @asset
 
@@ -10,7 +11,7 @@ module TestCurrency
     using UnitfulCurrencies
     using UnitfulCurrencies: @asset
 
-    @asset Currency TSP TestPataca
+    @asset Cash TSP TestPataca
 end
 
 const localpromotion = Unitful.promotion # needed for the new currency dimension
@@ -80,18 +81,19 @@ BRLGBP_timeseries = Dict(
     @test UnitfulCurrencies.is_asset("USD")
     @test UnitfulCurrencies.is_asset("TSP")
     @test !UnitfulCurrencies.is_asset("ABC")
-    @test typeof(UnitfulCurrencies.@asset Currency AAA TripleAs) <: Unitful.FreeUnits
-    @test_throws ArgumentError UnitfulCurrencies.@asset Currency aaa tripleas
+    @test typeof(UnitfulCurrencies.@asset Cash AAA TripleAs) <: Unitful.FreeUnits
+    @test_throws ArgumentError UnitfulCurrencies.@asset Cash aaa tripleas
 end
 
 @testset "Arithmetics" begin
     @test 1u"EUR" + 2u"EUR" === 3u"EUR"
     @test 1.0u"USD" + 2.0u"USD" === 3.0u"USD"
     @test (1//2)u"CAD" + (3//2)u"CAD" === (2//1)u"CAD"
-    #@test Decimal(1.5)u"BRL" + Decimal(2.5)u"BRL" === Decimal(0,4,0)u"BRL"
+    @test Decimal(1.5)u"BRL" + Decimal(2.5)u"BRL" == Decimal(4.0)u"BRL"
     @test 13u"EUR"/2u"BRL" === 6.5u"EUR/BRL"
     @test 10u"AUD"/2u"AUD" === 5.0
-    #@test_throws DimensionError (1u"BRL" + 1u"EUR")
+    @test FixedDecimal{Int,2}(7.21)u"BRL" / FixedDecimal{Int,2}(2)u"kg" === FixedDecimal{Int,2}(3.60)u"BRL/kg"
+    @test_throws Unitful.DimensionError (1u"BRL" + 1u"EUR")
 end
 
 @testset "Exchanges" begin
