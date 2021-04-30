@@ -460,9 +460,7 @@ There are still a number of things to be added:
 
 1. Add an option to directly obtain the exchange/trade rates from the web sources using a given API.
 
-1. Maybe join all tools to read the exchange market from web sources in a single function, with the market source given as an argument, instead of having one function for each.
-
-1. Add Documentation.
+1. More README examples to a proper Documenter-generated site.
 
 ## Related packages
 
