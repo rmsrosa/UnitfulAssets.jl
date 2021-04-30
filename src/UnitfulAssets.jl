@@ -23,7 +23,7 @@ using Unitful, JSON
 using Unitful: @dimension, @refunit
 import Unitful: uconvert
 
-export Market, generate_exchmkt
+export ExchangeMarket, generate_exchmkt
 
 include("utils.jl")
 include("assets.jl")
