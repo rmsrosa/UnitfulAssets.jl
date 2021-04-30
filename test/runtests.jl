@@ -6,7 +6,7 @@ using FixedPointDecimals
 
 using UnitfulAssets: @asset
 
-module TestCurrency
+module TestCash
     using Unitful
     using UnitfulAssets
     using UnitfulAssets: @asset
@@ -15,17 +15,17 @@ module TestCurrency
 end
 
 const localpromotion = Unitful.promotion # needed for the new currency dimension
-Unitful.register(TestCurrency) # needed for new Units
+Unitful.register(TestCash) # needed for new Units
 merge!(Unitful.promotion, localpromotion) # only needed with new dimensions
 
-module TestCurrencySymbol
+module TestCashSymbol
     using Unitful
     using UnitfulAssets
 
     @unit ¥ "¥" YuanSign 1.0u"CNY" true
 end
 
-Unitful.register(TestCurrencySymbol) # needed for new Units
+Unitful.register(TestCashSymbol) # needed for new Units
 
 # create exchange market from a fixer.io json file
 fixer_exchmkt = Dict(

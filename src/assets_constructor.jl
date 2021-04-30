@@ -39,7 +39,7 @@ from `asset_type`, `code_symb` and `name`.
 # Examples
 
 ```jldoctest
-julia> @asset Currency USD "USD"
+julia> @asset Cash USD "USD"
 USD
 
 julia> @asset Metal GOLD "GOLD"
