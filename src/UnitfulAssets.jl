@@ -25,11 +25,11 @@ import Unitful: uconvert
 
 export Market, generate_exchmkt
 
-include("assets_constructor.jl")
+include("assets.jl")
 include("pkgdefaults.jl")
 include("currency_symbols.jl")
-include("exchmkt_constructor.jl")
-include("exchmkt_tools.jl")
+include("exchmkt.jl")
+include("exchmkt_extras.jl")
 
 # Register the new units and dimensions in Unitful
 const localpromotion = Unitful.promotion # only needed with new dimensions

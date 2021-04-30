@@ -1,6 +1,7 @@
 #= 
-File containing further dispatches of `generate_exchmkt` to generate
-ExchangeMarket instances from json files of some exchange market providers.
+File containing further dispatches of `generate_exchmkt` to allow
+generating ExchangeMarket instances from json files of some internet
+exchange market providers.
 
 Currently, only tools for fixer.io and currencylayer.com providers
 are implemented.

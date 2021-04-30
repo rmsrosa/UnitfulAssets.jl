@@ -30,14 +30,14 @@ Unitful.register(TestCashSymbol) # needed for new Units
 # create exchange market from a fixer.io json file
 fixer_exchmkt = Dict(
     "2020-11-01" => UnitfulAssets.generate_exchmkt(
-        joinpath(@__DIR__, "exchange_markets", "2020-11-01_fixer.json"),
+        joinpath(@__DIR__, "exchmkt_data", "2020-11-01_fixer.json"),
         Val(:fixer)
     )
 )
 # create exchange market from a currencylayer json file
 currencylayer_exchmkt = Dict(
     "2020-11-25" => UnitfulAssets.generate_exchmkt(
-        joinpath(@__DIR__, "exchange_markets", "2020-11-25_currencylayer.json"),
+        joinpath(@__DIR__, "exchmkt_data", "2020-11-25_currencylayer.json"),
         Val(:currencylayer)
     )
 )
