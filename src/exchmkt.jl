@@ -193,14 +193,9 @@ function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode
     u_match = match(r"[a-zA-Z]+\{(.+)\}", string(Unitful.dimension(u)))
     x_match = match(r"[a-zA-Z]+\{(.+)\}", string(Unitful.dimension(x)))
 
-    gap_uc = Int('𝐀') - Int('A')
-    gap_lc = Int('𝐚') - Int('a')
-    deboldify(c::Char) = Char(Int(c) - ('𝐚' ≤ c ≤ '𝐳') * gap_lc - 
-        ('𝐀' ≤ c ≤ '𝐙') * gap_uc)
-
     if (u_match !== nothing) && (x_match !== nothing)
-        u_asset = map(deboldify, u_match.captures[1])
-        x_asset = map(deboldify, x_match.captures[1])
+        u_asset = deboldify(u_match.captures[1])
+        x_asset = deboldify(x_match.captures[1])
         pair = AssetsPair(x_asset, u_asset)
         pairinv = AssetsPair(u_asset, x_asset)
         if mode == 1 && pair in keys(e)

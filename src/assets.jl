@@ -52,12 +52,9 @@ DIS
 macro asset(asset_type, code_symb, name)
     asset_str = titlecase(string(asset_type), strict=true)
     code_abbr = string(code_symb)
-    gap_uc = Int('𝐀') - Int('A')
-    gap_lc = Int('𝐚') - Int('a')
-    boldify(c::Char) = Char(Int(c) + ('a' ≤ c ≤ 'z') * gap_lc + 
-        ('A' ≤ c ≤ 'Z') * gap_uc)
+
     if is_asset_code(code_abbr)        
-        code_abbr_bold = map(boldify, code_abbr)
+        code_abbr_bold = boldify(code_abbr)
         dimension = Symbol(code_abbr_bold)
         dim_abbr = asset_str * "{" * code_abbr_bold * "}"
         dim_name = Symbol(dim_abbr)

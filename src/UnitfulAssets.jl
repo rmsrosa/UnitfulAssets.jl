@@ -25,6 +25,7 @@ import Unitful: uconvert
 
 export Market, generate_exchmkt
 
+include("utils.jl")
 include("assets.jl")
 include("pkgdefaults.jl")
 include("currency_symbols.jl")
