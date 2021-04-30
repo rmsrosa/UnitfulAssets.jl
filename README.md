@@ -293,6 +293,9 @@ julia> uconvert(u"EUR", 150u"CAD", exch_mkt_27nov2020, mode=-2)
 96.63933451674102 EUR
 ```
 
+There are also a few dispatches of `generate_exchmkt` to create `ExchangeMarket` instances from JSON files downloaed from [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com) forex conversion sites. Further conversion providers should be added in the future, such as [Finnhub Stock API](https://finnhub.io).
+In any case, one can easily add a dispatch for the API of one's choice.
+
 ### Continuously varying interest rate in a foreign bank
 
 Now, considering again the example above of continuously varying interest rate, suppose that I am actually in Brazil and I want to see the evolution of my savings in terms of Brazillian Reais. Suppose, also, that this happened ten years ago, so we can use some real exchange rates. In this case, I use an exchange rate time series, as follows.
