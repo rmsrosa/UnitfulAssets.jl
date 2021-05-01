@@ -24,12 +24,6 @@ Stacktrace:
 struct AssetsPair
     base_asset::String
     quote_asset::String
-    AssetsPair(base_asset, quote_asset) = is_asset_code(base_asset) && 
-        is_asset_code(quote_asset) ? new(base_asset,quote_asset) : 
-            throw(ArgumentError("The given code symbol pair "
-                * "$((base_asset, quote_asset)) is not allowed, both should "
-                * "be all in ascii uppercase letters and at least "
-                * "three-character long."))
 end
 
 """
@@ -190,8 +184,8 @@ julia> uconvert(u"BRL", 1u"BRL", forex_exchmkt["2020-11-01"], mode=-1)
 ```
 """
 function uconvert(u::Unitful.Units, x::Unitful.Quantity, e::ExchangeMarket; mode::Int=1)
-    u_match = match(r"[a-zA-Z]+\{(.+)\}", string(Unitful.dimension(u)))
-    x_match = match(r"[a-zA-Z]+\{(.+)\}", string(Unitful.dimension(x)))
+    u_match = match(r".+?\{(.+)\}", string(Unitful.dimension(u)))
+    x_match = match(r".+?\{(.+)\}", string(Unitful.dimension(x)))
 
     if (u_match !== nothing) && (x_match !== nothing)
         u_asset = deboldify(u_match.captures[1])

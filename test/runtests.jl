@@ -84,7 +84,6 @@ BRLGBP_timeseries = Dict(
     @test UnitfulAssets.is_asset("TSP")
     @test !UnitfulAssets.is_asset("ABC")
     @test typeof(UnitfulAssets.@asset Cash AAA TripleAs) <: Unitful.FreeUnits
-    @test_throws ArgumentError UnitfulAssets.@asset Cash aaa tripleas
 end
 
 @testset "Arithmetics" begin
