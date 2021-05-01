@@ -293,8 +293,7 @@ julia> uconvert(u"EUR", 150u"CAD", exch_mkt_27nov2020, mode=-2)
 96.63933451674102 EUR
 ```
 
-There are also a few dispatches of `generate_exchmkt` to create `ExchangeMarket` instances from JSON files downloaed from [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com) forex conversion sites. Further conversion providers should be added in the future, such as [Finnhub Stock API](https://finnhub.io).
-In any case, one can easily add a dispatch for the API of one's choice.
+There are also a few dispatches of `generate_exchmkt` to create `ExchangeMarket` instances from JSON files downloaed from [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com) forex conversion sites. Further conversion providers should be added in the future. In any case, one can easily add a dispatch for the API of one's choice.
 
 ### Continuously varying interest rate in a foreign bank
 
@@ -463,7 +462,7 @@ There are still a number of things to be added:
 
 1. Add an option to directly obtain the exchange/trade rates from the web sources using a given API.
 
-1. More README examples to a proper Documenter-generated site.
+1. Move README examples to a proper Documenter-generated site.
 
 ## Related packages
 
