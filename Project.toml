@@ -3,7 +3,7 @@ uuid = "acc8e2b2-5b00-45d8-b782-8432da0c0c59"
 license = "MIT"
 desc = "Asset units extension for Unitful"
 authors = ["Ricardo Rosa <rmsrosa@gmail.com>"]
-version = "0.2.0"
+version = "0.3.0"
 
 [deps]
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
