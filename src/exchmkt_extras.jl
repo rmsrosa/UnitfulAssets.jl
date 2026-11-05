@@ -1,4 +1,4 @@
-#= 
+#=
 File containing further dispatches of `generate_exchmkt` to allow
 generating ExchangeMarket instances from json files of some internet
 exchange market providers.
@@ -32,5 +32,6 @@ Return an `ExchangeMarket` instance from a filename and the symbol T
 associated with the appropriate parser for that market.
 """
 function generate_exchmkt(filename::String, ::Val{T}) where T
-    return generate_exchmkt(JSON.parsefile(filename), Val(T))
+    parsed = JSON.parsefile(filename)
+    return parsed isa String || parsed isa Dict ? generate_exchmkt(parsed, Val(T)) : nothing
 end
