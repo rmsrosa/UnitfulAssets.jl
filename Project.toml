@@ -15,4 +15,4 @@ projects = ["test"]
 [compat]
 julia = "1.10"
 Unitful = "1"
-JSON = "0.21"
+JSON = "1"
