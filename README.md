@@ -1,19 +1,17 @@
 # UnitfulAssets.jl
 
-![Main Tests Workflow Status](https://github.com/rmsrosa/UnitfulAssets.jl/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/rmsrosa/UnitfulAssets.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/rmsrosa/UnitfulAssets.jl) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/rmsrosa/UnitfulAssets.jl) [![Lifecycle Experimental](https://img.shields.io/badge/lifecycle-experimental-orange)](https://lifecycle.r-lib.org/articles/stages.html)
+[![Main Tests Workflow Status](https://github.com/rmsrosa/UnitfulAssets.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/rmsrosa/UnitfulAssets.jl/actions) [![codecov](https://codecov.io/gh/rmsrosa/UnitfulAssets.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/rmsrosa/UnitfulAssets.jl) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/rmsrosa/UnitfulAssets.jl) [![Lifecycle Stable](https://img.shields.io/badge/lifecycle-stable-green)](https://lifecycle.r-lib.org/articles/stages.html)
 
 ![Logo](tools/logo/logo_200x200.png)
 
 A supplemental units package for [Unitful.jl](https://github.com/PainterQubits/Unitful.jl), adding units for all currently active currencies, some stocks and commodities, along with tools to perform conversions based on exchange market rates.
-
-**This package is currently under development and is not yet registered.**
 
 ## Table of Contents
 
 - [Summary](#summary)
 - [Installation](#installation)
 - [Examples](#examples)
-  - [Cost of raw material for a T-shirt](#cost-of-raw-material-for-a-t-shirt) - mixing assets with [Unitul.jl](https://github.com/PainterQubits/Unitful.jl)'s quantities.
+  - [Cost of raw material for a T-shirt](#cost-of-raw-material-for-a-t-shirt) - mixing assets with [Unitful.jl](https://github.com/PainterQubits/Unitful.jl)'s quantities.
   - [Production cost](#production-cost) - creating functions with assets as arguments.
   - [Continuously varying interest rate](#continuously-varying-interest-rate) - using [DifferentialEquations.jl](https://github.com/SciML/DifferentialEquations.jl) with assets.
   - [Exchange markets](#exchange-markets) - generating exchange markets and using different modes of exchange conversion.
@@ -38,12 +36,12 @@ All defined assets are listed in [src/pkgdefaults.jl](src/pkgdefaults.jl). Some 
 
 ## Installation
 
-This package is compatible with Julia ≥ 1.2 and Unitful ≥ 1.0.
+This package is compatible with Julia ≥ 1.10, Unitful ≥ 1.0, and JSON ≥ 1.0.
 
-Since it has not been registered yet, it can be installed directly from the github repo in the Julia REPL, by typing `]` and *adding* the url for the repo:
+Since it is a registered package, it can be installed directly from the github repo in the Julia REPL, by typing `]` and *adding* the package:
 
 ```julia
-pkg> add https://github.com/rmsrosa/UnitfulAssets.jl
+pkg> add UnitfulAssets
 ```
 
 ## Examples
@@ -293,7 +291,7 @@ julia> uconvert(u"EUR", 150u"CAD", exch_mkt_27nov2020, mode=-2)
 96.63933451674102 EUR
 ```
 
-There are also a few dispatches of `generate_exchmkt` to create `ExchangeMarket` instances from JSON files downloaed from [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com) forex conversion sites. Further conversion providers should be added in the future. In any case, one can easily add a dispatch for the API of one's choice.
+There are also a few dispatches of `generate_exchmkt` to create `ExchangeMarket` instances from JSON files downloaded from [fixer.io](https://fixer.io) and [currencylayer.com](https://currencylayer.com) forex conversion sites. Further conversion providers should be added in the future. In any case, one can easily add a dispatch for the API of one's choice.
 
 ### Continuously varying interest rate in a foreign bank
 
@@ -320,9 +318,9 @@ julia> uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1)'
 
 Notice the optional argument `mode=-1`, so it uses the inverse rate for the conversion. As explained above, this is different than using the rate for the pair `("GBP", "BRL")` since we don't want to buy `GBP` with `BRL`, and neither do we want the direct rate for `("BRL", "GBP")` since we don't want to buy a specific amount of `BRL` with `GBP`. Instead, we want to find out how much `BRL` we can buy with a given amount of `GBP`, so we use the inverse of the rate `("BRL", "GBP")`.
 
-**Exercise:** In the [Production cost](#production-cost) problem, suppose the raw materials come from a foreign country (or countries). Add an exchange market for properly taking into account the dependency of the production cost, the profit, and the break even point on the foreing currency(ies).
+**Exercise:** In the [Production cost](#production-cost) problem, suppose the raw materials come from a foreign country (or countries). Add an exchange market for properly taking into account the dependency of the production cost, the profit, and the break even point on the foreign currency(ies).
 
-### Decimal, fixed decimals and rational rates
+### Decimal, fixed decimals, and rational rates
 
 Since the type `Rate` holds a value of type `Number`, it is possible to work with any subtype of `Number`, such as `Rational`, `Decimal` and `FixedDecimal` rates. The number type you provide is preserved in the resulting `ExchangeMarket`.
 
@@ -439,7 +437,7 @@ julia> 1u"USdollar"
 1 US$
 ```
 
-The list of units with their symbols defined in this package is given in [src/currencysymbols.jl](src/currencysymbols.jl)
+The list of units with their symbols defined in this package is given in [src/currency_symbols.jl](src/currency_symbols.jl)
 
 Many symbols are used for different currencies, so we do not attempt to define all symbols here. For instance, the yen sign `¥` is used both for China's Renminbi, with code `CNY`, also known as Yuan, as well as for Japan's Yen, with code `JPY`.
 
