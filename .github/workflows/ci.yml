@@ -39,7 +39,7 @@ jobs:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
 
-      - uses: julia-actions/julia-cache-depot@v1
+      - uses: julia-actions/cache@v1
 
       - uses: julia-actions/julia-buildpkg@v1
 
