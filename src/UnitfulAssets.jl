@@ -2,11 +2,11 @@ __precompile__(true)
 """
     UnitfulAssets
 
-Module extending Unitful.jl with assets such as cash, stock, and commodites.
+Module extending Unitful.jl with assets such as cash, stock, and commodities.
 
 Dimensions and reference units are created for each asset. Cash assets associated
 with all the active currencies around the world are defined, along with some
-(metal) commidities and a few stocks.
+(metal) commodities and a few stocks.
 
 An `ExchangeMarket` type is defined as `Dict{AssetPair,ExchangeRate}`, 
 in which `AssetPair` is a tuple of Strings corresponding to the base and quote

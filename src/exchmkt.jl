@@ -79,7 +79,7 @@ ExchangeMarket = Dict{AssetsPair, Rate}
 Return the exchange rate as a Unitful.Quantity in proper units.
 """
 function get_rate(u::String, v::String, rate_value::Number)
-    return Main.eval(Meta.parse("(" * string(rate_value) * ")u\"" * u * "/" * v * "\""))
+    return Main.eval(Meta.parse("($(rate_value))u\"$(u)/$(v)\""))
 end
 
 """

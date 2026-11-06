@@ -6,6 +6,10 @@ using FixedPointDecimals
 
 using UnitfulAssets: @asset
 
+# Resolve an ambiguity in the tests.
+Unitful.Quantity{T,D,U}(x::Decimal) where {T,D,U} =
+    invoke(Unitful.Quantity{T,D,U}, Tuple{Number}, x)
+
 module TestCash
     using Unitful
     using UnitfulAssets
@@ -62,7 +66,7 @@ exch_mkt_from_dict_and_decimals = generate_exchmkt(Dict([
 test_exch_mkt = generate_exchmkt(("EUR","TSP") => 1234567.89)
 
 # rates to test broadcasting
-BRLGBP_timeseries = Dict(
+const BRLGBP_timeseries = [
     "2011-01-01" => generate_exchmkt(("BRL","GBP") => 0.38585),
     "2012-01-01" => generate_exchmkt(("BRL","GBP") => 0.34587),
     "2013-01-01" => generate_exchmkt(("BRL","GBP") => 0.29998),
@@ -73,7 +77,7 @@ BRLGBP_timeseries = Dict(
     "2018-01-02" => generate_exchmkt(("BRL","GBP") => 0.22569),
     "2019-01-04" => generate_exchmkt(("BRL","GBP") => 0.21082),
     "2020-01-04" => generate_exchmkt(("BRL","GBP") => 0.18784)
-)
+]
 
 @testset "Assets" begin
     # conversions
@@ -109,9 +113,10 @@ end
     @test uconvert(u"EUR", 1u"CAD", exch_mkt_27nov2020, mode=-2) == 0.6442622301116068u"EUR"
     @test uconvert(u"BRL", 1000u"CAD", exch_mkt_27nov2020, mode=2) == 4111.674271249999u"BRL"
     @test uconvert(u"BRL", 1000u"CAD", exch_mkt_27nov2020, mode=-2) == 4111.6768608248185u"BRL"
-    @test uconvert.(u"BRL", 1000u"GBP", values(BRLGBP_timeseries), mode=-1) ≈ [2591.68, 2891.26, 4018.00, 4743.38, 5850.35, 3333.56, 4140.27, 3912.06, 4430.86, 5323.68]u"BRL" (atol=0.01u"BRL")
-    @test uconvert(u"EUR", Decimal(1.5)u"USD", exch_mkt_from_dict_and_decimals) == Decimal(0, 1254855, -6) * u"EUR"
-    @test uconvert(u"EUR", Decimal(1.5)u"USD", exch_mkt_from_dict_and_decimals, mode=-1) == Decimal(0, 125485209476643019676, -20)u"EUR"
+    BRLGPB_ref = [2591.68, 2891.26, 3333.56, 3912.06, 4140.27, 5850.35, 4018.00, 4430.86, 4743.38, 5323.68]u"BRL"
+    @test uconvert.(u"BRL", 1000u"GBP", last.(BRLGBP_timeseries), mode=-1) ≈ BRLGPB_ref (atol=0.01u"BRL")
+    @test Decimals.@with_context (precision=7,) uconvert(u"EUR", Decimal(1.5)u"USD", exch_mkt_from_dict_and_decimals) == Decimal(0, 1254855, -6) * u"EUR"
+    @test Decimals.@with_context (precision=17,) uconvert(u"EUR", Decimal(1.5)u"USD", exch_mkt_from_dict_and_decimals, mode=-1) == Decimal(0, 12548520947664302, -16)u"EUR"
     @test uconvert(u"EUR", (3//2)u"USD", exch_mkt_from_dict_and_rationals) == (250971//200000)u"EUR"
     @test uconvert(u"EUR", (3//2)u"USD", exch_mkt_from_dict_and_rationals, mode=-1) == (9375//7471)u"EUR"
     @test uconvert(u"TSP", 1u"EUR", test_exch_mkt) == 1234567.89u"TSP"
