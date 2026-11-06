@@ -324,42 +324,81 @@ Notice the optional argument `mode=-1`, so it uses the inverse rate for the conv
 
 ### Decimal, fixed decimals and rational rates
 
-Since the type `Rate` has been defined with of value of type `Number`, it is possible to work with any subtype of `Number`, such as `Decimal`, `FixedDecimals` and `Rational` rates. For example, the following code generates an `ExchangeMarket` instance with Rational rates:
+Since the type `Rate` holds a value of type `Number`, it is possible to work with any subtype of `Number`, such as `Rational`, `Decimal` and `FixedDecimal` rates. The number type you provide is preserved in the resulting `ExchangeMarket`.
+
+#### Rational rates
 
 ```julia
 julia> exch_mkt_from_dict_and_rationals = generate_exchmkt(Dict([
-                  ("EUR","USD") => 119536//100000, ("USD","EUR") => 836570//1000000
-              ]))
-Dict{UnitfulAssets.AssetsPair,UnitfulAssets.Rate} with 2 entries:
-  AssetsPair("USD", "EUR") => Rate(83657//100000 EUR USD⁻¹)
+           ("EUR","USD") => 119536//100000, ("USD","EUR") => 836570//1000000
+       ]))
+Dict{UnitfulAssets.AssetsPair, UnitfulAssets.Rate} with 2 entries:
   AssetsPair("EUR", "USD") => Rate(7471//6250 USD EUR⁻¹)
+  AssetsPair("USD", "EUR") => Rate(83657//100000 EUR USD⁻¹)
 ```
 
-For Decimal rates, it is similar:
+Rational rates are reduced to lowest terms, as above, and conversions are exact.
+
+#### Decimal rates
+
+> **Note:** `Decimals.jl` and `Unitful.jl` currently define conflicting
+> constructors for `Quantity{...}(::Decimal)`, which makes the call
+> ambiguous. Until this is resolved upstream, define the following method
+> once, after loading both packages and before using `Decimal` values
+> with units:
+>
+> ```julia
+> Unitful.Quantity{T,D,U}(x::Decimal) where {T,D,U} =
+>     invoke(Unitful.Quantity{T,D,U}, Tuple{Number}, x)
+> ```
+
+Then `Decimal` rates work like any other:
 
 ```julia
-julia> using Decimals
+julia> using Unitful, UnitfulAssets, Decimals
+
+julia> Unitful.Quantity{T,D,U}(x::Decimal) where {T,D,U} =
+           invoke(Unitful.Quantity{T,D,U}, Tuple{Number}, x)
 
 julia> exch_mkt_from_dict_and_decimals = generate_exchmkt(Dict([
-           ("EUR","USD") => Decimal(1.19536), ("USD","EUR") => Decimal(0.836570)
+           ("EUR","USD") => parse(Decimal, "1.19536"),
+           ("USD","EUR") => parse(Decimal, "0.836570")
        ]))
-Dict{UnitfulAssets.AssetsPair,UnitfulAssets.Rate} with 2 entries:
-  AssetsPair("USD", "EUR") => Rate(0.83657 EUR USD⁻¹)
-  AssetsPair("EUR", "USD") => Rate(1.19536 USD EUR⁻¹)
+Dict{UnitfulAssets.AssetsPair, UnitfulAssets.Rate} with 2 entries:
+  AssetsPair("EUR", "USD") => Rate(Decimal(0, 119536, -5) USD EUR⁻¹)
+  AssetsPair("USD", "EUR") => Rate(Decimal(0, 836570, -6) EUR USD⁻¹)
+
+julia> uconvert(u"EUR", parse(Decimal, "1.5")u"USD", exch_mkt_from_dict_and_decimals)
+Decimal(0, 12548550, -7) EUR
 ```
 
-Similarly for `FixedDecimal` rates:
+> **Warning:** Build `Decimal` values from strings, as above. Writing
+> `Decimal(1.19536)` first rounds the number to a binary `Float64`, and the
+> resulting `Decimal` keeps that error exactly
+> (`1.19535999999999997811528373858891427516937255859375`),
+> which defeats the purpose of using decimals. The same holds for the
+> unit-bearing quantities you convert, e.g. `parse(Decimal, "1.5")u"USD"`.
+>
+> Note also that the printed form is the raw `Decimal(sign, coefficient, exponent)`
+> representation; `Decimal(0, 119536, -5)` is `1.19536`.
+
+#### Fixed decimal rates
 
 ```julia
 julia> using FixedPointDecimals
 
 julia> exch_mkt_from_dict_and_fixeddecimals = generate_exchmkt(Dict([
-                         ("EUR","USD") => FixedDecimal{Int,4}(1.19536), ("USD","EUR") => FixedDecimal{Int,4}(0.836570)
-                     ]))
+           ("EUR","USD") => FixedDecimal{Int,4}(1.19536),
+           ("USD","EUR") => FixedDecimal{Int,4}(0.836570)
+       ]))
 Dict{UnitfulAssets.AssetsPair, UnitfulAssets.Rate} with 2 entries:
   AssetsPair("EUR", "USD") => Rate(1.1954 USD EUR⁻¹)
   AssetsPair("USD", "EUR") => Rate(0.8366 EUR USD⁻¹)
 ```
+
+> **Note:** A `FixedDecimal{Int,4}` keeps exactly four decimal places, so the
+> inputs are rounded on construction (`1.19536` becomes `1.1954`). Choose
+> the number of places to match the precision you need for the rates.
 
 ## Assets rate as Unitful quantity
 
