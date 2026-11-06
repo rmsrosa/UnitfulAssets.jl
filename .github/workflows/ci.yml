@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1.6'      # Minimum Supported / LTS
+          - '1.10'      # Minimum Supported / LTS
           - '1'        # Latest stable Julia release
           - 'nightly'
         os:
