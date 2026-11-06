@@ -389,11 +389,11 @@ More assets can be added by the user.
 
 ## Currency symbols
 
-Some currency symbols are also defined as Unitful units, namely the US Dollar symbol `US\$`, equivalent to `USD`; the Canadian dollar `CA\$`,equivalent to `CAD`; the sterling `£`, equivalent to `GBR`; the euro `€`, equivalent to `EUR`; and the Brazilian Real `R$`, equivalent to `BRL`.
+Some currency symbols are also defined as Unitful units, namely the US Dollar symbol `US$`, equivalent to `USD`; the Canadian dollar `CA$`,equivalent to `CAD`; the sterling `£`, equivalent to `GBR`; the euro `€`, equivalent to `EUR`; and the Brazilian Real `R$`, equivalent to `BRL`.
 
 Both the euro and the sterling pound symbols are used as units, so that one may use directly `10u"€"` and `1u"£"`. Both are unicode characters that can be obtained in the REPL or in some proper Julia environment by tab completion `\euro+[TAB]` and `\sterling+[TAB]`.
 
-The dollar sign, however, is a reserved sign in Julia, so we do not use it as a unit symbol, but we do use it as an abbreviation. The unit definitions for `US\$`, `CA\$`, and `R$` are, respectively, `USdollar`, `CAdollar`, and `Real`, so for instance we have
+The dollar sign, however, is a reserved sign in Julia, so we do not use it as a unit symbol, but we do use it as an abbreviation. The unit definitions for `US$`, `CA$`, and `R$` are, respectively, `USdollar`, `CAdollar`, and `Real`, so for instance we have
 
 ```julia
 julia> 1u"USdollar"
